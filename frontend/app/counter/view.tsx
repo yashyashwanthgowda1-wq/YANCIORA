@@ -140,7 +140,7 @@ export default function CounterView() {
                 <Stat label="Words" value={fmtInt(r.word_count)} />
                 <Stat label="Characters" value={fmtInt(r.char_count)} />
                 <Stat label="Tokens / word" value={fmtDec(r.tokens_per_word)} />
-                <Stat label="Language · script" value={<span style={{ fontSize: 16 }}>{r.language ? LANGUAGES[r.language].name : "Unknown"} · {r.script ?? "—"}</span>} />
+                <Stat label="Language · script" value={<span style={{ fontSize: 18, display: "block" }}>{r.language ? LANGUAGES[r.language].name : "Unknown"}<span className="stat-unit" style={{ display: "block", marginLeft: 0 }}>{r.script ? SCRIPT_LABELS[r.script] : "No script detected"}</span></span>} />
               </div>
               <div className="panel-body stack">
                 {r.language === null && r.script === "Latn" && (

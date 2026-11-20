@@ -73,7 +73,7 @@ export default function HomeView() {
         </div>
       </section>
 
-      <div className="grid-2" style={{ marginBottom: 40 }}>
+      <div className="grid-2" style={{ marginBottom: 40, alignItems: "start" }}>
         <section className="panel" aria-labelledby="sys">
           <div className="panel-head">
             <div><h2 id="sys">System status</h2><p>Live from the backend at <code>{API_BASE_URL}</code></p></div>

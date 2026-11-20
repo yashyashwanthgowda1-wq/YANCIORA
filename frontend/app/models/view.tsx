@@ -91,7 +91,7 @@ export default function ModelsView() {
                     <tbody>
                       {MOCK_ROWS.map((r) => (
                         <tr key={r.id} className={r.pick ? "is-best" : undefined}>
-                          <td className="mono">{r.id}</td><td>{r.provider}</td>
+                          <td className="mono" style={{ whiteSpace: "nowrap" }}>{r.id}</td><td>{r.provider}</td>
                           {[0, 1, 2, 3, 4].map((k) => <td key={k}><Badge tone="mock">Mock</Badge></td>)}
                           <td>{r.pick ? <Badge tone="blue">Selected (mock)</Badge> : r.eligible ? <Badge tone="outline">Eligible</Badge> : <Badge tone="neutral">Excluded</Badge>}<div className="small subtle">{r.reason}</div></td>
                         </tr>

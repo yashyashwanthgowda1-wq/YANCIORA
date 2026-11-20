@@ -175,7 +175,7 @@ function RunDetail({ run }: { run: BenchmarkRun }) {
                   <td className="num">{fmtInt(s.total_words)}</td>
                   <td className="num">{fmtDec(s.fertility_mean)}</td>
                   <td className="num">{fmtDec(s.fertility_median)}</td>
-                  <td className="num">{s.fertility_ci95_low !== null ? `${fmtDec(s.fertility_ci95_low)}–${fmtDec(s.fertility_ci95_high)}` : "n/a"}</td>
+                  <td className="num" style={{ whiteSpace: "nowrap" }}>{s.fertility_ci95_low !== null ? `${fmtDec(s.fertility_ci95_low)}–${fmtDec(s.fertility_ci95_high)}` : "n/a"}</td>
                   <td className="num">{fmtInt(s.paired_groups_with_reference)}</td>
                   <td className="num">{fmtRatio(s.ratio_vs_reference)}</td>
                 </tr>
