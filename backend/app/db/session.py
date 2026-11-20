@@ -2,8 +2,11 @@
 (and report `not_configured`) before a database is set up."""
 from __future__ import annotations
 
+import logging
 from functools import lru_cache
 from typing import Any
+
+logger = logging.getLogger("redutax.db")
 
 
 @lru_cache
@@ -27,4 +30,6 @@ def check_database(database_url: str | None) -> dict[str, str]:
             conn.execute(text("SELECT 1"))
         return {"status": "ok"}
     except Exception as exc:  # noqa: BLE001 — health check must not crash
+        # Error type only: driver messages can contain the host or user name.
+        logger.warning("database connection failed: %s", type(exc).__name__)
         return {"status": "error", "error": type(exc).__name__}

@@ -329,6 +329,56 @@ await step("Meaning check (rules_v2) · unit change 5 kg → 5 g is rejected in 
   await shot("15-meaning-check-units-v2");
 });
 
+
+// ---------------------------------------------------------------- Database-backed screens (Neon)
+await step("Research Dashboard shows the stored PostgreSQL run, values match the API", async () => {
+  const api = await (await fetch("http://127.0.0.1:8000/api/benchmarks")).json();
+  const run = api.items[0];
+  await page.goto(`${BASE}/research`, { waitUntil: "networkidle" });
+  await page.waitForSelector(`text=${run.run_id}`, { timeout: 60000 });
+  await page.waitForSelector("text=Summary table", { timeout: 60000 });
+  const table = page.locator("section:has(h2:has-text('Summary table')) table tbody tr");
+  const rows = await table.allTextContents();
+  const fmt = (n) => new Intl.NumberFormat("en-IN").format(n);
+  let matched = 0;
+  const problems = [];
+  for (const s of run.summaries) {
+    const row = rows.find((r) => r.includes(s.tokenizer.name) && r.includes(fmt(s.total_tokens)));
+    const ratio = `${s.ratio_vs_reference.toFixed(2)}×`;
+    if (row && row.includes(ratio) && row.includes(s.fertility_mean.toFixed(2))) matched++;
+    else problems.push(`${s.tokenizer.name}/${s.language}`);
+  }
+  const body = await page.textContent("body");
+  record("Research Dashboard shows the stored PostgreSQL run, values match the API",
+    matched === run.summaries.length && rows.length === run.summaries.length && !/database_not_configured/.test(body),
+    { runId: run.run_id, summaryRowsShown: rows.length, matchedApiValues: matched, problems });
+  await shot("16-research-dashboard-stored-run");
+});
+await step("Research Dashboard per-sample results load from the database", async () => {
+  await page.waitForSelector("text=Per-sample results", { timeout: 60000 });
+  await page.waitForFunction(() => /flores-devtest-\d{4}-(en|hi|kn|ta|te)/.test(document.body.innerText), null, { timeout: 60000 });
+  const body = await page.textContent("body");
+  record("Research Dashboard per-sample results load from the database", /flores-devtest-\d{4}/.test(body), {});
+  await shot("17-research-per-sample-results");
+});
+await step("Language Comparison loads an aligned FLORES-200 group from the database", async () => {
+  await page.goto(`${BASE}/compare`, { waitUntil: "networkidle" });
+  await waitTokenizers("#cmp-tok");
+  await page.getByRole("button", { name: "Load aligned sample" }).click();
+  await page.waitForSelector("text=flores-devtest-0001", { timeout: 60000 });
+  await page.getByRole("button", { name: "Use", exact: true }).first().click();
+  await page.waitForSelector("text=Aligned group", { timeout: 30000 });
+  const cards = await page.locator('textarea[aria-label$=" text"]').count();
+  const resp = page.waitForResponse((r) => r.url().includes("/api/compare-languages"), { timeout: 30000 });
+  await page.getByRole("button", { name: "Compare", exact: true }).click();
+  const cmp = await (await resp).json();
+  const body = await page.textContent("body");
+  record("Language Comparison loads an aligned FLORES-200 group from the database",
+    /Aligned group/.test(body) && cards === 5 && cmp.aligned === true && !/database_not_configured/.test(body),
+    { variantCards: cards, compareAligned: cmp.aligned, languages: cmp.rows.map((r) => r.language).join(",") });
+  await shot("18-compare-aligned-sample-loader");
+});
+
 fs.writeFileSync(path.join(OUT, "results.json"), JSON.stringify({ results, consoleErrors }, null, 2));
 console.log(`\n${results.filter((r) => r.ok).length}/${results.length} passed; console errors: ${consoleErrors.length}`);
 consoleErrors.slice(0, 10).forEach((e) => console.log("  console:", e));

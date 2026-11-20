@@ -163,7 +163,8 @@ def list_runs(engine: Engine, *, run_id: str | None = None, dataset: str | None 
         if run_id and total == 0:
             raise NotFound(f"benchmark run '{run_id}' not found")
         runs = conn.execute(text(f"""
-            SELECT r.run_id, r.run_at, d.name AS dataset, d.version AS dataset_version, r.split,
+            SELECT r.run_id, r.run_at, d.name AS dataset, d.version AS dataset_version,
+                   d.license AS dataset_license, r.split,
                    r.reference_language, r.normalization, r.word_count_method, r.code_version,
                    r.input_sha256, r.n_samples
             {base} ORDER BY r.run_at DESC, r.run_id DESC LIMIT :lim OFFSET :off

@@ -7,7 +7,7 @@ Last updated: 2026-11-20
 | Phase | Scope | State |
 |---|---|---|
 | 0 | Repo, config, DB schema, `/health`, tests | Done |
-| 1 | Normalization, tokenizer counters, compare API, licence register, importer, benchmark, DB persistence, retrieval APIs | **Code complete. Not verified:** PostgreSQL tests not yet run against a real server; FLORES-200 licence not verified, so no real data loaded and no baseline run |
+| 1 | Normalization, tokenizer counters, compare API, licence register, importer, benchmark, DB persistence, retrieval APIs | **Verified 2026-11-21** — Neon PostgreSQL at migration `0002`; all 349 backend tests pass incl. the 30 PostgreSQL tests (test branch); FLORES-200 devtest imported (5,060 rows); first baseline benchmark stored (run `20261120T214425Z`) and shown on the Research Dashboard. Exit criteria met — **team sign-off pending** |
 | 2 | SentencePiece Unigram training + held-out benchmark | Not started (waits for Phase 1 verification + team approval) |
 | 3 | Optimizer + meaning/critical-detail checks (Features 5, 3, 6) | **Features 5, 3 and 6 done** (rules_v2, opt_rules_v1, translit_v1); Feature 6 awaits native-speaker spot checks |
 | 4 | Model registry, cost, Auto/Manual routing, chat | Not started |
@@ -17,9 +17,9 @@ Last updated: 2026-11-20
 
 ## Work tracks (team decision 2026-11-20)
 
-- **Track A — Phase 1 verification:** waiting on the Neon connection in `.env` (team) and the
-  verified FLORES-200 metadata (team). `TEST_PSQL_URL` should point at a **separate Neon branch**;
-  the DB tests create and drop their own throwaway databases and never touch app data.
+- **Track A — Phase 1 verification: done 2026-11-21.** Neon configured (production + separate
+  test branch), migrations applied, PostgreSQL tests pass on the test branch, FLORES-200 imported,
+  baseline benchmark stored. Results: `research/BENCHMARK_FLORES200_BASELINE.md`.
 - **Track B — stateless features:** Feature 5 → Feature 3 → Feature 6, rules-based, no paid APIs.
 
 ## Feature status (10 REDUTAX features)
@@ -27,7 +27,7 @@ Last updated: 2026-11-20
 | # | Feature | State |
 |---|---|---|
 | 1 | Multilingual Token Counter | Built (`POST /api/tokenize`) |
-| 2 | Language Comparison Engine | Built (`POST /api/compare-languages`); DB-backed groups/benchmarks await Track A |
+| 2 | Language Comparison Engine | Built (`POST /api/compare-languages`); aligned FLORES-200 groups load from PostgreSQL (`GET /api/samples/groups`); stored benchmarks on the Research Dashboard |
 | 3 | Smart Prompt Optimizer | **Done — opt_rules_v1** (`POST /api/optimize`); balanced mode inactive until phrase lists are reviewed |
 | 4 | AI Cost Calculator | Not started (needs pricing source decision) |
 | 5 | Meaning Preservation Checker | **Done — rules_v2** (units + standalone Romanized negations added 2026-11-21) (`POST /api/meaning-check`, `POST /api/critical-details`); Indic negation lists await native-speaker review |
@@ -128,20 +128,32 @@ Policy: `research/configs/transliteration.md`. Tamil output uses Sanskrit-style 
   registry token counts; never applied automatically.
 - DB connections now time out after 5 s (`app/db/session.py`), so `/health` and the API return 503 quickly when the DB is down.
 
-## Test results (Windows 11, Python 3.13, 2026-11-20)
+## Test results (Windows 11, Python 3.13, 2026-11-21)
 
-`pytest` → **318 passed, 30 skipped, 0 failed** (after Feature 5 `rules_v2`, with the tiktoken encoding files installed; only the 30 PostgreSQL tests skip).
+`pytest` with `TEST_PSQL_URL` → **349 passed, 0 skipped, 0 failed** — including all 30 PostgreSQL
+tests, run against the **separate Neon test branch** (each test module creates and drops its own
+throwaway database there; 0 left behind; none created on production). During the run the test
+process's `DATABASE_URL` was also pointed at the test branch, so the production URL was never loaded.
 
-| Skipped | Count | Reason |
-|---|---|---|
-| `test_dataset_store.py`, `test_benchmark_store.py`, `test_api_data.py` (DB parts) | 26 | No PostgreSQL available in this environment (no Docker, no local server); `TEST_PSQL_URL` unset |
-| `test_schema.py` | 4 | Same, plus `psql` not installed |
-| `test_tiktoken_adapter.py` + 1 optimizer test | 7 | tiktoken could not download its encoding files (SSLError on this network) |
+`tests/test_schema.py` now runs its SQL through psycopg instead of the `psql` binary (not installed,
+and it could not parse `postgresql+psycopg://` URLs); its four assertions are unchanged (D38).
+Without `TEST_PSQL_URL` the suite gives 319 passed, 30 skipped.
 
-**PostgreSQL integration (migration 0002, loader, benchmark store, DB-backed API tests) has not been
-executed yet.** Run it locally with `TEST_PSQL_URL` (commands below). The DB tests run the real Alembic chain (`upgrade head`) on a throwaway database.
+Frontend: `tsc` 0 errors · vitest 16/16 · `next build` OK. Browser checks (Edge, real UI and
+backend): **30/30**, incl. the Research Dashboard (all 10 stored summary rows match the API) and the
+aligned-sample loader.
 
 Note for Windows: if pytest fails with `PermissionError` on its temp folder, add `--basetemp .pytest_tmp`.
+
+## Database (Neon PostgreSQL) — 2026-11-21
+
+| Item | State |
+|---|---|
+| Connections | `DATABASE_URL` → production branch, `TEST_PSQL_URL` → separate test branch; both direct (no pooler), `sslmode=require`, `postgresql+psycopg://`; values only in the git-ignored root `.env` |
+| Server | PostgreSQL 18.7 (Neon) |
+| Migration revision (production) | `0002` (head) — 8 tables + `alembic_version`, 11 indexes, split-leakage trigger, 5 languages seeded |
+| Data (production) | `datasets` 1 (FLORES-200@2022-07-14), `dataset_samples` 5,060, `dataset_imports` 2, `tokenizers` 2, `benchmark_runs` 1, `token_benchmarks` 10,120, `benchmark_summaries` 10 |
+| Logging | Startup log shows only `database_url: configured (postgresql+psycopg)`; connection failures logged by error type only (D40) |
 
 ## Database migrations
 
@@ -172,11 +184,10 @@ Errors: `422 invalid_request` (bad filter), `404 not_found` (unknown dataset/run
 
 ## Remaining blockers for Phase 1 exit
 
-1. **Run the PostgreSQL tests locally** (`TEST_PSQL_URL=... pytest`) and record the result here.
-2. **Team: approve FLORES-200 use.** Licence facts were verified from the official source on 2026-11-21 and recorded in `research/configs/datasets.yaml` (CC-BY-SA-4.0, archive + SHA-256, citation, access date); the archive is downloaded (git-ignored) and line-aligned. The only remaining gate: add `approved_for: [evaluation]` once the team agrees.
-   Current gate message: `BLOCKED: dataset 'FLORES-200': not approved for 'evaluation'`.
-3. Then: convert → `import_pilot.py --load-db` → `run_benchmark.py --store-db` → first five-language baseline chart (Phase 1 exit criterion).
-4. Run the tiktoken tests on a machine that can download the encodings (or with `TIKTOKEN_CACHE_DIR` pre-filled).
+1. ~~Run the PostgreSQL tests.~~ **Done 2026-11-21:** 30/30 on the Neon test branch (see Test results).
+2. ~~Team: approve FLORES-200 use.~~ **Approved 2026-11-21 for internal research and evaluation only** (D36). Converted and validated without a database: `devtest` → 5,060 rows (1,012 aligned sentences × en/kn/hi/ta/te), 0 errors, at `research/data/processed/FLORES-200/2022-07-14/samples.jsonl` (git-ignored). Not yet imported into PostgreSQL.
+3. ~~Import + first baseline.~~ **Done 2026-11-21:** 5,060 rows imported (idempotent re-run: 0 inserted); run `20261120T214425Z` stored (10,120 counts, 10 summaries) and displayed — `research/BENCHMARK_FLORES200_BASELINE.md`.
+4. ~~tiktoken tests.~~ Done: encodings installed via the verified curl workaround (`docs/ROUND1_DEMO.md`); all tiktoken tests pass.
 5. Team: Romanized and code-mixed pilot examples with native-speaker review (FLORES has none). This can follow the Phase 1 exit.
 6. Frontend: mirror the new response types (`SampleGroupsResponse`, `BenchmarksResponse`, `BenchmarkResultsResponse`, `MeaningCheckResponse`, `CriticalDetailsResponse`, `OptimizeResponse`, `ScriptVariantsResponse`) in `frontend/lib/api/types.ts`.
    Frontend progress: `SampleGroupsResponse`, `BenchmarksResponse` and `BenchmarkResultsResponse` were mirrored by the frontend team; the rest are added by the Round 1 integration (see below).

@@ -60,8 +60,15 @@ class Settings(BaseModel):
         """Settings with credentials masked — safe to log."""
         d = self.model_dump()
         if self.database_url:
-            d["database_url"] = mask_url(self.database_url)
+            d["database_url"] = redact_url(self.database_url)
         return d
+
+
+def redact_url(url: str) -> str:
+    """For logs: only whether a database is configured and which driver/scheme. No username,
+    password, host, port, database name or query parameters."""
+    scheme = url.split("://", 1)[0] if "://" in url else "unknown"
+    return f"configured ({scheme})"
 
 
 def mask_url(url: str) -> str:

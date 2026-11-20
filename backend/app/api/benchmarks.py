@@ -36,7 +36,8 @@ def benchmarks(
                                  "word_count_method", "code_version", "input_sha256",
                                  "n_samples", "tokenizers", "note")},
             run_at=r["run_at"].isoformat(),
-            dataset=DatasetRef(name=r["dataset"], version=r["dataset_version"]),
+            dataset=DatasetRef(name=r["dataset"], version=r["dataset_version"],
+                               license=r["dataset_license"]),
             summaries=[BenchmarkSummary(**s) for s in r["summaries"]],
         )
         for r in runs

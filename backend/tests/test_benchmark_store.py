@@ -132,6 +132,8 @@ def test_list_runs_filters_and_pagination(eng, tmp_path):
 
     runs, total = list_runs(eng)
     assert total == 2
+    # Regression: the run's dataset licence comes from the datasets row.
+    assert all(r["dataset_license"] == D.LICENSE for r in runs)
     runs, total = list_runs(eng, tokenizer="fake_research")
     assert total == 1 and runs[0]["run_id"] == "RUN_B"
     assert {s["tokenizer"]["name"] for s in runs[0]["summaries"]} == {"fake_research"}

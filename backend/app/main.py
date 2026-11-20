@@ -57,6 +57,8 @@ def create_app() -> FastAPI:
     app.include_router(optimizer.router)
     app.include_router(transliteration.router)
     logger.info("starting %s %s settings=%s", APP_NAME, APP_VERSION, settings.safe_dict())
+    logger.info("database: %s; connectivity is reported by GET /health",
+                "configured" if settings.database_url else "not configured")
     return app
 
 

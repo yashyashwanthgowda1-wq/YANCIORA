@@ -8,10 +8,13 @@
 # "TO_VERIFY" blocks import. Every value below that says TO_VERIFY must be checked by a person.
 
 datasets:
-  # Facts below verified 2026-11-21 from the official source (see notes). approved_for is still
-  # EMPTY on purpose: the team must confirm REDUTAX's intended use before import (BRD §9.2).
+  # Facts below verified 2026-11-21 from the official source (see notes).
+  # Approved 2026-11-21 by the Team YANCIORA project lead for INTERNAL research and evaluation
+  # only, subject to CC BY-SA 4.0 attribution and share-alike obligations. Not approved for
+  # redistribution or tokenizer training — do not redistribute the data or processed files
+  # without re-checking the licence requirements.
   - name: FLORES-200
-    version: "flores200_dataset.tar.gz (Last-Modified 2022-07-14)"
+    version: "2022-07-14"         # flores200_dataset.tar.gz, HTTP Last-Modified 2022-07-14 (see download_url, archive_sha256)
     source_url: https://github.com/facebookresearch/flores/tree/main/flores200
     download_url: https://dl.fbaipublicfiles.com/nllb/flores200_dataset.tar.gz   # via https://tinyurl.com/flores200dataset
     archive_bytes: 25585843
@@ -32,7 +35,11 @@ datasets:
       hi: hin_Deva
       ta: tam_Taml
       te: tel_Telu
-    approved_for: []              # TEAM DECISION PENDING — import stays blocked until filled
+    approved_for: [evaluation]    # internal research/evaluation only (team decision 2026-11-21)
+    approval: >
+      Approved 2026-11-21 by the Team YANCIORA project lead: internal research and evaluation only;
+      CC BY-SA 4.0 attribution required; share-alike applies to any shared adaptations; no
+      redistribution of the dataset or processed files without verifying licence requirements.
     notes: >
       Planned use: aligned evaluation set for language comparison (Phase 1).
       FLORES has no Romanized or code-mixed text; those come from the team set.

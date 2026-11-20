@@ -122,6 +122,8 @@ def test_benchmarks_endpoint(client):
     assert body.total == 1 and run.run_id == "RUN1" and run.split == "test"
     assert run.dataset.version == "1" and run.tokenizers[0].name == "fake_bytes"
     assert run.normalization == "nfc_ws_v1" and "not cost multipliers" in run.note
+    # Regression: dataset licence metadata is populated (was null before).
+    assert run.dataset.license == D.LICENSE and r.json()["items"][0]["dataset"]["license"] == D.LICENSE
     en = next(s for s in run.summaries if s.language == "en")
     assert en.status == "exact" and en.ratio_vs_reference == pytest.approx(1.0)
 

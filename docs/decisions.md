@@ -54,6 +54,15 @@
 
 | D35 | FLORES-200 licence facts recorded from the official source (CC-BY-SA-4.0; archive flores200_dataset.tar.gz, Last-Modified 2022-07-14, sha256 b8b0b767…; accessed 2026-11-21) but `approved_for` left empty | Approving REDUTAX's use is a team decision; the import gate stays closed until it is recorded. |
 
+| D36 | FLORES-200 approved (2026-11-21, project lead) for **internal research and evaluation only** — `approved_for: [evaluation]`; CC BY-SA 4.0 attribution and share-alike obligations apply; not approved for redistribution or tokenizer training. Dataset version id set to `2022-07-14` (archive name, URL and SHA-256 kept in the register) | Team decision; a plain version id keeps file paths and the DB key free of spaces. Tests enforce the evaluation-only scope. |
+
+| D37 | Neon PostgreSQL: production branch for the app (`DATABASE_URL`), separate test branch for tests (`TEST_PSQL_URL`); direct connections, `sslmode=require`, `postgresql+psycopg://`; secrets only in the git-ignored root `.env`. DB tests run via `backend/scripts/run_db_tests.py`, which refuses identical hosts and points the test process's `DATABASE_URL` at the test branch | Destructive test operations (CREATE/DROP DATABASE) can never reach production. |
+| D38 | `tests/test_schema.py` executes SQL through psycopg instead of the `psql` binary; assertions unchanged; throwaway DB URL built with `tests.pg.with_database` (keeps `?sslmode=require`) | `psql` is not installed on the dev machine and could not parse `postgresql+psycopg://`; the old URL builder dropped Neon's SSL parameter. |
+| D39 | Benchmark reporting adds **tokens per sentence on aligned groups** (total, mean, median, min, max, per-sentence ratio vs English) alongside the stored tokens-per-word summaries | Whitespace "words" undercount agglutinative Dravidian text, inflating per-word ratios (Kannada 12.05× per word vs 8.84× per sentence under cl100k_base). |
+
+| D40 | Startup log shows the database only as `configured (<driver>)` (`redact_url`); failed health-check connections are logged by error type only | Logs must not contain the database user, host, password or full connection string. `mask_url` is kept but no longer used for logging. |
+| D41 | `GET /api/benchmarks` fills `dataset.license` from the `datasets` row (was always null) | Licence metadata travels with stored results; response shape unchanged (field already existed). |
+
 The new response types in `backend/app/schemas.py` (`SampleGroupsResponse`, `BenchmarksResponse`,
 `BenchmarkResultsResponse`, `MeaningCheckResponse`, `CriticalDetailsResponse`, `OptimizeResponse`, `ScriptVariantsResponse`) must be mirrored in the frontend's `lib/api/types.ts`.
 

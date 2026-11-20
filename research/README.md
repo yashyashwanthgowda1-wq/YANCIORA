@@ -19,6 +19,10 @@ JSONL or CSV with: `sample_id`, `language_code` (kn/hi/ta/te/en), `script`
 
 Rows meaning the same thing share an `aligned_group_id`. A group must stay within one split.
 
+## Results
+
+- First stored baseline: [`BENCHMARK_FLORES200_BASELINE.md`](BENCHMARK_FLORES200_BASELINE.md) — FLORES-200 devtest, 5 languages × 1,012 aligned sentences, cl100k_base vs o200k_base (run `20261120T214425Z`).
+
 ## Outputs
 
 - `data/processed/<dataset>/<version>/samples.jsonl` + `import_report.json`

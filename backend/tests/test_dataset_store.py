@@ -45,9 +45,11 @@ def test_shipped_register_blocks_db_load():
     from app.services.dataset_import import load_register
 
     reg = load_register(Path(__file__).resolve().parents[2] / "research/configs/datasets.yaml")
-    for name in ("FLORES-200", "REDUTAX-team-pilot"):
-        with pytest.raises(RegisterError):
-            load_samples(NoDB(), reg, name, D.rows())
+    with pytest.raises(RegisterError):
+        load_samples(NoDB(), reg, "REDUTAX-team-pilot", D.rows())
+    # FLORES-200 is approved for evaluation only (team decision 2026-11-21).
+    with pytest.raises(RegisterError, match="tokenizer_training"):
+        load_samples(NoDB(), reg, "FLORES-200", D.rows(), use="tokenizer_training")
 
 
 def test_validation_errors_block_before_db():

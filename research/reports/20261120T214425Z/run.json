@@ -1,0 +1,30 @@
+{
+  "run_id": "20261120T214425Z",
+  "run_at": "2026-11-20T21:44:25.078478+00:00",
+  "code_version": "f4614747402ff5ca681924d17000f8e9ffd1697d",
+  "input_file": "research\\data\\processed\\FLORES-200\\2022-07-14\\samples.jsonl",
+  "input_sha256": "803b7fb9bf1834b53e1b8fb410ae4ce9864bce5d0ffb9464b17ca37cc310cef3",
+  "datasets": [
+    "FLORES-200@2022-07-14"
+  ],
+  "split": "test",
+  "n_samples": 5060,
+  "tokenizers": [
+    {
+      "name": "cl100k_base",
+      "library": "tiktoken",
+      "version": "0.14.0",
+      "kind": "baseline"
+    },
+    {
+      "name": "o200k_base",
+      "library": "tiktoken",
+      "version": "0.14.0",
+      "kind": "baseline"
+    }
+  ],
+  "normalization": "nfc_ws_v1",
+  "word_count_method": "unicode_whitespace_v1",
+  "reference_language": "en",
+  "note": "Ratios are tokenization ratios under each tokenizer, not cost multipliers."
+}

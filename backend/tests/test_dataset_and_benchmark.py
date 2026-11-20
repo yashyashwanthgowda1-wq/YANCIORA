@@ -58,10 +58,19 @@ def test_register_blocks_unknown_and_wrong_use():
 
 
 def test_shipped_register_blocks_until_verified():
-    reg = yaml.safe_load((REPO / "research/configs/datasets.yaml").read_text())["datasets"]
-    for name in ("FLORES-200", "REDUTAX-team-pilot"):
-        with pytest.raises(RegisterError):
-            check_register_entry(reg, name, "evaluation")
+    reg = yaml.safe_load((REPO / "research/configs/datasets.yaml").read_text(encoding="utf-8"))["datasets"]
+    with pytest.raises(RegisterError):
+        check_register_entry(reg, "REDUTAX-team-pilot", "evaluation")
+
+
+def test_shipped_register_flores_approved_for_evaluation_only():
+    """Team decision 2026-11-21: FLORES-200 for internal research/evaluation only."""
+    reg = yaml.safe_load((REPO / "research/configs/datasets.yaml").read_text(encoding="utf-8"))["datasets"]
+    entry = check_register_entry(reg, "FLORES-200", "evaluation")
+    assert entry["license"] == "CC-BY-SA-4.0" and entry["approved_for"] == ["evaluation"]
+    for use in ("tokenizer_training", "redistribution"):
+        with pytest.raises(RegisterError, match=f"not approved for '{use}'"):
+            check_register_entry(reg, "FLORES-200", use)
 
 
 # ---------- validation ----------
@@ -145,9 +154,13 @@ def test_import_cli_blocks_unverified_dataset(tmp_path):
     src = tmp_path / "in.jsonl"
     src.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in GOOD), encoding="utf-8")
     r = subprocess.run([sys.executable, str(REPO / "research/scripts/import_pilot.py"),
-                        "--input", str(src), "--dataset", "FLORES-200",
+                        "--input", str(src), "--dataset", "REDUTAX-team-pilot",
                         "--out-root", str(tmp_path / "out")], capture_output=True, text=True)
     assert r.returncode == 2 and "BLOCKED" in r.stderr
+    r2 = subprocess.run([sys.executable, str(REPO / "research/scripts/import_pilot.py"),
+                         "--input", str(src), "--dataset", "FLORES-200", "--use", "tokenizer_training",
+                         "--out-root", str(tmp_path / "out")], capture_output=True, text=True)
+    assert r2.returncode == 2 and "not approved for 'tokenizer_training'" in r2.stderr
 
 
 def test_import_cli_writes_outputs(tmp_path):
