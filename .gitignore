@@ -1,0 +1,29 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.pytest_tmp/
+*.egg-info/
+
+# Node
+node_modules/
+.next/
+
+# Research data and artifacts (versioned in object storage, not git)
+research/data/raw/*
+research/data/processed/*
+!research/data/raw/.gitkeep
+!research/data/processed/.gitkeep
+research/artifacts/
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/

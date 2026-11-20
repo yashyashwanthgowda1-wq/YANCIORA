@@ -1,0 +1,42 @@
+# REDUTAX dataset licence register (BRD §9.2).
+#
+# Nothing is imported until its entry here is complete:
+#   - license and citation filled in from the source's own terms (not from memory)
+#   - accessed_at set to the date the files were downloaded
+#   - approved_for lists the uses the team has confirmed the licence allows
+#     (evaluation, tokenizer_training, redistribution)
+# "TO_VERIFY" blocks import. Every value below that says TO_VERIFY must be checked by a person.
+
+datasets:
+  - name: FLORES-200
+    version: TO_VERIFY            # release used, e.g. the archive name/date
+    source_url: https://github.com/facebookresearch/flores
+    license: TO_VERIFY
+    license_url: TO_VERIFY
+    citation: TO_VERIFY
+    accessed_at: null             # YYYY-MM-DD
+    languages: [en, kn, hi, ta, te]
+    language_codes_in_source:     # FLORES-200 codes (verify against the release)
+      en: eng_Latn
+      kn: kan_Knda
+      hi: hin_Deva
+      ta: tam_Taml
+      te: tel_Telu
+    approved_for: []
+    notes: >
+      Planned use: aligned evaluation set for language comparison (Phase 1).
+      FLORES has no Romanized or code-mixed text; those come from the team set.
+
+  - name: REDUTAX-team-pilot
+    version: "0.1"
+    source_url: internal
+    license: TO_VERIFY            # team decides; record consent for contributed text
+    license_url: null
+    citation: Team YANCIORA (No. 46), REDUTAX pilot set
+    accessed_at: null
+    languages: [en, kn, hi, ta, te]
+    approved_for: []
+    notes: >
+      Human-written/verified prompts incl. Romanized and code-mixed variants.
+      Follow annotation rules in research/configs/annotation_guidelines.md (to be written).
+      No personal data.
