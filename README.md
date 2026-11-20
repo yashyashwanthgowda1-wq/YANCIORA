@@ -27,7 +27,7 @@ backend/            FastAPI service (Python)
   tests/
 research/           dataset import, normalization, tokenizer training, benchmarks (Phase 1+)
   data/raw|processed  local only, git-ignored
-frontend/           web UI (stack decision pending — see frontend/README.md)
+frontend/           web UI — Next.js 15 + TypeScript (see frontend/README.md)
 docs/               decisions and open questions
 docker-compose.yml  local PostgreSQL 16
 ```
