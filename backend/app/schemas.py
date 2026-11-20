@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 LanguageCode = Literal["kn", "hi", "ta", "te", "en"]
 Script = Literal["Knda", "Deva", "Taml", "Telu", "Latn", "mixed"]
@@ -385,5 +385,116 @@ class OptimizeResponse(BaseModel):
     requires_review: bool
     phrase_lists: list[PhraseListRef]
     meaning_check: MeaningCheckResponse
+    warnings: list[str]
+    limitations: list[str]
+
+
+# ---------- Feature 6: script and transliteration (POST /api/script-variants) ----------
+TranslitScheme = Literal["iso", "itrans_dravidian", "hk_dravidian", "optitrans_dravidian", "baraha"]
+TRANSLIT_LANGUAGES = ("kn", "hi", "ta", "te")
+
+
+class ScriptVariantsRequest(BaseModel):
+    text: str = Field(min_length=1, max_length=MAX_TEXT_CHARS)
+    language: LanguageCode = Field(description="kn, hi, ta or te (English has no script variants)")
+    direction: Literal["native_to_roman", "roman_to_native"] = "native_to_roman"
+    source_scheme: TranslitScheme | Literal["casual"] | None = Field(
+        default=None, description="Required for roman_to_native. 'casual' (everyday Romanized "
+                                  "typing) is not a scheme and returns status 'unsupported'.")
+    target_schemes: list[TranslitScheme] = Field(
+        default_factory=lambda: ["iso"], min_length=1, max_length=5,
+        description="Romanization schemes for native_to_roman (default ISO 15919).")
+    tokenizers: list[str] = Field(default_factory=lambda: ["cl100k_base"], min_length=1,
+                                  max_length=MAX_OPT_TOKENIZERS)
+    protected_terms: list[str] = Field(default_factory=list, max_length=MAX_PROTECTED_TERMS)
+
+    @field_validator("text")
+    @classmethod
+    def _not_blank(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("text is blank")
+        return v
+
+    @field_validator("language")
+    @classmethod
+    def _indic_only(cls, v: str) -> str:
+        if v not in TRANSLIT_LANGUAGES:
+            raise ValueError("script variants are available for kn, hi, ta and te only")
+        return v
+
+    @field_validator("target_schemes", "tokenizers")
+    @classmethod
+    def _unique(cls, v: list[str]) -> list[str]:
+        if len(set(v)) != len(v):
+            raise ValueError("values must not repeat")
+        return v
+
+    @field_validator("protected_terms")
+    @classmethod
+    def _terms_ok(cls, v: list[str]) -> list[str]:
+        _check_terms(v)
+        if any(len(t) > 200 for t in v):
+            raise ValueError("protected terms must be at most 200 characters")
+        return v
+
+    @model_validator(mode="after")
+    def _direction_needs(self) -> "ScriptVariantsRequest":
+        if self.direction == "roman_to_native" and self.source_scheme is None:
+            raise ValueError("source_scheme is required for roman_to_native "
+                             "(use 'casual' for everyday Romanized typing)")
+        return self
+
+
+class VariantTokenCount(BaseModel):
+    tokenizer: TokenizerRef
+    status: CountStatus
+    tokens: int
+    tokens_per_word: float | None
+    delta_vs_source: int
+    ratio_vs_source: float | None   # tokenization ratio, not a cost multiplier
+
+
+class ScriptSource(BaseModel):
+    script: Script
+    scheme: TranslitScheme | None
+    text: str
+    token_counts: list[VariantTokenCount]
+
+
+class JoinerReport(BaseModel):
+    """ZWJ (U+200D) / ZWNJ (U+200C) in the converted spans."""
+    source_count: int
+    output_count: int
+    preserved_in_round_trip: bool
+
+
+class ScriptVariant(BaseModel):
+    script: Script
+    scheme: TranslitScheme | None
+    text: str
+    lossless_round_trip: bool
+    lossy_reasons: list[str]
+    converted_spans: int
+    protected_spans_skipped: int
+    joiners: JoinerReport
+    token_counts: list[VariantTokenCount]
+    meaning_check: MeaningCheckResponse
+    requires_review: Literal[True] = True
+    warnings: list[str]
+
+
+class TranslitLibrary(BaseModel):
+    name: str
+    version: str
+
+
+class ScriptVariantsResponse(BaseModel):
+    method: str
+    status: Literal["ok", "unsupported"]
+    language: LanguageCode
+    direction: Literal["native_to_roman", "roman_to_native"]
+    library: TranslitLibrary
+    source: ScriptSource
+    variants: list[ScriptVariant]
     warnings: list[str]
     limitations: list[str]

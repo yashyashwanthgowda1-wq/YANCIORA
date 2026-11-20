@@ -12,6 +12,13 @@ dependencies = [
   "alembic>=1.13",
   "tiktoken>=0.7",
   "pyyaml>=6",
+  # Pinned (team decision 2026-11-20): regex is also used by tiktoken; 2026.11.19 avoided.
+  "regex==2026.9.29",
+  # Runtime needs of indic-transliteration (installed separately, --no-deps; see
+  # requirements-translit.txt).
+  "toml==0.10.2",
+  "tqdm==4.70.1",
+  'colorama==0.4.6; platform_system == "Windows"',
 ]
 
 [project.optional-dependencies]

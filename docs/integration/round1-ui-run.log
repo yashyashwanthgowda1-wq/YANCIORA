@@ -1,0 +1,29 @@
+PASS  Home loads and reports backend health  — {"healthCall":"GET /health → 200"}
+PASS  Counter · en · cl100k_base  — {"tokens":"26","tokenizer":"cl100k_base · tiktoken 0.14.0"}
+PASS  Counter · kn · cl100k_base  — {"tokens":"118","tokenizer":"cl100k_base · tiktoken 0.14.0"}
+PASS  Counter · hi · cl100k_base  — {"tokens":"64","tokenizer":"cl100k_base · tiktoken 0.14.0"}
+PASS  Counter · ta · cl100k_base  — {"tokens":"97","tokenizer":"cl100k_base · tiktoken 0.14.0"}
+PASS  Counter · te · cl100k_base  — {"tokens":"90","tokenizer":"cl100k_base · tiktoken 0.14.0"}
+PASS  Counter · tokenizer selection changes the count (Kannada, o200k_base)  — {"cl100k_base":"118","o200k_base":"32"}
+PASS  Counter · over-limit input is blocked client-side  — {"countButtonDisabled":true}
+PASS  Compare · English vs Kannada vs Hindi  — {"warningShown":true}
+PASS  Script variants · Kannada → ISO + Baraha, review + add to comparison  — {"hasIso":true,"hasBaraha":true,"variantsBefore":3,"variantsAfter":4,"schemeWarning":true}
+PASS  Script variants · Tamil shows the Sanskrit-style warning  — {}
+PASS  Script variants · Hindi and Telugu  — {"hi":"kr̥payā   isa ripōrṭa kā sārāṁśa dēṁ!!!   nāma śāmila na kar","te":"dayacēsi   ī nivēdikanu saṁgrahiṁcaṁḍi!!!   pērlu cērcavaddu"}
+PASS  Script variants · casual Romanized → native is unsupported  — {}
+PASS  Optimizer · en  — {"accepted":"2","suggested":"0","finalStatus":"Preserved","reviewShown":false,"billingNote":true,"criticalDetailChips":3}
+PASS  Optimizer · kn  — {"accepted":"2","suggested":"0","finalStatus":"Preserved","reviewShown":false,"billingNote":true,"criticalDetailChips":2}
+PASS  Optimizer · hi  — {"accepted":"2","suggested":"0","finalStatus":"Preserved","reviewShown":false,"billingNote":true,"criticalDetailChips":2}
+PASS  Optimizer · ta  — {"accepted":"2","suggested":"0","finalStatus":"Preserved","reviewShown":false,"billingNote":true,"criticalDetailChips":1}
+PASS  Optimizer · te  — {"accepted":"2","suggested":"0","finalStatus":"Preserved","reviewShown":false,"billingNote":true,"criticalDetailChips":1}
+PASS  Optimizer · aggressive mode offers script variants as suggestions only (Kannada)  — {"optimizedStillKannada":true}
+PASS  Optimizer · Kannada at_risk edit is a suggestion that needs review  — {"suggested":"2","exclamationsKeptInOutput":true,"riskText":true}
+PASS  Optimizer · gate rejects an edit that would change a detail  — {}
+PASS  Meaning check · user rewrite that drops a number and a negation is rejected  — {"rewrite1":"Your rewrite 1Pay before 5 pm.6-50.0%1.50Changed2 missing · 0 addedNot measuredRejected · details changedView","rewrite2":"Your rewrite 2Don't pay more than Rs. 500 before 5 pm.14+16.7%1.56Preserved0 missing · 0 addedNot measuredNo token savingView","findingsShown":true}
+PASS  Loading state and duplicate-submission prevention  — {"disabledWhileLoading":true,"spinnerShown":true,"optimizeRequests":1}
+PASS  Error · backend unreachable shows a clear message (simulated by aborting the request)  — {}
+PASS  Error · real backend error (unknown tokenizer, HTTP 400) is displayed  — {}
+
+25/25 passed; console errors: 2
+  console: http://localhost:3000/optimize :: Failed to load resource: net::ERR_CONNECTION_REFUSED
+  console: http://localhost:3000/optimize :: Failed to load resource: the server responded with a status of 400 (Bad Request)

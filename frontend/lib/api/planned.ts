@@ -42,10 +42,10 @@ export const NAV: NavGroup[] = [
   ] },
   { label: "Measure", items: [
     { href: "/counter", label: "Token Counter", availability: "live", note: "POST /api/tokenize" },
-    { href: "/compare", label: "Language Comparison", availability: "live", note: "POST /api/compare-languages" },
+    { href: "/compare", label: "Language Comparison", availability: "live", note: "POST /api/compare-languages · /api/script-variants" },
   ] },
   { label: "Reduce", items: [
-    { href: "/optimize", label: "Prompt Optimizer", availability: "partial", note: "Live counting; generation and meaning checks arrive in Phase 3" },
+    { href: "/optimize", label: "Prompt Optimizer", availability: "live", note: "POST /api/optimize · /api/meaning-check · /api/critical-details (rules-based)" },
     { href: "/cost", label: "Cost Calculator", availability: "partial", note: "Formula with prices you enter; no price registry yet" },
     { href: "/models", label: "Model Recommendation", availability: "planned", note: "Model registry arrives in Phase 4" },
   ] },

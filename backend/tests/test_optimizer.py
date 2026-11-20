@@ -272,9 +272,10 @@ def test_unreviewed_list_never_applied():
     assert not r.changed and not r.phrase_lists[0].applied
 
 
-def test_aggressive_mode_notes_script_suggestions_pending():
+def test_aggressive_mode_english_has_no_script_suggestions():
+    # Feature 6 now provides script variants; English text has none (see test_transliteration.py).
     r = opt("go   now", mode="aggressive")
-    assert any("Feature 6" in w for w in r.warnings)
+    assert any("need Kannada, Hindi, Tamil or Telugu" in w for w in r.warnings)
     assert not any(s.kind == "script_variant" for s in r.suggestions)
 
 

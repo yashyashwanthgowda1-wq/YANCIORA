@@ -37,7 +37,7 @@ Duplicate-sentence removals and script changes are **always suggestions**, never
 | safe+ | `punct_repeat` | `!!`+ → `!`, `??`+ → `?`, `,,`+ → `,`, `;;`+ → `;`, 4+ dots → `...` | `...` and `?!` kept |
 | balanced+ | `phrase:<list>` | entries of **reviewed** phrase lists only | replacement must be shorter; empty replacement only at sentence start with capitalisation |
 | all | `duplicate_sentence` | back-to-back identical sentences of ≥ 5 words: delete the second | suggestion only |
-| aggressive | `script_variant` | native ↔ Romanized (Feature 6) | suggestion only; not implemented yet |
+| aggressive | `script_variant` | whole-text Romanized variants of the optimized text (Feature 6; ISO 15919 + ASCII schemes, distinct texts only) | suggestion only; must save tokens and pass the meaning gate (`changed` → rejected) |
 
 Code inside fences/backticks, URLs, quotes etc. are untouched because they are protected details.
 

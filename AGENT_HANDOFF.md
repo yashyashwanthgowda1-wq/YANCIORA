@@ -18,9 +18,9 @@ All ten PRD §6 screens in `frontend/` (Next.js 15, React 19, TypeScript strict)
 |---|---|
 | Home, Settings | Live: `/health`, `/api/tokenizers` |
 | Token Counter | Live: `POST /api/tokenize` |
-| Language Comparison | Live: `POST /api/compare-languages`; `GET /api/samples/groups` (empty or 503 until data is imported) |
+| Language Comparison | Live: `POST /api/compare-languages`, `POST /api/script-variants` (Script variants panel, Round 1 integration); `GET /api/samples/groups` (empty or 503 until data is imported) |
 | Research Dashboard | Live: `GET /api/benchmarks`, `/api/benchmarks/{run_id}/results` (empty or 503 until a run is stored) |
-| Prompt Optimizer | Partial: live counts of user rewrites; generation/meaning checks/approval inactive |
+| Prompt Optimizer | Live (Round 1 integration): `POST /api/optimize`, `/api/meaning-check`, `/api/critical-details`; Approve & send stays disabled until AI Chat (Phase 4) |
 | Cost Calculator | Partial: formula on user-entered prices; no registry |
 | Voice & Calls | Partial: browser speech input; Vapi inactive |
 | Model Recommendation | Inactive; opt-in labelled MOCK preview (fictional rows) |

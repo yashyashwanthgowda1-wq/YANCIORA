@@ -44,8 +44,14 @@
 | D27 | Feature 5 regexes made linear (possessive quantifiers, start-of-run lookbehinds); `core/text.py` caches script lookups | Fixes an ~80 s worst case on 20,000-digit input; outputs unchanged, regression tests added. |
 | D28 | At most 200 edits evaluated per request (worst case ~4.6 s at 20,000 characters); a warning reports unevaluated edits, which stay listed in `rejected` | Team decision 2026-11-20 (lowered from 500, ~11 s). |
 
+| D29 | Feature 6 engine `indic-transliteration` 2.3.82 (MIT, code and scheme data; uploaded 2026-04-06; sha256 verified against PyPI) installed with `--no-deps`. Runtime needs pinned: `regex==2026.9.29` (Apache-2.0 AND CNRI-Python; not 2026.11.19), `toml==0.10.2` (MIT), `tqdm==4.70.1` (MPL-2.0 AND MIT), `colorama==0.4.6` on Windows (BSD). Excluded: `typer` (+click, rich, shellingham, pygments, markdown-it-py, mdurl), `roman`, `backports.functools_lru_cache` — never imported by the `sanscript` module. `pip check` lists these three as missing; expected. | Team conditions 2026-11-20: audit, pins, no unnecessary CLI dependencies. Note: the package's main LICENSE.txt names "The Python Packaging Authority" (template leftover); the MIT grant is intact. |
+| D30 | ISO 15919 default; ASCII alternatives itrans_dravidian, hk_dravidian, optitrans_dravidian, baraha; IAST not offered | Team decision 2026-11-20. |
+| D31 | Romanized → native only from a named scheme; `casual` → `unsupported`; always review; Tamil always lossy | Team decision 2026-11-20. |
+| D32 | Transliteration converts only runs of the target script; Feature 5 details (except negations) and digits are never converted | Preserve URLs, emails, code, quotes, protected terms, digits and Latin words. |
+| D33 | Script variants are never applied; in the optimizer they are whole-text `script_variant` suggestions in aggressive mode only | Team decision 2026-11-20. |
+
 The new response types in `backend/app/schemas.py` (`SampleGroupsResponse`, `BenchmarksResponse`,
-`BenchmarkResultsResponse`, `MeaningCheckResponse`, `CriticalDetailsResponse`, `OptimizeResponse`) must be mirrored in the frontend's `lib/api/types.ts`.
+`BenchmarkResultsResponse`, `MeaningCheckResponse`, `CriticalDetailsResponse`, `OptimizeResponse`, `ScriptVariantsResponse`) must be mirrored in the frontend's `lib/api/types.ts`.
 
 ## Open questions (BRD §23)
 

@@ -1,15 +1,17 @@
 "use client";
 import { useState } from "react";
+import { ScriptVariantsResults } from "@/components/analysis";
 import { HBarChart } from "@/components/charts";
 import { TokenizerSelect } from "@/components/domain";
 import { IconDownload, IconPlus, IconTrash } from "@/components/icons";
 import {
-  Badge, Callout, CountStatusBadge, EmptyState, ErrorState, Field, LoadingRows, PageHeader, Pager, TokenizerTag,
+  Badge, Callout, CountStatusBadge, EmptyState, ErrorState, Field, LoadingRows, PageHeader, Pager, Segmented, TokenizerTag,
 } from "@/components/ui";
 import { api } from "@/lib/api/client";
 import {
-  LANGUAGE_CODES, MAX_TEXT_CHARS, MAX_VARIANTS, SCRIPTS, SPLITS, VARIANT_TYPES,
-  type CompareResponse, type CompareVariant, type LanguageCode, type SampleGroup, type Split,
+  LANGUAGE_CODES, MAX_TEXT_CHARS, MAX_VARIANTS, SCRIPTS, SPLITS, TRANSLIT_LANGUAGES, TRANSLIT_SCHEMES, VARIANT_TYPES,
+  type CompareResponse, type CompareVariant, type LanguageCode, type SampleGroup, type ScriptVariant, type Split,
+  type TranslitLanguage, type TranslitScheme,
 } from "@/lib/api/types";
 import { downloadText, toCsv } from "@/lib/csv";
 import { fmtDec, fmtInt, fmtRatio } from "@/lib/format";
@@ -131,9 +133,109 @@ export default function CompareView() {
         </div>
       </section>
 
+      <ScriptVariantsTool tokenizer={tokenizer} variants={variants} canAdd={variants.length < MAX_VARIANTS}
+        onAdd={(v) => { setVariants((vs) => [...vs, { ...v, id: nextId++ }]); setAligned(null); compare.reset(); }} />
+
       {compare.error && <ErrorState error={compare.error} onRetry={() => compare.run()} />}
       {compare.data && <CompareResults res={compare.data.res} refIndex={compare.data.refIndex} />}
     </>
+  );
+}
+
+const SCHEME_LABELS: Record<TranslitScheme, string> = {
+  iso: "ISO 15919 (default)",
+  itrans_dravidian: "ITRANS Dravidian (ASCII)",
+  hk_dravidian: "Harvard-Kyoto Dravidian (ASCII)",
+  optitrans_dravidian: "Optitrans Dravidian (ASCII)",
+  baraha: "Baraha (ASCII)",
+};
+
+/** Feature 6: script variants of one variant's text (POST /api/script-variants). Never applied automatically. */
+function ScriptVariantsTool({ tokenizer, variants, canAdd, onAdd }: {
+  tokenizer: string; variants: Draft[]; canAdd: boolean; onAdd: (v: CompareVariant) => void;
+}) {
+  const eligible = variants.map((v, i) => ({ v, i }))
+    .filter(({ v }) => (TRANSLIT_LANGUAGES as readonly string[]).includes(v.language) && v.text.trim());
+  const [srcId, setSrcId] = useState<number | null>(null);
+  const [direction, setDirection] = useState<"native_to_roman" | "roman_to_native">("native_to_roman");
+  const [schemes, setSchemes] = useState<TranslitScheme[]>(["iso"]);
+  const [sourceScheme, setSourceScheme] = useState<TranslitScheme | "casual">("casual");
+  const chosen = eligible.find((e) => e.v.id === srcId) ?? eligible[0];
+  const tooLong = !!chosen && chosen.v.text.length > MAX_TEXT_CHARS;
+  const canRun = !!chosen && !!tokenizer && !tooLong && (direction === "roman_to_native" || schemes.length > 0);
+
+  const run = useAction(async (signal) => {
+    const src = chosen!.v;
+    const res = await api.scriptVariants({
+      text: src.text, language: src.language as TranslitLanguage, direction,
+      source_scheme: direction === "roman_to_native" ? sourceScheme : null,
+      target_schemes: direction === "native_to_roman" ? schemes : undefined,
+      tokenizers: [tokenizer],
+    }, { signal });
+    logActivity({ kind: "compare", href: "/compare", summary: `Script variants · ${LANGUAGES[src.language].name} · ${res.variants.length} variant(s) · ${tokenizer}` });
+    return { res, language: src.language };
+  });
+
+  const toggle = (s: TranslitScheme) => setSchemes((cur) => (cur.includes(s) ? cur.filter((x) => x !== s) : [...cur, s]));
+  const add = (v: ScriptVariant) => run.data && onAdd({
+    language: run.data.language, script: v.script, variant_type: "transliteration", text: v.text,
+  });
+
+  return (
+    <section className="panel" style={{ marginBottom: 24 }}>
+      <div className="panel-head">
+        <div>
+          <h2>Script variants <Badge tone="blue">F06</Badge></h2>
+          <p>Same text in another script (<code>POST /api/script-variants</code>). Variants are never applied automatically; fewer tokens does not mean a model understands the text equally well.</p>
+        </div>
+      </div>
+      <div className="panel-body stack">
+        {eligible.length === 0 ? (
+          <p className="small muted">Enter text in a Kannada, Hindi, Tamil or Telugu variant above to see its script variants. English has no script variants.</p>
+        ) : (
+          <>
+            <div className="row" style={{ alignItems: "flex-end", flexWrap: "wrap" }}>
+              <Field label="Source variant" htmlFor="sv-src">
+                <select id="sv-src" className="select" value={chosen?.v.id ?? ""} onChange={(e) => { setSrcId(Number(e.target.value)); run.reset(); }}>
+                  {eligible.map(({ v, i }) => <option key={v.id} value={v.id}>Variant {i + 1} · {LANGUAGES[v.language].name} ({v.script})</option>)}
+                </select>
+              </Field>
+              <Field label="Direction">
+                <Segmented label="Direction" value={direction} onChange={(d) => { setDirection(d); run.reset(); }}
+                  options={[{ value: "native_to_roman", label: "Native → Romanized" }, { value: "roman_to_native", label: "Romanized → native" }]} />
+              </Field>
+              {direction === "roman_to_native" && (
+                <Field label="Source scheme" htmlFor="sv-scheme" hint="Name the scheme the text was written in">
+                  <select id="sv-scheme" className="select" value={sourceScheme} onChange={(e) => setSourceScheme(e.target.value as TranslitScheme | "casual")}>
+                    <option value="casual">Everyday Romanized typing (not supported)</option>
+                    {TRANSLIT_SCHEMES.map((s) => <option key={s} value={s}>{SCHEME_LABELS[s]}</option>)}
+                  </select>
+                </Field>
+              )}
+            </div>
+            {direction === "native_to_roman" && (
+              <div className="row" style={{ flexWrap: "wrap", gap: 12 }} role="group" aria-label="Romanization schemes">
+                {TRANSLIT_SCHEMES.map((s) => (
+                  <label key={s} className="checkbox small"><input type="checkbox" checked={schemes.includes(s)} onChange={() => toggle(s)} /> {SCHEME_LABELS[s]}</label>
+                ))}
+              </div>
+            )}
+            {direction === "roman_to_native" && (
+              <Callout tone="info">Romanized → native always needs your review. English words in mixed text are converted too, and Tamil is always lossy.</Callout>
+            )}
+          </>
+        )}
+        {run.error && <ErrorState error={run.error} onRetry={() => run.run()} compact />}
+        {run.data && <ScriptVariantsResults res={run.data.res} onAdd={canAdd ? add : undefined} />}
+        {run.data && !canAdd && <p className="small subtle">The comparison already has {MAX_VARIANTS} variants; remove one to add a script variant.</p>}
+      </div>
+      <div className="panel-foot btn-row">
+        <button className="btn btn-primary" disabled={!canRun || run.loading} onClick={() => run.run()}>{run.loading && <span className="spinner" />} Generate script variants</button>
+        {eligible.length > 0 && direction === "native_to_roman" && schemes.length === 0 && <span className="small subtle">Pick at least one scheme.</span>}
+        {tooLong && <span className="field-error">Over {fmtInt(MAX_TEXT_CHARS)} characters.</span>}
+        {!tokenizer && <span className="small subtle">Waiting for a tokenizer.</span>}
+      </div>
+    </section>
   );
 }
 

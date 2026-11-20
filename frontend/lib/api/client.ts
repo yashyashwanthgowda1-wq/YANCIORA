@@ -1,7 +1,9 @@
 import type {
   ApiErrorBody, BenchmarkResultsQuery, BenchmarkResultsResponse, BenchmarksQuery, BenchmarksResponse,
-  CompareRequest, CompareResponse, HealthResponse, SampleGroupsQuery, SampleGroupsResponse,
-  TokenizeRequest, TokenizeResponse, TokenizersResponse,
+  CompareRequest, CompareResponse, CriticalDetailsRequest, CriticalDetailsResponse, HealthResponse,
+  MeaningCheckRequest, MeaningCheckResponse, OptimizeRequest, OptimizeResponse, SampleGroupsQuery,
+  SampleGroupsResponse, ScriptVariantsRequest, ScriptVariantsResponse, TokenizeRequest, TokenizeResponse,
+  TokenizersResponse,
 } from "./types";
 
 export const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000").replace(/\/+$/, "");
@@ -98,6 +100,21 @@ export const api = {
   benchmarkResults: (runId: string, q: BenchmarkResultsQuery = {}, o?: RequestOptions) =>
     request<BenchmarkResultsResponse>(
       `/api/benchmarks/${encodeURIComponent(runId)}/results${buildQuery({ ...q })}`, {}, o),
+
+  // Feature 3 — smart prompt optimizer (opt_rules_v1)
+  optimize: (body: OptimizeRequest, o?: RequestOptions) =>
+    request<OptimizeResponse>("/api/optimize", { method: "POST", body }, o),
+
+  // Feature 5 — meaning preservation (rules_v1)
+  meaningCheck: (body: MeaningCheckRequest, o?: RequestOptions) =>
+    request<MeaningCheckResponse>("/api/meaning-check", { method: "POST", body }, o),
+
+  criticalDetails: (body: CriticalDetailsRequest, o?: RequestOptions) =>
+    request<CriticalDetailsResponse>("/api/critical-details", { method: "POST", body }, o),
+
+  // Feature 6 — script and transliteration variants (translit_v1)
+  scriptVariants: (body: ScriptVariantsRequest, o?: RequestOptions) =>
+    request<ScriptVariantsResponse>("/api/script-variants", { method: "POST", body }, o),
 };
 
 /** Human guidance for known error codes (shown under the server's own message). */
@@ -111,6 +128,10 @@ export function errorHint(code: string): string | null {
       return "Set DATABASE_URL in the backend .env and run alembic upgrade head.";
     case "database_unavailable":
       return "The database is configured but unreachable. Start it with: docker compose up -d db.";
+    case "transliteration_unavailable":
+      return "Install the transliteration engine on the backend: pip install --no-deps --require-hashes -r requirements-translit.txt";
+    case "unknown_tokenizer":
+      return "Pick a tokenizer from the list; the backend only accepts the names it reports at /api/tokenizers.";
     case "not_found":
       return "Nothing matches that dataset or run.";
     default:

@@ -43,6 +43,7 @@ docker compose up -d db              # PostgreSQL on localhost:5432
 cd backend
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -e ".[dev,research]"
+pip install --no-deps --require-hashes -r requirements-translit.txt   # Feature 6 engine, no CLI deps
 
 alembic upgrade head                 # applies 0001 + 0002 (Phase 0/1 tables)
 uvicorn app.main:app --reload        # http://localhost:8000/health
@@ -137,6 +138,23 @@ reason), `requires_review`, `phrase_lists` (review status and whether applied), 
 `limitations`. Modes: `safe` (whitespace, invisible characters, repeated punctuation),
 `balanced` (+ reviewed phrase lists — none are reviewed yet), `aggressive` (+ script
 suggestions, arriving with Feature 6). Rules: [research/configs/optimizer.md](research/configs/optimizer.md).
+
+## Script variants (Feature 6)
+
+`POST /api/script-variants`
+
+```json
+{"text": "ಕನ್ನಡ ಸರಿ", "language": "kn", "direction": "native_to_roman",
+ "target_schemes": ["iso", "baraha"], "tokenizers": ["cl100k_base"], "protected_terms": []}
+```
+
+Each variant returns `text` (e.g. ISO 15919 `kannaḍa sari`), `lossless_round_trip` +
+`lossy_reasons`, a ZWJ/ZWNJ report, token counts per tokenizer (tokens, delta and ratio vs the
+source), the Feature 5 `meaning_check`, warnings and `requires_review: true` — variants are
+never applied. Romanized → native needs `"direction": "roman_to_native"` and a named
+`source_scheme`; `"source_scheme": "casual"` returns `"status": "unsupported"`. Schemes: `iso`
+(default), `itrans_dravidian`, `hk_dravidian`, `optitrans_dravidian`, `baraha`. Policy and
+measured engine behaviour: [research/configs/transliteration.md](research/configs/transliteration.md).
 
 ## Tests
 

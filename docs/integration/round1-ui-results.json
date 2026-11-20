@@ -1,0 +1,387 @@
+{
+  "results": [
+    {
+      "name": "Home loads and reports backend health",
+      "ok": true,
+      "details": {
+        "healthCall": "GET /health → 200"
+      },
+      "api": [
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "GET /health → 200"
+      ]
+    },
+    {
+      "name": "Counter · en · cl100k_base",
+      "ok": true,
+      "details": {
+        "tokens": "26",
+        "tokenizer": "cl100k_base · tiktoken 0.14.0"
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/tokenize → 200"
+      ]
+    },
+    {
+      "name": "Counter · kn · cl100k_base",
+      "ok": true,
+      "details": {
+        "tokens": "118",
+        "tokenizer": "cl100k_base · tiktoken 0.14.0"
+      },
+      "api": [
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/tokenize → 200"
+      ]
+    },
+    {
+      "name": "Counter · hi · cl100k_base",
+      "ok": true,
+      "details": {
+        "tokens": "64",
+        "tokenizer": "cl100k_base · tiktoken 0.14.0"
+      },
+      "api": [
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/tokenize → 200"
+      ]
+    },
+    {
+      "name": "Counter · ta · cl100k_base",
+      "ok": true,
+      "details": {
+        "tokens": "97",
+        "tokenizer": "cl100k_base · tiktoken 0.14.0"
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/tokenize → 200"
+      ]
+    },
+    {
+      "name": "Counter · te · cl100k_base",
+      "ok": true,
+      "details": {
+        "tokens": "90",
+        "tokenizer": "cl100k_base · tiktoken 0.14.0"
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/tokenize → 200"
+      ]
+    },
+    {
+      "name": "Counter · tokenizer selection changes the count (Kannada, o200k_base)",
+      "ok": true,
+      "details": {
+        "cl100k_base": "118",
+        "o200k_base": "32"
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/tokenize → 200",
+        "POST /api/tokenize → 200"
+      ]
+    },
+    {
+      "name": "Counter · over-limit input is blocked client-side",
+      "ok": true,
+      "details": {
+        "countButtonDisabled": true
+      },
+      "api": [
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200"
+      ]
+    },
+    {
+      "name": "Compare · English vs Kannada vs Hindi",
+      "ok": true,
+      "details": {
+        "warningShown": true
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/compare-languages → 200"
+      ]
+    },
+    {
+      "name": "Script variants · Kannada → ISO + Baraha, review + add to comparison",
+      "ok": true,
+      "details": {
+        "hasIso": true,
+        "hasBaraha": true,
+        "variantsBefore": 3,
+        "variantsAfter": 4,
+        "schemeWarning": true
+      },
+      "api": [
+        "POST /api/script-variants → 200"
+      ]
+    },
+    {
+      "name": "Script variants · Tamil shows the Sanskrit-style warning",
+      "ok": true,
+      "details": {},
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/script-variants → 200"
+      ]
+    },
+    {
+      "name": "Script variants · Hindi and Telugu",
+      "ok": true,
+      "details": {
+        "hi": "kr̥payā   isa ripōrṭa kā sārāṁśa dēṁ!!!   nāma śāmila na kar",
+        "te": "dayacēsi   ī nivēdikanu saṁgrahiṁcaṁḍi!!!   pērlu cērcavaddu"
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/script-variants → 200",
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/script-variants → 200"
+      ]
+    },
+    {
+      "name": "Script variants · casual Romanized → native is unsupported",
+      "ok": true,
+      "details": {},
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/script-variants → 200"
+      ]
+    },
+    {
+      "name": "Optimizer · en",
+      "ok": true,
+      "details": {
+        "accepted": "2",
+        "suggested": "0",
+        "finalStatus": "Preserved",
+        "reviewShown": false,
+        "billingNote": true,
+        "criticalDetailChips": 3
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/optimize → 200",
+        "POST /api/critical-details → 200"
+      ]
+    },
+    {
+      "name": "Optimizer · kn",
+      "ok": true,
+      "details": {
+        "accepted": "2",
+        "suggested": "0",
+        "finalStatus": "Preserved",
+        "reviewShown": false,
+        "billingNote": true,
+        "criticalDetailChips": 2
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/optimize → 200",
+        "POST /api/critical-details → 200"
+      ]
+    },
+    {
+      "name": "Optimizer · hi",
+      "ok": true,
+      "details": {
+        "accepted": "2",
+        "suggested": "0",
+        "finalStatus": "Preserved",
+        "reviewShown": false,
+        "billingNote": true,
+        "criticalDetailChips": 2
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/optimize → 200",
+        "POST /api/critical-details → 200"
+      ]
+    },
+    {
+      "name": "Optimizer · ta",
+      "ok": true,
+      "details": {
+        "accepted": "2",
+        "suggested": "0",
+        "finalStatus": "Preserved",
+        "reviewShown": false,
+        "billingNote": true,
+        "criticalDetailChips": 1
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/optimize → 200",
+        "POST /api/critical-details → 200"
+      ]
+    },
+    {
+      "name": "Optimizer · te",
+      "ok": true,
+      "details": {
+        "accepted": "2",
+        "suggested": "0",
+        "finalStatus": "Preserved",
+        "reviewShown": false,
+        "billingNote": true,
+        "criticalDetailChips": 1
+      },
+      "api": [
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/optimize → 200",
+        "POST /api/critical-details → 200"
+      ]
+    },
+    {
+      "name": "Optimizer · aggressive mode offers script variants as suggestions only (Kannada)",
+      "ok": true,
+      "details": {
+        "optimizedStillKannada": true
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/critical-details → 200",
+        "POST /api/optimize → 200"
+      ]
+    },
+    {
+      "name": "Optimizer · Kannada at_risk edit is a suggestion that needs review",
+      "ok": true,
+      "details": {
+        "suggested": "2",
+        "exclamationsKeptInOutput": true,
+        "riskText": true
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/optimize → 200",
+        "POST /api/critical-details → 200"
+      ]
+    },
+    {
+      "name": "Optimizer · gate rejects an edit that would change a detail",
+      "ok": true,
+      "details": {},
+      "api": [
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/optimize → 200",
+        "POST /api/critical-details → 200"
+      ]
+    },
+    {
+      "name": "Meaning check · user rewrite that drops a number and a negation is rejected",
+      "ok": true,
+      "details": {
+        "rewrite1": "Your rewrite 1Pay before 5 pm.6-50.0%1.50Changed2 missing · 0 addedNot measuredRejected · details changedView",
+        "rewrite2": "Your rewrite 2Don't pay more than Rs. 500 before 5 pm.14+16.7%1.56Preserved0 missing · 0 addedNot measuredNo token savingView",
+        "findingsShown": true
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "POST /api/tokenize → 200",
+        "POST /api/tokenize → 200",
+        "POST /api/tokenize → 200",
+        "POST /api/meaning-check → 200",
+        "POST /api/meaning-check → 200"
+      ]
+    },
+    {
+      "name": "Loading state and duplicate-submission prevention",
+      "ok": true,
+      "details": {
+        "disabledWhileLoading": true,
+        "spinnerShown": true,
+        "optimizeRequests": 1
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/critical-details → 200",
+        "POST /api/optimize → 200"
+      ]
+    },
+    {
+      "name": "Error · backend unreachable shows a clear message (simulated by aborting the request)",
+      "ok": true,
+      "details": {},
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/critical-details → 200"
+      ]
+    },
+    {
+      "name": "Error · real backend error (unknown tokenizer, HTTP 400) is displayed",
+      "ok": true,
+      "details": {},
+      "api": [
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/optimize → 400",
+        "POST /api/critical-details → 200"
+      ]
+    }
+  ],
+  "consoleErrors": [
+    "http://localhost:3000/optimize :: Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "http://localhost:3000/optimize :: Failed to load resource: the server responded with a status of 400 (Bad Request)"
+  ]
+}

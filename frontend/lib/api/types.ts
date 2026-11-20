@@ -241,4 +241,218 @@ export type KnownErrorCode =
   | "database_not_configured"
   | "database_unavailable"
   | "network_error"
-  | "bad_response";
+  | "bad_response"
+  | "transliteration_unavailable";
+
+// ---------- POST /api/critical-details, POST /api/meaning-check (Feature 5, rules_v1) ----------
+export type DetailCategory =
+  | "code" | "url" | "email" | "quoted" | "money" | "datetime" | "number" | "negation" | "protected_term";
+export type MeaningStatus = "preserved" | "at_risk" | "changed";
+export type ReviewStatus = "reviewed" | "developer_curated" | "unreviewed";
+export const MAX_PROTECTED_TERMS = 50;
+
+export interface LexiconRef {
+  id: string;
+  language: LanguageCode;
+  script: Script;
+  review_status: ReviewStatus;
+}
+
+export interface CriticalDetailsRequest {
+  text: string;
+  language?: LanguageCode | "auto"; // server default "auto"
+  protected_terms?: string[]; // server default []
+}
+
+export interface CriticalDetail {
+  category: DetailCategory;
+  /** as written; equals response.text.slice(start, end) */
+  text: string;
+  /** comparison key, e.g. "INR 500", "100000", "not" */
+  value: string;
+  start: number;
+  end: number;
+}
+
+export interface CriticalDetailsResponse {
+  method: string;
+  language: LanguageCode | null;
+  /** NFC form of the input; offsets point into this string */
+  text: string;
+  details: CriticalDetail[];
+  negation_lexicons: LexiconRef[];
+  warnings: string[];
+}
+
+export interface MeaningCheckRequest {
+  original: string;
+  candidate: string;
+  language?: LanguageCode | "auto"; // server default "auto"
+  protected_terms?: string[]; // server default []
+}
+
+export interface DetailFinding {
+  category: DetailCategory;
+  value: string;
+  example: string;
+  original_count: number;
+  candidate_count: number;
+  state: "kept" | "missing" | "added";
+}
+
+export interface MeaningCheckResponse {
+  /** "preserved" means no rule found a problem — not a guarantee of equivalent meaning */
+  status: MeaningStatus;
+  method: string;
+  language: LanguageCode | null;
+  findings: DetailFinding[];
+  missing_count: number;
+  added_count: number;
+  risks: string[];
+  warnings: string[];
+  negation_lexicons: LexiconRef[];
+  limitations: string[];
+}
+
+// ---------- POST /api/optimize (Feature 3, opt_rules_v1) ----------
+export type OptimizeMode = "safe" | "balanced" | "aggressive";
+
+export interface OptimizeRequest {
+  text: string;
+  language?: LanguageCode | "auto"; // server default "auto"
+  mode?: OptimizeMode; // server default "safe"
+  tokenizers?: string[]; // server default ["cl100k_base"]; 1..4, no repeats
+  protected_terms?: string[]; // server default []
+}
+
+export interface OptimizeTokenCount {
+  tokenizer: TokenizerRef;
+  status: CountStatus;
+  before: number;
+  after: number;
+  saved: number;
+  saved_pct: number;
+}
+
+/** start/end are offsets into the NFC form of the original text. */
+export interface EditReport {
+  rule: string;
+  start: number;
+  end: number;
+  before: string;
+  after: string;
+  /** per tokenizer: tokens after minus before this edit (negative = saved); null if not measured */
+  token_delta: Record<string, number> | null;
+  reason: string;
+}
+
+export interface AcceptedEdit extends EditReport {
+  meaning_status: "preserved";
+}
+
+export interface RejectedEdit extends EditReport {
+  stage: "protected" | "overlap" | "limit" | "tokens" | "meaning";
+}
+
+/** Not applied. The user decides. */
+export interface OptimizeSuggestion extends EditReport {
+  kind: "at_risk_edit" | "duplicate_sentence" | "script_variant";
+  meaning_status: "preserved" | "at_risk";
+  risks: string[];
+  requires_review: true;
+}
+
+export interface PhraseListRef {
+  id: string;
+  language: LanguageCode;
+  review_status: ReviewStatus;
+  entries: number;
+  applied: boolean;
+}
+
+export interface OptimizeResponse {
+  method: string;
+  mode: OptimizeMode;
+  language: LanguageCode | null;
+  original: string;
+  optimized: string;
+  changed: boolean;
+  token_counts: OptimizeTokenCount[];
+  accepted: AcceptedEdit[];
+  suggestions: OptimizeSuggestion[];
+  rejected: RejectedEdit[];
+  requires_review: boolean;
+  phrase_lists: PhraseListRef[];
+  meaning_check: MeaningCheckResponse;
+  warnings: string[];
+  limitations: string[];
+}
+
+// ---------- POST /api/script-variants (Feature 6, translit_v1) ----------
+export type TranslitScheme = "iso" | "itrans_dravidian" | "hk_dravidian" | "optitrans_dravidian" | "baraha";
+export type TranslitLanguage = "kn" | "hi" | "ta" | "te";
+export const TRANSLIT_SCHEMES: readonly TranslitScheme[] = [
+  "iso", "itrans_dravidian", "hk_dravidian", "optitrans_dravidian", "baraha",
+];
+export const TRANSLIT_LANGUAGES: readonly TranslitLanguage[] = ["kn", "hi", "ta", "te"];
+
+export interface ScriptVariantsRequest {
+  text: string;
+  language: TranslitLanguage;
+  direction?: "native_to_roman" | "roman_to_native"; // server default "native_to_roman"
+  /** required for roman_to_native; "casual" returns status "unsupported" */
+  source_scheme?: TranslitScheme | "casual" | null;
+  target_schemes?: TranslitScheme[]; // server default ["iso"]
+  tokenizers?: string[]; // server default ["cl100k_base"]
+  protected_terms?: string[];
+}
+
+export interface VariantTokenCount {
+  tokenizer: TokenizerRef;
+  status: CountStatus;
+  tokens: number;
+  tokens_per_word: number | null;
+  delta_vs_source: number;
+  /** tokenization ratio, not a cost multiplier */
+  ratio_vs_source: number | null;
+}
+
+export interface ScriptSource {
+  script: Script;
+  scheme: TranslitScheme | null;
+  text: string;
+  token_counts: VariantTokenCount[];
+}
+
+export interface JoinerReport {
+  source_count: number;
+  output_count: number;
+  preserved_in_round_trip: boolean;
+}
+
+export interface ScriptVariant {
+  script: Script;
+  scheme: TranslitScheme | null;
+  text: string;
+  lossless_round_trip: boolean;
+  lossy_reasons: string[];
+  converted_spans: number;
+  protected_spans_skipped: number;
+  joiners: JoinerReport;
+  token_counts: VariantTokenCount[];
+  meaning_check: MeaningCheckResponse;
+  requires_review: true;
+  warnings: string[];
+}
+
+export interface ScriptVariantsResponse {
+  method: string;
+  status: "ok" | "unsupported";
+  language: LanguageCode;
+  direction: "native_to_roman" | "roman_to_native";
+  library: { name: string; version: string };
+  source: ScriptSource;
+  variants: ScriptVariant[];
+  warnings: string[];
+  limitations: string[];
+}

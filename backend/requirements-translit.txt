@@ -1,0 +1,8 @@
+# Feature 6 transliteration engine. Install WITHOUT its declared dependencies:
+#   pip install --no-deps --require-hashes -r requirements-translit.txt
+#
+# indic-transliteration declares typer (CLI), roman and backports.functools_lru_cache, which
+# the `sanscript` module REDUTAX uses never imports. Its real runtime needs (regex, toml,
+# tqdm, colorama on Windows) are pinned in pyproject.toml. Licence audit: docs/decisions.md D29.
+# MIT licence (code and scheme data); uploaded to PyPI 2026-04-06; sha256 checked against PyPI.
+indic-transliteration==2.3.82 --hash=sha256:243b8a444f14c1a811c03ba07e8aa300da61a7c4172a45556fdce1d963038019

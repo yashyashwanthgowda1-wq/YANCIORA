@@ -9,7 +9,7 @@ Last updated: 2026-11-20
 | 0 | Repo, config, DB schema, `/health`, tests | Done |
 | 1 | Normalization, tokenizer counters, compare API, licence register, importer, benchmark, DB persistence, retrieval APIs | **Code complete. Not verified:** PostgreSQL tests not yet run against a real server; FLORES-200 licence not verified, so no real data loaded and no baseline run |
 | 2 | SentencePiece Unigram training + held-out benchmark | Not started (waits for Phase 1 verification + team approval) |
-| 3 | Optimizer + meaning/critical-detail checks (Features 5, 3, 6) | **Features 5 and 3 done** (rules_v1, opt_rules_v1). Feature 6 next |
+| 3 | Optimizer + meaning/critical-detail checks (Features 5, 3, 6) | **Features 5, 3 and 6 done** (rules_v1, opt_rules_v1, translit_v1); Feature 6 awaits native-speaker spot checks |
 | 4 | Model registry, cost, Auto/Manual routing, chat | Not started |
 | 5 | Browser voice + Vapi phone | Not started |
 | 6 | Evaluation report + demo | Not started |
@@ -31,7 +31,7 @@ Last updated: 2026-11-20
 | 3 | Smart Prompt Optimizer | **Done — opt_rules_v1** (`POST /api/optimize`); balanced mode inactive until phrase lists are reviewed |
 | 4 | AI Cost Calculator | Not started (needs pricing source decision) |
 | 5 | Meaning Preservation Checker | **Done — rules_v1** (`POST /api/meaning-check`, `POST /api/critical-details`); Indic negation lists await native-speaker review |
-| 6 | Script and Transliteration Optimizer | Planned after Feature 3 (licence of `indic-transliteration` to verify first) |
+| 6 | Script and Transliteration Optimizer | **Done — translit_v1** (`POST /api/script-variants`; optimizer aggressive-mode suggestions); native-speaker spot check pending |
 | 7 | Smart Model Recommendation | Not started |
 | 8 | Voice-to-Optimized Prompt | Not started |
 | 9 | Smart AI Chatbot | Not started (needs provider approval) |
@@ -73,6 +73,24 @@ and B5-13 (standalone Romanized `illa`), neither fixed.
 
 Policy: `research/configs/optimizer.md`.
 
+### Feature 6 acceptance criteria — results
+
+| Criterion | Result |
+|---|---|
+| Licence audit of direct + transitive dependencies; versions pinned; CLI dependencies excluded | Pass (D29; `requirements-translit.txt` hash-pinned, `--no-deps`; regex pinned to 2026.9.29) |
+| Native → Romanized for kn/hi/ta/te in ISO 15919 + 4 ASCII schemes | Pass (`test_round_trip_matrix`, 20 cases) |
+| Round trip reported per request; measured losses flagged, not hidden | Pass — Hindi+ITRANS-Dravidian (आऊंगा → ॐगा) and Hindi+Baraha (ँ) reported lossy |
+| URLs, emails, code, quoted text, protected terms, digits, Latin words untouched | Pass (`test_protected_content_untouched`, `test_native_digits_never_converted`) |
+| ZWJ/ZWNJ preservation tested and losses reported | Pass (Kannada preserved; Devanagari ZWJ shown as `{}` marker, warned) |
+| Romanized → native only with a named scheme; `casual` → unsupported; always review; Tamil always lossy | Pass |
+| Token counts from the existing registry; billing / model-understanding disclaimers | Pass |
+| Never applied automatically (Feature 6 and Feature 3) | Pass (`test_optimizer_aggressive_offers_script_variants_only_as_suggestions`, safe/balanced never propose) |
+| Deterministic; 20,000-char limit; standard errors; 503 when the engine is missing; OpenAPI | Pass (`tests/test_api_transliteration.py`) |
+| Native-speaker spot check | **Pending** — `docs/review/transliteration_spot_check.md` |
+
+Policy: `research/configs/transliteration.md`. Tamil output uses Sanskrit-style consonant values
+(warned on every Tamil variant) — please prioritise Tamil in the spot check.
+
 ### Fixed while building Feature 3 (behaviour unchanged, regression tests added)
 
 - **Feature 5 performance defect:** the money-suffix and email patterns backtracked
@@ -105,11 +123,14 @@ Policy: `research/configs/optimizer.md`.
 - **New — Feature 3 optimizer** (`app/optimizer/`, `app/services/optimizer.py`,
   `app/api/optimizer.py`): safe rules gated by Feature 5; at_risk edits returned as
   suggestions; every edit reported with its token delta.
+- **New — Feature 6 script variants** (`app/services/transliteration.py`,
+  `app/api/transliteration.py`): native ↔ Romanized with round-trip and ZWJ/ZWNJ reports,
+  registry token counts; never applied automatically.
 - DB connections now time out after 5 s (`app/db/session.py`), so `/health` and the API return 503 quickly when the DB is down.
 
 ## Test results (Windows 11, Python 3.13, 2026-11-20)
 
-`pytest` → **230 passed, 37 skipped, 0 failed** (after Feature 3 and the 200-edit limit; 162 passed before Feature 3, so no regressions).
+`pytest` → **298 passed, 30 skipped, 0 failed** (after Feature 6, with the tiktoken encoding files installed; only the 30 PostgreSQL tests skip).
 
 | Skipped | Count | Reason |
 |---|---|---|
@@ -142,6 +163,7 @@ Note for Windows: if pytest fails with `PermissionError` on its temp folder, add
 | `POST /api/meaning-check` | Implemented (Feature 5, rules_v1) |
 | `POST /api/critical-details` | Implemented (Feature 5, offsets for highlighting) |
 | `POST /api/optimize` | Implemented (Feature 3, opt_rules_v1) |
+| `POST /api/script-variants` | Implemented (Feature 6, translit_v1) |
 | `GET /api/benchmarks/{run_id}/results` | Implemented. Filters: `tokenizer`, `language`, `script`, `aligned_group_id`, `page`, `page_size` ≤ 100 |
 | Others in the UI brief | Later phases |
 
@@ -157,9 +179,25 @@ Errors: `422 invalid_request` (bad filter), `404 not_found` (unknown dataset/run
 3. Then: convert → `import_pilot.py --load-db` → `run_benchmark.py --store-db` → first five-language baseline chart (Phase 1 exit criterion).
 4. Run the tiktoken tests on a machine that can download the encodings (or with `TIKTOKEN_CACHE_DIR` pre-filled).
 5. Team: Romanized and code-mixed pilot examples with native-speaker review (FLORES has none). This can follow the Phase 1 exit.
-6. Grok/frontend: mirror the new response types (`SampleGroupsResponse`, `BenchmarksResponse`, `BenchmarkResultsResponse`, `MeaningCheckResponse`, `CriticalDetailsResponse`, `OptimizeResponse`) in `lib/api/types.ts`.
-   Frontend progress: `SampleGroupsResponse`, `BenchmarksResponse` and `BenchmarkResultsResponse` are mirrored in `frontend/lib/api/types.ts`; `MeaningCheckResponse`, `CriticalDetailsResponse` and `OptimizeResponse` are not yet.
+6. Frontend: mirror the new response types (`SampleGroupsResponse`, `BenchmarksResponse`, `BenchmarkResultsResponse`, `MeaningCheckResponse`, `CriticalDetailsResponse`, `OptimizeResponse`, `ScriptVariantsResponse`) in `frontend/lib/api/types.ts`.
+   Frontend progress: `SampleGroupsResponse`, `BenchmarksResponse` and `BenchmarkResultsResponse` were mirrored by the frontend team; the rest are added by the Round 1 integration (see below).
+8. Native speakers: fill in `docs/review/transliteration_spot_check.md` (Tamil first).
 7. Native speakers: review the Kannada/Hindi/Tamil/Telugu negation lists in `backend/app/core/lexicons/negation.yaml`. Until then, edits to Indic text are reported `at_risk`.
+
+## Round 1 integration (2026-11-20, branch `integration/round1`, not pushed)
+
+Frontend connected to five backend features; runbook: `docs/ROUND1_DEMO.md`.
+
+| Feature | Screen | State (tested through the UI in Edge, 25/25 checks) |
+|---|---|---|
+| Token Counter | `/counter` | Live — en/kn/hi/ta/te, cl100k_base and o200k_base |
+| Language Comparison | `/compare` | Live — stateless; the aligned-sample loader still needs the database |
+| Script variants (F6) | `/compare` → Script variants panel | Live — schemes, round trip, warnings, review, add to comparison, casual → unsupported |
+| Prompt Optimizer (F3) | `/optimize` → Automatic optimization | Live — accepted / suggestions / rejected, meaning status, critical details |
+| Meaning check (F5) | `/optimize` → rewrites ledger + result panels | Live — per-rewrite status and findings |
+
+No database is required for these. Backend tests with real tiktoken encodings: 298 passed,
+30 skipped (PostgreSQL only). Frontend: `tsc` 0 errors, vitest 16/16, `next build` OK.
 
 ## Frontend (2026-11-20)
 

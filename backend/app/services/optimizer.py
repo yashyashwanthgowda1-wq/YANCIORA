@@ -99,6 +99,34 @@ def _phrase_lists(req: OptimizeRequest, src: str, lists: tuple[R.PhraseList, ...
     return [pl for pl in considered if active and pl.reviewed], refs
 
 
+def _script_variant_edits(req: OptimizeRequest, src: str, text: str,
+                          adapters: list[TokenizerAdapter]) -> tuple[list[R.Edit], list[str]]:
+    """Whole-text script-variant edits (one per distinct variant text) for aggressive mode."""
+    from app.schemas import ScriptVariantsRequest
+    from app.services import transliteration as TL
+
+    lang = req.language if req.language != "auto" else T.guess_language(
+        T.detect_script(T.normalize(text)))
+    if lang not in TL.LANG_SCRIPT:
+        return [], ["Script-change suggestions need Kannada, Hindi, Tamil or Telugu text "
+                    "(or language set to kn, hi, ta or te)."]
+    try:
+        resp = TL.script_variants(ScriptVariantsRequest(
+            text=text, language=lang, target_schemes=[TL.DEFAULT_SCHEME, *TL.ASCII_SCHEMES],
+            tokenizers=[a.info.name for a in adapters], protected_terms=req.protected_terms),
+            adapters)
+    except TL.TransliterationUnavailable:
+        return [], ["Script-change suggestions unavailable: indic-transliteration is not installed."]
+    edits, seen = [], set()
+    for v in resp.variants:
+        if v.text in seen or v.text == text or v.converted_spans == 0:
+            continue
+        seen.add(v.text)
+        edits.append(R.Edit(f"script_variant:{v.scheme}", 0, len(src), v.text))
+    notes = [w for v in resp.variants for w in v.warnings]
+    return edits, list(dict.fromkeys(notes))
+
+
 def optimize(req: OptimizeRequest, adapters: list[TokenizerAdapter] | None = None,
              phrase_lists: tuple[R.PhraseList, ...] | None = None) -> OptimizeResponse:
     adapters = adapters or [get_tokenizer(n) for n in req.tokenizers]
@@ -182,6 +210,13 @@ def optimize(req: OptimizeRequest, adapters: list[TokenizerAdapter] | None = Non
     final_text = _apply(src, accepted_edits) if accepted_edits else req.text
     final_counts = count(final_text)
 
+    # Aggressive mode: script variants (Feature 6) of the optimized text, as whole-text
+    # suggestions. Never applied; measured and gated like every other suggestion.
+    script_notes: list[str] = []
+    if req.mode == "aggressive":
+        script_edits, script_notes = _script_variant_edits(req, src, D.nfc(final_text), adapters)
+        review_only.extend(("script_variant", e) for e in script_edits)
+
     # Suggestions: each measured on its own against the final optimized text.
     for kind, e in review_only:
         if evaluated >= MAX_EVALUATED_EDITS:
@@ -200,8 +235,12 @@ def optimize(req: OptimizeRequest, adapters: list[TokenizerAdapter] | None = Non
         if mc.status == "changed":
             reject(e, "meaning", _meaning_summary(mc), delta)
             continue
-        reason = ("meaning check at_risk: needs your review" if mc.status == "at_risk"
-                  else "duplicate sentences may be intentional: needs your review")
+        if kind == "script_variant":
+            reason = "script change: never applied automatically; needs your review"
+        elif mc.status == "at_risk":
+            reason = "meaning check at_risk: needs your review"
+        else:
+            reason = "duplicate sentences may be intentional: needs your review"
         suggestions.append(OptimizeSuggestion(
             rule=e.rule, start=e.start, end=e.end, before=src[e.start:e.end], after=e.after,
             token_delta=delta, reason=reason, kind=kind, meaning_status=mc.status, risks=mc.risks))
@@ -228,8 +267,7 @@ def optimize(req: OptimizeRequest, adapters: list[TokenizerAdapter] | None = Non
     if req.mode != "safe" and not any(r.applied for r in list_refs):
         warnings.append("No reviewed phrase list for this language: only safe rules were applied. "
                         "Phrase lists need team review before balanced mode uses them.")
-    if req.mode == "aggressive":
-        warnings.append("Script-change suggestions arrive with Feature 6 (not implemented yet).")
+    warnings += script_notes
     if not accepted_edits:
         warnings.append("No eligible edit found: the original text is returned unchanged.")
     warnings += [w for w in final_check.warnings if w not in warnings]

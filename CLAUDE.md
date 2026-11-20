@@ -37,7 +37,7 @@ for the frontend is a separate document given to Grok; its API types must match 
 - `backend/app/api/` — FastAPI routes; `errors.py` gives `{"error": {"code", "message"}}`
 - `backend/app/schemas.py` — request/response models (mirror of the frontend's `lib/api/types.ts`)
 - `backend/migrations/` — Alembic; schema SQL in `migrations/sql/`
-- `research/configs/` — licence register `datasets.yaml`, `normalization.md`, `meaning_check.md`, `optimizer.md`
+- `research/configs/` — licence register `datasets.yaml`, `normalization.md`, `meaning_check.md`, `optimizer.md`, `transliteration.md`
 - `research/scripts/` — `flores_to_jsonl.py`, `import_pilot.py`, `run_benchmark.py`
 - `frontend/` — to be filled with the Grok-generated Next.js app
 
@@ -46,6 +46,7 @@ for the frontend is a separate document given to Grok; its API types must match 
 ```bash
 docker compose up -d db
 cd backend && pip install -e ".[dev,research]"
+pip install --no-deps --require-hashes -r requirements-translit.txt
 alembic upgrade head
 uvicorn app.main:app --reload            # http://localhost:8000/docs
 pytest                                   # add TEST_PSQL_URL=... for schema tests
