@@ -28,13 +28,16 @@ for the frontend is a separate document given to Grok; its API types must match 
 
 ## Layout
 
-- `backend/app/core/` — settings, text normalization (`text.py`), metrics
+- `backend/app/core/` — settings, text normalization (`text.py`), metrics, critical-detail
+  extraction (`details.py`, negation lists in `lexicons/`)
 - `backend/app/tokenizers/` — adapter interface, tiktoken adapter, registry
-- `backend/app/services/` — counting/compare, dataset validation, benchmark logic (framework-free)
+- `backend/app/optimizer/` — optimizer rules (`rules.py`) and phrase lists (`phrases/*.yaml`)
+- `backend/app/services/` — counting/compare, dataset validation, benchmark logic, meaning
+  check, optimizer pipeline (framework-free)
 - `backend/app/api/` — FastAPI routes; `errors.py` gives `{"error": {"code", "message"}}`
 - `backend/app/schemas.py` — request/response models (mirror of the frontend's `lib/api/types.ts`)
 - `backend/migrations/` — Alembic; schema SQL in `migrations/sql/`
-- `research/configs/` — licence register `datasets.yaml`, `normalization.md`
+- `research/configs/` — licence register `datasets.yaml`, `normalization.md`, `meaning_check.md`, `optimizer.md`
 - `research/scripts/` — `flores_to_jsonl.py`, `import_pilot.py`, `run_benchmark.py`
 - `frontend/` — to be filled with the Grok-generated Next.js app
 

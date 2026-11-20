@@ -9,6 +9,7 @@ from __future__ import annotations
 import re
 import unicodedata
 from collections import Counter
+from functools import lru_cache
 
 NORMALIZATION_ID = "nfc_ws_v1"
 WORD_COUNT_METHOD = "unicode_whitespace_v1"
@@ -33,7 +34,8 @@ MIXED_THRESHOLD = 0.10
 def normalize(text: str) -> str:
     """NFC, drop BOM, collapse whitespace runs to one space, trim. Meaning-preserving."""
     text = unicodedata.normalize("NFC", text)
-    text = "".join(ch for ch in text if ch not in _REMOVE)
+    for ch in _REMOVE:
+        text = text.replace(ch, "")
     return _WS_RUN.sub(" ", text).strip()
 
 
@@ -54,6 +56,7 @@ def char_count(text: str) -> int:
     return len(normalize(text))
 
 
+@lru_cache(maxsize=8192)
 def script_of_char(ch: str) -> str | None:
     cp = ord(ch)
     for script, ranges in SCRIPT_RANGES.items():
@@ -62,6 +65,7 @@ def script_of_char(ch: str) -> str | None:
     return None
 
 
+@lru_cache(maxsize=256)
 def detect_script(text: str) -> str | None:
     """Dominant script among letters/marks: a script code, 'mixed', or None (no letters)."""
     counts: Counter[str] = Counter()

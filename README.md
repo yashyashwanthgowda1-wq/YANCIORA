@@ -92,6 +92,52 @@ Errors use `{"error": {"code", "message"}}`:
 Each sample in a group has `language`, `script`, `variant_type` and `text`, so a group can be
 posted as-is to `POST /api/compare-languages`.
 
+## Meaning preservation check (Feature 5)
+
+`POST /api/meaning-check`
+
+```json
+{"original": "Do not pay ₹500 before 5 pm.", "candidate": "Pay $500 before 5 pm.", "language": "en"}
+```
+
+Response (abridged):
+
+```json
+{"status": "changed", "method": "rules_v1", "language": "en",
+ "findings": [
+   {"category": "money", "value": "INR 500", "example": "₹500", "original_count": 1, "candidate_count": 0, "state": "missing"},
+   {"category": "money", "value": "USD 500", "example": "$500", "original_count": 0, "candidate_count": 1, "state": "added"},
+   {"category": "datetime", "value": "5pm", "example": "5 pm", "original_count": 1, "candidate_count": 1, "state": "kept"},
+   {"category": "negation", "value": "not", "example": "not", "original_count": 1, "candidate_count": 0, "state": "missing"}],
+ "missing_count": 2, "added_count": 1, "risks": [], "warnings": [],
+ "negation_lexicons": [{"id": "en", "language": "en", "script": "Latn", "review_status": "developer_curated"}],
+ "limitations": ["Rule-based check (rules_v1): ...", "'preserved' means no rule found a problem. ..."]}
+```
+
+Statuses: `changed` (a critical detail is missing, added or altered), `at_risk` (details kept but
+a heuristic warning applies), `preserved` (no rule found a problem — not a guarantee).
+`POST /api/critical-details` with `{"text", "language", "protected_terms"}` lists the details with
+offsets for highlighting. Rules: [research/configs/meaning_check.md](research/configs/meaning_check.md).
+
+## Prompt optimizer (Feature 3)
+
+`POST /api/optimize`
+
+```json
+{"text": "Please   send ₹500 today!!!", "language": "en", "mode": "safe",
+ "tokenizers": ["cl100k_base", "o200k_base"], "protected_terms": []}
+```
+
+Response fields: `optimized`, `changed`, `token_counts` (before/after/saved per tokenizer, with
+tokenizer identity and count status), `accepted` (applied; meaning check `preserved`),
+`suggestions` (**not applied**, `requires_review: true`: at_risk edits, duplicate sentences,
+script changes), `rejected` (with `stage`: protected / overlap / limit / tokens / meaning and a
+reason), `requires_review`, `phrase_lists` (review status and whether applied), `meaning_check`
+(Feature 5 result for original vs optimized), `warnings` (incl. "not provider billing") and
+`limitations`. Modes: `safe` (whitespace, invisible characters, repeated punctuation),
+`balanced` (+ reviewed phrase lists — none are reviewed yet), `aggressive` (+ script
+suggestions, arriving with Feature 6). Rules: [research/configs/optimizer.md](research/configs/optimizer.md).
+
 ## Tests
 
 ```bash
@@ -101,6 +147,8 @@ TEST_PSQL_URL=postgresql://redutax:redutax@localhost:5432/postgres pytest   # + 
 ```
 
 The PostgreSQL tests create a throwaway database, run the Alembic migrations on it, then drop it.
+With Neon, point `TEST_PSQL_URL` at a **separate branch** (not the app database) and use the
+`postgresql+psycopg://…?sslmode=require` form.
 `test_schema.py` also needs `psql` on PATH. On Windows, if pytest reports `PermissionError` for its
 temp folder, add `--basetemp .pytest_tmp`.
 

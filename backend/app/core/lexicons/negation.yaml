@@ -1,0 +1,117 @@
+# Negation markers for the meaning-preservation checker (Feature 5, rules_v1).
+#
+# review_status:
+#   reviewed           approved by a native speaker on the team (record who/when in `reviewed_by`)
+#   developer_curated  written by the developers from standard grammar; team review welcome
+#   unreviewed         seed list, NOT approved. Checks that rely on it report `at_risk`.
+#
+# match:
+#   word       the whole token equals the form (case-insensitive)
+#   suffix     the token ends with the form (agglutinative negative verb endings)
+#   substring  the form appears anywhere in the token
+#
+# canonical: forms with the same meaning share a canonical value, so "don't" and "do not"
+# count as the same negation. Detection is protective only: the checker never removes text.
+#
+# Native speakers: please correct, extend and then set review_status: reviewed + reviewed_by.
+
+version: negation_v1
+lexicons:
+  - id: en
+    language: en
+    script: Latn
+    review_status: developer_curated
+    entries:
+      - {form: "not", match: word, canonical: not}
+      - {form: "n't", match: suffix, canonical: not}
+      - {form: "cannot", match: word, canonical: not}
+      - {form: "no", match: word, canonical: "no"}
+      - {form: "never", match: word, canonical: never}
+      - {form: "none", match: word, canonical: none}
+      - {form: "nothing", match: word, canonical: nothing}
+      - {form: "nobody", match: word, canonical: nobody}
+      - {form: "nowhere", match: word, canonical: nowhere}
+      - {form: "neither", match: word, canonical: neither}
+      - {form: "nor", match: word, canonical: nor}
+      - {form: "without", match: word, canonical: without}
+
+  - id: hi-Deva
+    language: hi
+    script: Deva
+    review_status: unreviewed
+    entries:
+      - {form: "नहीं", match: word, canonical: "hi:nahin"}
+      - {form: "न", match: word, canonical: "hi:na"}
+      - {form: "ना", match: word, canonical: "hi:na"}
+      - {form: "मत", match: word, canonical: "hi:mat"}
+      - {form: "बिना", match: word, canonical: "hi:bina"}
+
+  - id: hi-Latn
+    language: hi
+    script: Latn
+    review_status: unreviewed
+    entries:
+      - {form: "nahi", match: word, canonical: "hi:nahin"}
+      - {form: "nahin", match: word, canonical: "hi:nahin"}
+      - {form: "nhi", match: word, canonical: "hi:nahin"}
+      - {form: "mat", match: word, canonical: "hi:mat"}
+      - {form: "bina", match: word, canonical: "hi:bina"}
+
+  - id: kn-Knda
+    language: kn
+    script: Knda
+    review_status: unreviewed
+    entries:
+      - {form: "ಇಲ್ಲ", match: substring, canonical: "kn:illa"}
+      - {form: "ಿಲ್ಲ", match: suffix, canonical: "kn:illa"}    # negative verb ending, e.g. ಬರುವುದಿಲ್ಲ
+      - {form: "ಬೇಡ", match: substring, canonical: "kn:beda"}
+      - {form: "ಅಲ್ಲ", match: substring, canonical: "kn:alla"}
+
+  - id: kn-Latn
+    language: kn
+    script: Latn
+    review_status: unreviewed
+    entries:
+      - {form: "illa", match: suffix, canonical: "kn:illa"}
+      - {form: "beda", match: word, canonical: "kn:beda"}
+      - {form: "alla", match: word, canonical: "kn:alla"}
+
+  - id: ta-Taml
+    language: ta
+    script: Taml
+    review_status: unreviewed
+    entries:
+      - {form: "இல்லை", match: substring, canonical: "ta:illai"}
+      - {form: "ில்லை", match: substring, canonical: "ta:illai"}  # e.g. வரவில்லை
+      - {form: "வேண்டாம்", match: substring, canonical: "ta:vendam"}
+      - {form: "அல்ல", match: substring, canonical: "ta:alla"}
+      - {form: "ாது", match: suffix, canonical: "ta:aadhu"}     # negative ending, e.g. முடியாது
+
+  - id: ta-Latn
+    language: ta
+    script: Latn
+    review_status: unreviewed
+    entries:
+      - {form: "illai", match: suffix, canonical: "ta:illai"}
+      - {form: "illa", match: suffix, canonical: "ta:illai"}
+      - {form: "vendam", match: word, canonical: "ta:vendam"}
+      - {form: "venda", match: word, canonical: "ta:vendam"}
+
+  - id: te-Telu
+    language: te
+    script: Telu
+    review_status: unreviewed
+    entries:
+      - {form: "లేదు", match: substring, canonical: "te:ledu"}
+      - {form: "వద్దు", match: substring, canonical: "te:vaddu"}
+      - {form: "కాదు", match: substring, canonical: "te:kaadu"}
+
+  - id: te-Latn
+    language: te
+    script: Latn
+    review_status: unreviewed
+    entries:
+      - {form: "ledu", match: suffix, canonical: "te:ledu"}
+      - {form: "vaddu", match: word, canonical: "te:vaddu"}
+      - {form: "kaadu", match: word, canonical: "te:kaadu"}
+      - {form: "kadu", match: word, canonical: "te:kaadu"}
