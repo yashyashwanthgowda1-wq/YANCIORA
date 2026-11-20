@@ -8,24 +8,40 @@
 # "TO_VERIFY" blocks import. Every value below that says TO_VERIFY must be checked by a person.
 
 datasets:
+  # Facts below verified 2026-11-21 from the official source (see notes). approved_for is still
+  # EMPTY on purpose: the team must confirm REDUTAX's intended use before import (BRD §9.2).
   - name: FLORES-200
-    version: TO_VERIFY            # release used, e.g. the archive name/date
-    source_url: https://github.com/facebookresearch/flores
-    license: TO_VERIFY
-    license_url: TO_VERIFY
-    citation: TO_VERIFY
-    accessed_at: null             # YYYY-MM-DD
+    version: "flores200_dataset.tar.gz (Last-Modified 2022-07-14)"
+    source_url: https://github.com/facebookresearch/flores/tree/main/flores200
+    download_url: https://dl.fbaipublicfiles.com/nllb/flores200_dataset.tar.gz   # via https://tinyurl.com/flores200dataset
+    archive_bytes: 25585843
+    archive_sha256: b8b0b76783024b85797e5cc75064eb83fc5288b41e9654dabc7be6ae944011f6
+    license: CC-BY-SA-4.0
+    license_url: https://creativecommons.org/licenses/by-sa/4.0/
+    license_evidence: >
+      facebookresearch/flores README, "Licenses" section: "FLORES-200: CC-BY-SA 4.0"; repository
+      file LICENSE_CC-BY-SA. The archive's own README has no licence statement.
+    citation: >
+      NLLB Team (2022). No Language Left Behind: Scaling Human-Centered Machine Translation.
+      (BibTeX key nllb2022, as given in the facebookresearch/flores flores200 README.)
+    accessed_at: 2026-11-21       # archive downloaded
     languages: [en, kn, hi, ta, te]
-    language_codes_in_source:     # FLORES-200 codes (verify against the release)
+    language_codes_in_source:     # verified: files present in dev/ and devtest/ of the archive
       en: eng_Latn
       kn: kan_Knda
       hi: hin_Deva
       ta: tam_Taml
       te: tel_Telu
-    approved_for: []
+    approved_for: []              # TEAM DECISION PENDING — import stays blocked until filled
     notes: >
       Planned use: aligned evaluation set for language comparison (Phase 1).
       FLORES has no Romanized or code-mixed text; those come from the team set.
+      Licence terms (CC BY-SA 4.0): research and commercial use permitted; attribution required;
+      adaptations that are shared must use the same licence (share-alike) — applies if processed
+      files are redistributed. Archive check: dev 997 and devtest 1012 lines per language,
+      line-aligned across en/kn/hi/ta/te. The facebookresearch/flores repository is archived
+      (read-only since 2023-11-21); newer versions (FLORES+, openlanguagedata) are a different
+      dataset with their own terms and are NOT covered by this entry.
 
   - name: REDUTAX-team-pilot
     version: "0.1"

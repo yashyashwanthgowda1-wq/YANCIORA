@@ -291,6 +291,44 @@ await step("Error · real backend validation error is displayed", async () => {
   await shot("13-error-unknown-tokenizer");
 });
 
+
+// ---------------------------------------------------------------- Added for post-Round-1 validation
+await step("Optimizer · balanced mode reports that no phrase list is reviewed", async () => {
+  await page.goto(`${BASE}/optimize`, { waitUntil: "networkidle" });
+  await waitTokenizers("#op-tok");
+  await page.fill('textarea[aria-label="Original prompt"]', "Practise daily in order to   improve.");
+  await page.selectOption("#op-lang", "en");
+  await page.getByRole("button", { name: "+ Reviewed phrase lists" }).click();
+  await page.getByRole("button", { name: "Optimize", exact: true }).click();
+  await page.waitForSelector("text=Optimization result", { timeout: 60000 });
+  const body = await page.textContent("body");
+  const optimized = await page.locator(".side-by-side > div").nth(1).locator("p").textContent();
+  record("Optimizer · balanced mode reports that no phrase list is reviewed",
+    /balanced mode/.test(body) && /No reviewed phrase list/.test(body) && /in order to/.test(optimized),
+    { phraseNotApplied: /in order to/.test(optimized), listStatus: /en — developer curated, 11 entries, not applied/.test(body) });
+  await shot("14-optimizer-balanced-mode");
+});
+await step("Meaning check (rules_v2) · unit change 5 kg → 5 g is rejected in the UI", async () => {
+  await page.goto(`${BASE}/optimize`, { waitUntil: "networkidle" });
+  await waitTokenizers("#op-tok");
+  await page.fill('textarea[aria-label="Original prompt"]', "Add 5 kg of rice and wait 3 days.");
+  await page.getByRole("button", { name: "Add rewrite" }).click();
+  await page.fill('textarea[aria-label="Rewrite 1"]', "Add 5 g of rice and wait 3 days.");
+  await page.getByRole("button", { name: "Add rewrite" }).click();
+  await page.fill('textarea[aria-label="Rewrite 2"]', "Add 5kg of rice and wait 3 days.");
+  await page.getByRole("button", { name: /Count original/ }).click();
+  await page.waitForSelector("text=Candidate ledger", { timeout: 60000 });
+  const rows = await page.locator("table.table tbody tr").allTextContents();
+  const r1 = rows.find((r) => /rewrite 1/i.test(r)) ?? "";
+  const r2 = rows.find((r) => /rewrite 2/i.test(r)) ?? "";
+  await page.getByRole("button", { name: "View", exact: true }).first().click();
+  const body = await page.textContent("body");
+  record("Meaning check (rules_v2) · unit change 5 kg → 5 g is rejected in the UI",
+    /Changed/.test(r1) && /Rejected/.test(r1) && /Preserved/.test(r2) && /rules_v2/.test(body),
+    { rewrite1: r1.slice(0, 140), rewrite2: r2.slice(0, 140) });
+  await shot("15-meaning-check-units-v2");
+});
+
 fs.writeFileSync(path.join(OUT, "results.json"), JSON.stringify({ results, consoleErrors }, null, 2));
 console.log(`\n${results.filter((r) => r.ok).length}/${results.length} passed; console errors: ${consoleErrors.length}`);
 consoleErrors.slice(0, 10).forEach((e) => console.log("  console:", e));

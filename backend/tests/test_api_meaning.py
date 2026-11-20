@@ -18,7 +18,7 @@ def test_meaning_check_endpoint_changed():
     assert r.status_code == 200
     body = MeaningCheckResponse.model_validate(r.json())
     assert body.status == "changed" and body.missing_count == 2 and body.added_count == 1
-    assert body.method == "rules_v1" and body.limitations
+    assert body.method == "rules_v2" and body.limitations
 
 
 def test_meaning_check_endpoint_preserved():

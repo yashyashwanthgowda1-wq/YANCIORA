@@ -50,6 +50,10 @@
 | D32 | Transliteration converts only runs of the target script; Feature 5 details (except negations) and digits are never converted | Preserve URLs, emails, code, quotes, protected terms, digits and Latin words. |
 | D33 | Script variants are never applied; in the optimizer they are whole-text `script_variant` suggestions in aggressive mode only | Team decision 2026-11-20. |
 
+| D34 | Feature 5 `rules_v2`: Latin units become part of a number's key (B5-1, partly); `suffix` negation entries that are whole words also match bare tokens (B5-13). Response fields unchanged; `method` value is now `rules_v2` | Highest-risk backlog items fixable without native-speaker input; 20 regression tests added. Indic-script units remain open. |
+
+| D35 | FLORES-200 licence facts recorded from the official source (CC-BY-SA-4.0; archive flores200_dataset.tar.gz, Last-Modified 2022-07-14, sha256 b8b0b767…; accessed 2026-11-21) but `approved_for` left empty | Approving REDUTAX's use is a team decision; the import gate stays closed until it is recorded. |
+
 The new response types in `backend/app/schemas.py` (`SampleGroupsResponse`, `BenchmarksResponse`,
 `BenchmarkResultsResponse`, `MeaningCheckResponse`, `CriticalDetailsResponse`, `OptimizeResponse`, `ScriptVariantsResponse`) must be mirrored in the frontend's `lib/api/types.ts`.
 

@@ -105,7 +105,7 @@ export const api = {
   optimize: (body: OptimizeRequest, o?: RequestOptions) =>
     request<OptimizeResponse>("/api/optimize", { method: "POST", body }, o),
 
-  // Feature 5 — meaning preservation (rules_v1)
+  // Feature 5 — meaning preservation (rules_v2)
   meaningCheck: (body: MeaningCheckRequest, o?: RequestOptions) =>
     request<MeaningCheckResponse>("/api/meaning-check", { method: "POST", body }, o),
 

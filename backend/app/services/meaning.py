@@ -1,4 +1,4 @@
-"""Meaning-preservation check (Feature 5, rules_v1).
+"""Meaning-preservation check (Feature 5, rules_v2).
 
 Compares the critical details of an original prompt and a candidate rewrite. Statuses:
   changed    a critical detail is missing, added or altered
@@ -23,12 +23,13 @@ MIN_LENGTH_FOR_RATIO = 40      # characters; shorter texts skip the shrink check
 SHRINK_RATIO = 0.5
 
 LIMITATIONS = [
-    "Rule-based check (rules_v1): it compares critical details only. It cannot confirm that "
+    "Rule-based check (rules_v2): it compares critical details only. It cannot confirm that "
     "the overall meaning, tone or intent is unchanged.",
     "'preserved' means no rule found a problem. It is not a guarantee of semantic equivalence.",
-    "Not detected: numbers written as words, units after numbers (e.g. '5 kg' vs '5 g'), "
-    "Indic-script month names and dates, Indic-script scale words (e.g. lakh/crore written in "
-    "native script), and paraphrases that reverse meaning without a listed negation word.",
+    "Not detected: numbers written as words, units written in Indic scripts or outside the "
+    "listed Latin units (kg, km, GB, days, …), Indic-script month names and dates, Indic-script "
+    "scale words (e.g. lakh/crore written in native script), and paraphrases that reverse "
+    "meaning without a listed negation word.",
     "Negation detection uses word lists. Lists marked 'unreviewed' have not been approved by "
     "native speakers.",
 ]

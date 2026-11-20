@@ -1,4 +1,4 @@
-"""Feature 5 — critical-detail extraction and meaning check (rules_v1).
+"""Feature 5 — critical-detail extraction and meaning check (rules_v2).
 All texts are unit-test fixtures written for these tests, not dataset samples."""
 import pytest
 from pydantic import ValidationError
@@ -210,7 +210,7 @@ def test_unreviewed_lexicon_no_risk_when_unchanged():
 
 def test_response_always_carries_limitations_and_method():
     r = run("a 1", "a 1")
-    assert r.method == "rules_v1" and r.limitations == LIMITATIONS
+    assert r.method == "rules_v2" and r.limitations == LIMITATIONS
     assert any("not a guarantee" in x for x in r.limitations)
 
 
@@ -258,3 +258,53 @@ def test_money_and_email_matches_unchanged_by_performance_fix():
              D.extract_details("x,5 rupees and 1,234.50 rupees, Rs 7, mail a.b+c@x.test", "en")]
     assert found == [("money", "INR 5"), ("money", "INR 1234.50"), ("money", "INR 7"),
                      ("email", "a.b+c@x.test")]
+
+
+# ---------- rules_v2 regressions: units (B5-1) and standalone suffix words (B5-13) ----------
+@pytest.mark.parametrize("text,expected", [
+    ("Add 5 kg rice", ["5 kg"]),
+    ("Add 5kg rice", ["5 kg"]),
+    ("Add 5 kilograms rice", ["5 kg"]),
+    ("Add 5 g rice", ["5 g"]),
+    ("Run 10 km", ["10 km"]),
+    ("Store 64GB", ["64 gb"]),
+    ("Wait 3 days", ["3 day"]),
+    ("Give 5 minutes", ["5 min"]),
+    ("Set 25°C", ["25 °c"]),
+    ("Order 42 now", ["42"]),            # no unit
+    ("go 5 more times", ["5"]),          # 'm' of 'more' is not metres
+    ("Budget 5 lakh", ["5lakh"]),        # scale word unchanged
+])
+def test_units_are_part_of_number_key(text, expected):
+    assert values(text, "number") == expected
+
+
+@pytest.mark.parametrize("original,candidate,status", [
+    ("Add 5 kg rice", "Add 5 g rice", "changed"),
+    ("Wait 3 days", "Wait 3 weeks", "changed"),
+    ("Upload 10 MB", "Upload 10 GB", "changed"),
+    ("Add 5 kg rice", "Add 5kg rice", "preserved"),
+    ("Add 5 kilograms of rice", "Add 5 kg of rice", "preserved"),
+])
+def test_unit_changes_detected(original, candidate, status):
+    assert run(original, candidate).status == status
+
+
+def test_money_and_time_unaffected_by_units():
+    assert values("Pay ₹500 at 5 pm", "money") == ["INR 500"]
+    assert values("Pay ₹500 at 5 pm", "datetime") == ["5pm"]
+    assert values("Pay ₹500 at 5 pm", "number") == []
+
+
+def test_standalone_romanized_negation_detected():
+    assert values("hesaru haaki illa", "negation", "kn") == ["kn:illa"]
+    assert values("avan varala illai", "negation", "ta") == ["ta:illai"]
+    assert values("vaadu raadu ledu", "negation", "te") == ["te:ledu"]
+    r = run("naanu barodu illa", "naanu barodu", language="kn")
+    assert r.status == "changed" and states(r) == {("negation", "kn:illa"): "missing"}
+
+
+def test_fragment_suffixes_still_need_longer_token():
+    assert values("n't", "negation", "en") == []          # "n't" alone is not a word
+    assert not D._is_word_form("ಿಲ್ಲ") and not D._is_word_form("n't")
+    assert D._is_word_form("illa")

@@ -14,13 +14,13 @@ import { useAction } from "@/lib/hooks";
 import { LANGUAGES } from "@/lib/languages";
 import { logActivity } from "@/lib/storage";
 
-/** What the rule-based meaning check (rules_v1) covers today for each protected category. */
+/** What the rule-based meaning check (rules_v2) covers today for each protected category. */
 const PROTECTED: { name: string; checked: "yes" | "partly" | "no"; note: string }[] = [
   { name: "Names", checked: "partly", note: "only names you list as protected terms" },
   { name: "Numbers & amounts", checked: "yes", note: "digits in any script, ₹/Rs/$ amounts" },
   { name: "Dates & times", checked: "partly", note: "numeric and English formats" },
   { name: "Locations", checked: "no", note: "not checked yet" },
-  { name: "Units & quantities", checked: "partly", note: "numbers checked; units not compared yet" },
+  { name: "Units & quantities", checked: "partly", note: "Latin units (kg, km, GB, days…) compared; Indic-script units not yet" },
   { name: "Negation", checked: "partly", note: "word lists; Indic lists await native-speaker review" },
   { name: "Conditions", checked: "no", note: "not checked yet" },
   { name: "Safety instructions", checked: "no", note: "not checked yet" },
@@ -184,7 +184,7 @@ export default function OptimizeView() {
                       <td className="num">{i === 0 ? "—" : <span className={d !== null && d < 0 ? "delta-neg" : d !== null && d > 0 ? "delta-pos" : ""}>{fmtPct(d)}</span>}</td>
                       <td className="num">{fmtDec(r.result.tokens_per_word)}</td>
                       <td>{i === 0 || !r.meaning ? "—" : <><MeaningStatusBadge status={r.meaning.status} /><div className="small subtle">{r.meaning.missing_count} missing · {r.meaning.added_count} added</div></>}</td>
-                      <td>{i === 0 ? "—" : <Badge tone="planned" title="rules_v1 compares critical details only; no semantic similarity model is used">Not measured</Badge>}</td>
+                      <td>{i === 0 ? "—" : <Badge tone="planned" title="rules_v2 compares critical details only; no semantic similarity model is used">Not measured</Badge>}</td>
                       <td>{i === 0 ? <Badge tone="blue">Retained</Badge> : <Decision meaning={r.meaning} fewer={r.result.token_count < orig.result.token_count} />}</td>
                       <td>{i > 0 && <button className="btn btn-sm btn-ghost" onClick={() => setViewIdx(i)} aria-pressed={viewIdx === i}>View</button>}</td>
                     </tr>
@@ -219,7 +219,7 @@ export default function OptimizeView() {
           )}
           {viewing && viewIdx > 0 && viewing.meaning && (
             <section className="panel">
-              <div className="panel-head"><div><h2>Meaning check — {viewing.label}</h2><p>Original vs this rewrite (rules_v1)</p></div></div>
+              <div className="panel-head"><div><h2>Meaning check — {viewing.label}</h2><p>Original vs this rewrite (rules_v2)</p></div></div>
               <div className="panel-body"><MeaningFindings mc={viewing.meaning} /></div>
             </section>
           )}

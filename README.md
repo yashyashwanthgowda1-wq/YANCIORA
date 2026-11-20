@@ -104,7 +104,7 @@ posted as-is to `POST /api/compare-languages`.
 Response (abridged):
 
 ```json
-{"status": "changed", "method": "rules_v1", "language": "en",
+{"status": "changed", "method": "rules_v2", "language": "en",
  "findings": [
    {"category": "money", "value": "INR 500", "example": "₹500", "original_count": 1, "candidate_count": 0, "state": "missing"},
    {"category": "money", "value": "USD 500", "example": "$500", "original_count": 0, "candidate_count": 1, "state": "added"},
@@ -112,7 +112,7 @@ Response (abridged):
    {"category": "negation", "value": "not", "example": "not", "original_count": 1, "candidate_count": 0, "state": "missing"}],
  "missing_count": 2, "added_count": 1, "risks": [], "warnings": [],
  "negation_lexicons": [{"id": "en", "language": "en", "script": "Latn", "review_status": "developer_curated"}],
- "limitations": ["Rule-based check (rules_v1): ...", "'preserved' means no rule found a problem. ..."]}
+ "limitations": ["Rule-based check (rules_v2): ...", "'preserved' means no rule found a problem. ..."]}
 ```
 
 Statuses: `changed` (a critical detail is missing, added or altered), `at_risk` (details kept but

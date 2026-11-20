@@ -76,7 +76,8 @@ No secrets are needed for these five features.
 4. **Prompt Optimizer** — English prompt with extra spaces → *Optimize*: accepted edits, token before/after, meaning check *Preserved*, critical-detail chips.
    Kannada prompt with `!!!!!!` and a zero-width space → those edits appear under *Suggestions — not applied* (*At risk · review*), because the Kannada negation list is not native-speaker-reviewed yet.
    `Pay Rs.   500 now.` → original kept; the space fix is rejected because it would turn the number into a money amount.
-5. **Meaning check** — add rewrites "Pay before 5 pm." (→ *Changed*, *Rejected · details changed*: ₹500 and "not" missing) and "Don't pay more than Rs. 500 before 5 pm." (→ *Preserved*).
+5. **Units (rules_v2)** — original "Add 5 kg of rice and wait 3 days.", rewrite "Add 5 g of rice and wait 3 days." → *Changed / Rejected*; "Add 5kg …" → *Preserved*.
+6. **Meaning check** — add rewrites "Pay before 5 pm." (→ *Changed*, *Rejected · details changed*: ₹500 and "not" missing) and "Don't pay more than Rs. 500 before 5 pm." (→ *Preserved*).
 
 Note for presenters: with real tokenizers, `!!!` → `!` usually saves **no** tokens (it is already
 one token), so it is correctly rejected as "no token saving". Savings on clean Indic text are small;
@@ -85,6 +86,6 @@ the point of the demo is that every change is measured, gated and explained.
 ## Evidence
 
 `docs/integration/round1-ui-check.mjs` drives the real UI in Microsoft Edge (playwright-core
-1.64.1, installed outside the project). Last run: **25/25 passed**
+1.64.1, installed outside the project). Last run (2026-11-21, after `rules_v2`): **27/27 passed**
 (`docs/integration/round1-ui-run.log`, `docs/integration/round1-ui-results.json`).
 Screenshots: `docs/screenshots/integration/`.

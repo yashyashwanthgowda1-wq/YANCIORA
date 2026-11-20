@@ -10,7 +10,7 @@ router = APIRouter(prefix="/api", tags=["meaning"])
 
 @router.post("/meaning-check", response_model=MeaningCheckResponse)
 def meaning_check(req: MeaningCheckRequest) -> MeaningCheckResponse:
-    """Compare critical details of an original prompt and a rewrite (rules_v1).
+    """Compare critical details of an original prompt and a rewrite (rules_v2).
 
     Status `preserved` means no rule found a problem; it is not a guarantee of
     semantic equivalence. See `limitations` in the response."""

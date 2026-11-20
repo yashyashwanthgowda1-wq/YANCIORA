@@ -9,7 +9,7 @@ Last updated: 2026-11-20
 | 0 | Repo, config, DB schema, `/health`, tests | Done |
 | 1 | Normalization, tokenizer counters, compare API, licence register, importer, benchmark, DB persistence, retrieval APIs | **Code complete. Not verified:** PostgreSQL tests not yet run against a real server; FLORES-200 licence not verified, so no real data loaded and no baseline run |
 | 2 | SentencePiece Unigram training + held-out benchmark | Not started (waits for Phase 1 verification + team approval) |
-| 3 | Optimizer + meaning/critical-detail checks (Features 5, 3, 6) | **Features 5, 3 and 6 done** (rules_v1, opt_rules_v1, translit_v1); Feature 6 awaits native-speaker spot checks |
+| 3 | Optimizer + meaning/critical-detail checks (Features 5, 3, 6) | **Features 5, 3 and 6 done** (rules_v2, opt_rules_v1, translit_v1); Feature 6 awaits native-speaker spot checks |
 | 4 | Model registry, cost, Auto/Manual routing, chat | Not started |
 | 5 | Browser voice + Vapi phone | Not started |
 | 6 | Evaluation report + demo | Not started |
@@ -30,7 +30,7 @@ Last updated: 2026-11-20
 | 2 | Language Comparison Engine | Built (`POST /api/compare-languages`); DB-backed groups/benchmarks await Track A |
 | 3 | Smart Prompt Optimizer | **Done — opt_rules_v1** (`POST /api/optimize`); balanced mode inactive until phrase lists are reviewed |
 | 4 | AI Cost Calculator | Not started (needs pricing source decision) |
-| 5 | Meaning Preservation Checker | **Done — rules_v1** (`POST /api/meaning-check`, `POST /api/critical-details`); Indic negation lists await native-speaker review |
+| 5 | Meaning Preservation Checker | **Done — rules_v2** (units + standalone Romanized negations added 2026-11-21) (`POST /api/meaning-check`, `POST /api/critical-details`); Indic negation lists await native-speaker review |
 | 6 | Script and Transliteration Optimizer | **Done — translit_v1** (`POST /api/script-variants`; optimizer aggressive-mode suggestions); native-speaker spot check pending |
 | 7 | Smart Model Recommendation | Not started |
 | 8 | Voice-to-Optimized Prompt | Not started |
@@ -130,7 +130,7 @@ Policy: `research/configs/transliteration.md`. Tamil output uses Sanskrit-style 
 
 ## Test results (Windows 11, Python 3.13, 2026-11-20)
 
-`pytest` → **298 passed, 30 skipped, 0 failed** (after Feature 6, with the tiktoken encoding files installed; only the 30 PostgreSQL tests skip).
+`pytest` → **318 passed, 30 skipped, 0 failed** (after Feature 5 `rules_v2`, with the tiktoken encoding files installed; only the 30 PostgreSQL tests skip).
 
 | Skipped | Count | Reason |
 |---|---|---|
@@ -160,7 +160,7 @@ Note for Windows: if pytest fails with `PermissionError` on its temp folder, add
 | `POST /api/compare-languages` | Implemented |
 | `GET /api/samples/groups` | Implemented. Filters: `dataset`, `dataset_version`, `language` (repeatable, groups containing all), `split`, `aligned_group_id`, `page`, `page_size` ≤ 100 |
 | `GET /api/benchmarks` | Implemented. Filters: `run_id`, `dataset`, `dataset_version`, `tokenizer`, `language`, `page`, `page_size` ≤ 100 |
-| `POST /api/meaning-check` | Implemented (Feature 5, rules_v1) |
+| `POST /api/meaning-check` | Implemented (Feature 5, rules_v2) |
 | `POST /api/critical-details` | Implemented (Feature 5, offsets for highlighting) |
 | `POST /api/optimize` | Implemented (Feature 3, opt_rules_v1) |
 | `POST /api/script-variants` | Implemented (Feature 6, translit_v1) |
@@ -173,9 +173,8 @@ Errors: `422 invalid_request` (bad filter), `404 not_found` (unknown dataset/run
 ## Remaining blockers for Phase 1 exit
 
 1. **Run the PostgreSQL tests locally** (`TEST_PSQL_URL=... pytest`) and record the result here.
-2. **Team: verify FLORES-200 licence.** Download it, read its own licence/terms, and fill in `research/configs/datasets.yaml`:
-   `version`, `license`, `license_url`, `citation`, `accessed_at`, `approved_for: [evaluation]`.
-   Until then the import is blocked (by design): `BLOCKED: dataset 'FLORES-200': version not verified; license not verified; citation not verified; accessed_at missing; not approved for 'evaluation'`.
+2. **Team: approve FLORES-200 use.** Licence facts were verified from the official source on 2026-11-21 and recorded in `research/configs/datasets.yaml` (CC-BY-SA-4.0, archive + SHA-256, citation, access date); the archive is downloaded (git-ignored) and line-aligned. The only remaining gate: add `approved_for: [evaluation]` once the team agrees.
+   Current gate message: `BLOCKED: dataset 'FLORES-200': not approved for 'evaluation'`.
 3. Then: convert → `import_pilot.py --load-db` → `run_benchmark.py --store-db` → first five-language baseline chart (Phase 1 exit criterion).
 4. Run the tiktoken tests on a machine that can download the encodings (or with `TIKTOKEN_CACHE_DIR` pre-filled).
 5. Team: Romanized and code-mixed pilot examples with native-speaker review (FLORES has none). This can follow the Phase 1 exit.
@@ -188,7 +187,7 @@ Errors: `422 invalid_request` (bad filter), `404 not_found` (unknown dataset/run
 
 Frontend connected to five backend features; runbook: `docs/ROUND1_DEMO.md`.
 
-| Feature | Screen | State (tested through the UI in Edge, 25/25 checks) |
+| Feature | Screen | State (tested through the UI in Edge, 27/27 checks on 2026-11-21) |
 |---|---|---|
 | Token Counter | `/counter` | Live — en/kn/hi/ta/te, cl100k_base and o200k_base |
 | Language Comparison | `/compare` | Live — stateless; the aligned-sample loader still needs the database |
@@ -196,7 +195,7 @@ Frontend connected to five backend features; runbook: `docs/ROUND1_DEMO.md`.
 | Prompt Optimizer (F3) | `/optimize` → Automatic optimization | Live — accepted / suggestions / rejected, meaning status, critical details |
 | Meaning check (F5) | `/optimize` → rewrites ledger + result panels | Live — per-rewrite status and findings |
 
-No database is required for these. Backend tests with real tiktoken encodings: 298 passed,
+No database is required for these. Backend tests with real tiktoken encodings: 318 passed,
 30 skipped (PostgreSQL only). Frontend: `tsc` 0 errors, vitest 16/16, `next build` OK.
 
 ## Frontend (2026-11-20)

@@ -23,7 +23,9 @@ PASS  Meaning check · user rewrite that drops a number and a negation is reject
 PASS  Loading state and duplicate-submission prevention  — {"disabledWhileLoading":true,"spinnerShown":true,"optimizeRequests":1}
 PASS  Error · backend unreachable shows a clear message (simulated by aborting the request)  — {}
 PASS  Error · real backend error (unknown tokenizer, HTTP 400) is displayed  — {}
+PASS  Optimizer · balanced mode reports that no phrase list is reviewed  — {"phraseNotApplied":true,"listStatus":true}
+PASS  Meaning check (rules_v2) · unit change 5 kg → 5 g is rejected in the UI  — {"rewrite1":"Your rewrite 1Add 5 g of rice and wait 3 days.120.0%1.33Changed1 missing · 1 addedNot measuredRejected · details changedView","rewrite2":"Your rewrite 2Add 5kg of rice and wait 3 days.120.0%1.50Preserved0 missing · 0 addedNot measuredNo token savingView"}
 
-25/25 passed; console errors: 2
+27/27 passed; console errors: 2
   console: http://localhost:3000/optimize :: Failed to load resource: net::ERR_CONNECTION_REFUSED
   console: http://localhost:3000/optimize :: Failed to load resource: the server responded with a status of 400 (Bad Request)

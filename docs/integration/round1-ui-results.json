@@ -9,8 +9,8 @@
       "api": [
         "GET /health → 200",
         "GET /api/tokenizers → 200",
-        "GET /api/tokenizers → 200",
-        "GET /health → 200"
+        "GET /health → 200",
+        "GET /api/tokenizers → 200"
       ]
     },
     {
@@ -36,8 +36,8 @@
         "tokenizer": "cl100k_base · tiktoken 0.14.0"
       },
       "api": [
-        "GET /health → 200",
         "GET /api/tokenizers → 200",
+        "GET /health → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "POST /api/tokenize → 200"
@@ -66,8 +66,8 @@
         "tokenizer": "cl100k_base · tiktoken 0.14.0"
       },
       "api": [
-        "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "POST /api/tokenize → 200"
@@ -81,8 +81,8 @@
         "tokenizer": "cl100k_base · tiktoken 0.14.0"
       },
       "api": [
-        "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "POST /api/tokenize → 200"
@@ -96,8 +96,8 @@
         "o200k_base": "32"
       },
       "api": [
-        "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "POST /api/tokenize → 200",
@@ -111,8 +111,8 @@
         "countButtonDisabled": true
       },
       "api": [
-        "GET /health → 200",
         "GET /api/tokenizers → 200",
+        "GET /health → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200"
       ]
@@ -163,12 +163,12 @@
         "te": "dayacēsi   ī nivēdikanu saṁgrahiṁcaṁḍi!!!   pērlu cērcavaddu"
       },
       "api": [
-        "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "POST /api/script-variants → 200",
-        "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "POST /api/script-variants → 200"
       ]
@@ -178,8 +178,8 @@
       "ok": true,
       "details": {},
       "api": [
-        "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "POST /api/script-variants → 200"
       ]
@@ -199,8 +199,8 @@
         "GET /api/tokenizers → 200",
         "GET /health → 200",
         "GET /api/tokenizers → 200",
-        "POST /api/optimize → 200",
-        "POST /api/critical-details → 200"
+        "POST /api/critical-details → 200",
+        "POST /api/optimize → 200"
       ]
     },
     {
@@ -215,8 +215,8 @@
         "criticalDetailChips": 2
       },
       "api": [
-        "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "POST /api/optimize → 200",
         "POST /api/critical-details → 200"
@@ -234,8 +234,8 @@
         "criticalDetailChips": 2
       },
       "api": [
-        "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "POST /api/optimize → 200",
         "POST /api/critical-details → 200"
@@ -253,8 +253,8 @@
         "criticalDetailChips": 1
       },
       "api": [
-        "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "POST /api/optimize → 200",
         "POST /api/critical-details → 200"
@@ -275,8 +275,8 @@
         "GET /health → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
-        "POST /api/optimize → 200",
-        "POST /api/critical-details → 200"
+        "POST /api/critical-details → 200",
+        "POST /api/optimize → 200"
       ]
     },
     {
@@ -286,8 +286,8 @@
         "optimizedStillKannada": true
       },
       "api": [
-        "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "POST /api/critical-details → 200",
         "POST /api/optimize → 200"
@@ -302,8 +302,8 @@
         "riskText": true
       },
       "api": [
-        "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "POST /api/optimize → 200",
         "POST /api/critical-details → 200"
@@ -314,8 +314,8 @@
       "ok": true,
       "details": {},
       "api": [
-        "GET /health → 200",
         "GET /api/tokenizers → 200",
+        "GET /health → 200",
         "GET /api/tokenizers → 200",
         "POST /api/optimize → 200",
         "POST /api/critical-details → 200"
@@ -331,8 +331,8 @@
       },
       "api": [
         "GET /api/tokenizers → 200",
-        "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "GET /api/tokenizers → 200",
         "POST /api/tokenize → 200",
         "POST /api/tokenize → 200",
         "POST /api/tokenize → 200",
@@ -349,8 +349,8 @@
         "optimizeRequests": 1
       },
       "api": [
-        "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "POST /api/critical-details → 200",
         "POST /api/optimize → 200"
@@ -372,11 +372,44 @@
       "ok": true,
       "details": {},
       "api": [
-        "GET /health → 200",
         "GET /api/tokenizers → 200",
+        "GET /health → 200",
         "GET /api/tokenizers → 200",
         "POST /api/optimize → 400",
         "POST /api/critical-details → 200"
+      ]
+    },
+    {
+      "name": "Optimizer · balanced mode reports that no phrase list is reviewed",
+      "ok": true,
+      "details": {
+        "phraseNotApplied": true,
+        "listStatus": true
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/optimize → 200",
+        "POST /api/critical-details → 200"
+      ]
+    },
+    {
+      "name": "Meaning check (rules_v2) · unit change 5 kg → 5 g is rejected in the UI",
+      "ok": true,
+      "details": {
+        "rewrite1": "Your rewrite 1Add 5 g of rice and wait 3 days.120.0%1.33Changed1 missing · 1 addedNot measuredRejected · details changedView",
+        "rewrite2": "Your rewrite 2Add 5kg of rice and wait 3 days.120.0%1.50Preserved0 missing · 0 addedNot measuredNo token savingView"
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "POST /api/tokenize → 200",
+        "POST /api/tokenize → 200",
+        "POST /api/tokenize → 200",
+        "POST /api/meaning-check → 200",
+        "POST /api/meaning-check → 200"
       ]
     }
   ],

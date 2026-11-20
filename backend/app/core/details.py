@@ -1,4 +1,4 @@
-"""Critical-detail extraction (Feature 5, method `rules_v1`).
+"""Critical-detail extraction (Feature 5, method `rules_v2`).
 
 Finds the parts of a prompt whose loss or change would change its meaning: code, URLs,
 emails, quoted text, money, dates/times, numbers, negations and caller-protected terms.
@@ -19,7 +19,7 @@ from typing import Iterable
 
 from app.core import text as T
 
-METHOD_ID = "rules_v1"
+METHOD_ID = "rules_v2"   # v2: units after numbers (B5-1), standalone suffix words (B5-13)
 CATEGORIES = ("code", "url", "email", "quoted", "money", "datetime", "number",
               "negation", "protected_term")
 REVIEW_STATUSES = ("reviewed", "developer_curated", "unreviewed")
@@ -106,7 +106,31 @@ TIMES = [
     re.compile(r"\b\d{1,2}:\d{2}(?::\d{2})?(?:\s?[ap]\.?m\b\.?)?", re.I),
     re.compile(r"\b\d{1,2}\s?[ap]\.?m\b\.?", re.I),
 ]
-NUMBER = re.compile(rf"{_AMOUNT}{_SCALE}%?", re.I)
+# Units after a number (rules_v2, backlog B5-1): a closed list of Latin-script units. The unit is
+# part of the number's comparison key, so "5 kg" → "5 g" is a change. Indic-script units are not
+# covered (they need native-speaker review).
+UNITS: dict[str, str] = {}
+for _canon, _forms in {
+    "mg": ["mg", "milligram", "milligrams"], "g": ["g", "gm", "gms", "gram", "grams"],
+    "kg": ["kg", "kgs", "kilo", "kilos", "kilogram", "kilograms"], "tonne": ["tonne", "tonnes", "ton", "tons"],
+    "mm": ["mm", "millimetre", "millimetres", "millimeter", "millimeters"],
+    "cm": ["cm", "centimetre", "centimetres", "centimeter", "centimeters"],
+    "m": ["m", "metre", "metres", "meter", "meters"],
+    "km": ["km", "kms", "kilometre", "kilometres", "kilometer", "kilometers"],
+    "ft": ["ft", "foot", "feet"], "mile": ["mile", "miles"],
+    "ml": ["ml", "millilitre", "millilitres", "milliliter", "milliliters"],
+    "l": ["l", "litre", "litres", "liter", "liters", "ltr"],
+    "kb": ["kb"], "mb": ["mb"], "gb": ["gb"], "tb": ["tb"],
+    "ms": ["ms", "millisecond", "milliseconds"], "sec": ["sec", "secs", "second", "seconds"],
+    "min": ["min", "mins", "minute", "minutes"], "hour": ["hr", "hrs", "hour", "hours"],
+    "day": ["day", "days"], "week": ["week", "weeks"], "month": ["month", "months"],
+    "year": ["yr", "yrs", "year", "years"],
+    "°c": ["°c", "°"], "°f": ["°f"],
+}.items():
+    for _f in _forms:
+        UNITS[_f] = _canon
+_UNIT_RE = "|".join(re.escape(u) for u in sorted(UNITS, key=len, reverse=True))
+NUMBER = re.compile(rf"{_AMOUNT}{_SCALE}%?(?:\s?(?P<unit>{_UNIT_RE})(?![\w°]))?", re.I)
 TOKEN = re.compile(r"[^\s.,;:!?()\[\]{}\"“”«»<>|/\\]+")
 _URL_TRAIL = ".,;:!?)]}'\"’”"
 
@@ -178,6 +202,13 @@ def active_lexicons(language: str | None, *texts: str) -> tuple[Lexicon, ...]:
                  and (lx.script != "Latn" or lx.language == "en" or roman_ok))
 
 
+def _is_word_form(form: str) -> bool:
+    """A suffix entry that is itself a word (e.g. Romanized 'illa', 'ledu') also matches the bare
+    token (rules_v2, backlog B5-13). Fragments such as "n't" or a native ending starting with a
+    vowel sign (ಿಲ್ಲ) are not words, so they still need a longer token."""
+    return form.isalpha()
+
+
 def _neg_match(token: str, lexicons: Iterable[Lexicon]) -> str | None:
     t = token.lower().replace("’", "'").strip("'")
     if not t:
@@ -185,7 +216,8 @@ def _neg_match(token: str, lexicons: Iterable[Lexicon]) -> str | None:
     for lx in lexicons:
         for e in lx.entries:
             if (e.match == "word" and t == e.form) or \
-               (e.match == "suffix" and t.endswith(e.form) and len(t) > len(e.form)) or \
+               (e.match == "suffix" and t.endswith(e.form)
+                and (len(t) > len(e.form) or _is_word_form(e.form))) or \
                (e.match == "substring" and e.form in t):
                 return e.canonical
     return None
@@ -231,7 +263,10 @@ def extract_details(text: str, language: str | None = None,
         # A minus sign counts only when it stands alone before the number ("-5", not "A-5").
         if start > 0 and masked[start - 1] in "-−" and (start == 1 or masked[start - 2].isspace()):
             start -= 1
-        take(start, m.end(), "number", norm_number(src[start:m.end()]))
+        unit = m.group("unit")
+        num_end = m.start("unit") if unit else m.end()
+        value = norm_number(src[start:num_end].rstrip())
+        take(start, m.end(), "number", f"{value} {UNITS[unit.lower()]}" if unit else value)
 
     lexes = lexicons if lexicons is not None else active_lexicons(language, src)
     for m in TOKEN.finditer(masked):

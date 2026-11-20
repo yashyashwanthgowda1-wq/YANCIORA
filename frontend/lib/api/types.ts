@@ -244,7 +244,7 @@ export type KnownErrorCode =
   | "bad_response"
   | "transliteration_unavailable";
 
-// ---------- POST /api/critical-details, POST /api/meaning-check (Feature 5, rules_v1) ----------
+// ---------- POST /api/critical-details, POST /api/meaning-check (Feature 5, rules_v2) ----------
 export type DetailCategory =
   | "code" | "url" | "email" | "quoted" | "money" | "datetime" | "number" | "negation" | "protected_term";
 export type MeaningStatus = "preserved" | "at_risk" | "changed";
