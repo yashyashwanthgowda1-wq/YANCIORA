@@ -11,7 +11,7 @@ import uuid
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import benchmarks, counting, health, samples
+from app.api import benchmarks, counting, health, meaning, optimizer, samples
 from app.api.errors import install_error_handlers
 from app.core.config import APP_NAME, APP_VERSION, get_settings
 
@@ -53,6 +53,8 @@ def create_app() -> FastAPI:
     app.include_router(counting.router)
     app.include_router(samples.router)
     app.include_router(benchmarks.router)
+    app.include_router(meaning.router)
+    app.include_router(optimizer.router)
     logger.info("starting %s %s settings=%s", APP_NAME, APP_VERSION, settings.safe_dict())
     return app
 

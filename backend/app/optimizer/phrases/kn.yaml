@@ -1,0 +1,10 @@
+# kn verbose-phrase list for the optimizer's balanced mode (Feature 3).
+# Empty and unreviewed by team decision (2026-11-20): entries may be added only with
+# native-speaker review; set review_status: reviewed and reviewed_by when approved.
+# Field reference: see en.yaml.
+
+id: kn
+language: kn
+review_status: unreviewed
+reviewed_by: null
+entries: []

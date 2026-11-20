@@ -27,6 +27,13 @@ def sa_url(url: str) -> str:
     return url
 
 
+def with_database(url: str, name: str) -> str:
+    """Same server URL pointing at another database, keeping query options such as
+    Neon's ?sslmode=require."""
+    base, sep, query = url.partition("?")
+    return base.rsplit("/", 1)[0] + "/" + name + (sep + query if sep else "")
+
+
 def alembic(db_url: str, action: str, target: str) -> None:
     from alembic import command
     from alembic.config import Config
@@ -62,7 +69,7 @@ def pg_url():
     except Exception as exc:  # noqa: BLE001
         server.dispose()
         pytest.skip(f"PostgreSQL unreachable: {type(exc).__name__}")
-    url = sa_url(SERVER_URL).rsplit("/", 1)[0] + "/" + name
+    url = with_database(sa_url(SERVER_URL), name)
     alembic(url, "upgrade", "head")
     yield url
     from app.db.session import get_engine

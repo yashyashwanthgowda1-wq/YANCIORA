@@ -25,8 +25,27 @@
 | D14 | Added `GET /api/benchmarks/{run_id}/results` (paginated per-sample counts) next to `GET /api/benchmarks` | Per-sample results can be large; keeping them off the run list keeps that endpoint small. |
 | D15 | Retrieval endpoints return `503 database_not_configured` / `503 database_unavailable` with generic messages; `404 not_found` for an unknown dataset or run | Never expose SQL, hosts or credentials (BRD §14). |
 
+## Decisions taken for Track B (Features 5, 3, 6)
+
+| # | Decision | Reason |
+|---|---|---|
+| D16 | Team: hosted PostgreSQL on Neon; tests use a separate Neon branch | Team decision 2026-11-20; keeps test databases away from app data. |
+| D17 | Build order Feature 5 → 3 → 6; deterministic rules first, no paid LLM APIs without approval | Team decision 2026-11-20. The optimizer is only as safe as its meaning gate. |
+| D18 | Meaning-check statuses `preserved / at_risk / changed`; `preserved` never claims guaranteed meaning; fixed `limitations` in every response | Heuristic checks cannot prove semantic equivalence. |
+| D19 | Detail offsets refer to NFC text (whitespace kept), not `nfc_ws_v1` | Code indentation must be comparable and protectable. |
+| D20 | Indic negation lists ship as `unreviewed` seeds; any non-whitespace edit checked with them is `at_risk` | Team decision: no Indic list is treated as approved until native speakers review it. |
+| D21 | Money normalised to `CUR amount` (₹/Rs/rupees → INR …); digits of any script compared as ASCII values | `₹500` vs `Rs. 500` and `೫೦೦` vs `500` are the same detail; `₹500` vs `$500` is not. |
+
+| D22 | Optimizer acceptance: preserved → applied; at_risk → suggestion (not applied); changed → rejected | Team decision 2026-11-20 (Indic negation lists are unreviewed). |
+| D23 | An edit must save tokens under ≥ 1 requested tokenizer and add none under any; zero-saving edits rejected | Team decision 2026-11-20. |
+| D24 | English phrase list stays inactive until a team member reviews it; developer_curated ≠ reviewed | Team decision 2026-11-20. |
+| D25 | Duplicate-sentence removal and script changes are always suggestions | Repetition can be intentional; script changes may affect model understanding. |
+| D26 | Optimizer counts tokens on the exact text (not `nfc_ws_v1`), edits proposed on NFC text with offsets into it | The optimized text is what would be sent to a model. |
+| D27 | Feature 5 regexes made linear (possessive quantifiers, start-of-run lookbehinds); `core/text.py` caches script lookups | Fixes an ~80 s worst case on 20,000-digit input; outputs unchanged, regression tests added. |
+| D28 | At most 200 edits evaluated per request (worst case ~4.6 s at 20,000 characters); a warning reports unevaluated edits, which stay listed in `rejected` | Team decision 2026-11-20 (lowered from 500, ~11 s). |
+
 The new response types in `backend/app/schemas.py` (`SampleGroupsResponse`, `BenchmarksResponse`,
-`BenchmarkResultsResponse`) must be mirrored in the frontend's `lib/api/types.ts`.
+`BenchmarkResultsResponse`, `MeaningCheckResponse`, `CriticalDetailsResponse`, `OptimizeResponse`) must be mirrored in the frontend's `lib/api/types.ts`.
 
 ## Open questions (BRD §23)
 

@@ -27,5 +27,8 @@ research = [
 [tool.setuptools.packages.find]
 include = ["app*"]
 
+[tool.setuptools.package-data]
+app = ["core/lexicons/*.yaml", "optimizer/phrases/*.yaml"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

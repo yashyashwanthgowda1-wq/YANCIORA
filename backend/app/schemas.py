@@ -181,3 +181,209 @@ class BenchmarkResultsResponse(BaseModel):
     page: int
     page_size: int
     total: int
+
+
+# ---------- Feature 5: meaning preservation (POST /api/meaning-check, /api/critical-details) ----------
+DetailCategory = Literal["code", "url", "email", "quoted", "money", "datetime", "number",
+                         "negation", "protected_term"]
+MeaningStatus = Literal["preserved", "at_risk", "changed"]
+ReviewStatus = Literal["reviewed", "developer_curated", "unreviewed"]
+MAX_PROTECTED_TERMS = 50
+
+
+def _check_terms(terms: list[str]) -> list[str]:
+    for t in terms:
+        if not t.strip():
+            raise ValueError("protected_terms must not contain blank terms")
+    return terms
+
+
+class CriticalDetailsRequest(BaseModel):
+    text: str = Field(min_length=1, max_length=MAX_TEXT_CHARS)
+    language: LanguageCode | Literal["auto"] = "auto"
+    protected_terms: list[str] = Field(default_factory=list, max_length=MAX_PROTECTED_TERMS)
+
+    @field_validator("text")
+    @classmethod
+    def _not_blank(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("text is blank")
+        return v
+
+    @field_validator("protected_terms")
+    @classmethod
+    def _terms_ok(cls, v: list[str]) -> list[str]:
+        _check_terms(v)
+        if any(len(t) > 200 for t in v):
+            raise ValueError("protected terms must be at most 200 characters")
+        return v
+
+
+class LexiconRef(BaseModel):
+    id: str
+    language: LanguageCode
+    script: Script
+    review_status: ReviewStatus
+
+
+class CriticalDetail(BaseModel):
+    category: DetailCategory
+    text: str               # as written; equals response.text[start:end]
+    value: str              # comparison key (e.g. "INR 500", "100000", "not")
+    start: int
+    end: int
+
+
+class CriticalDetailsResponse(BaseModel):
+    method: str
+    language: LanguageCode | None
+    text: str               # NFC form of the input; offsets point into this string
+    details: list[CriticalDetail]
+    negation_lexicons: list[LexiconRef]
+    warnings: list[str]
+
+
+class MeaningCheckRequest(BaseModel):
+    original: str = Field(min_length=1, max_length=MAX_TEXT_CHARS)
+    candidate: str = Field(min_length=1, max_length=MAX_TEXT_CHARS)
+    language: LanguageCode | Literal["auto"] = "auto"
+    protected_terms: list[str] = Field(default_factory=list, max_length=MAX_PROTECTED_TERMS)
+
+    @field_validator("original", "candidate")
+    @classmethod
+    def _not_blank(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("text is blank")
+        return v
+
+    @field_validator("protected_terms")
+    @classmethod
+    def _terms_ok(cls, v: list[str]) -> list[str]:
+        _check_terms(v)
+        if any(len(t) > 200 for t in v):
+            raise ValueError("protected terms must be at most 200 characters")
+        return v
+
+
+class DetailFinding(BaseModel):
+    category: DetailCategory
+    value: str
+    example: str
+    original_count: int
+    candidate_count: int
+    state: Literal["kept", "missing", "added"]
+
+
+class MeaningCheckResponse(BaseModel):
+    status: MeaningStatus
+    method: str
+    language: LanguageCode | None
+    findings: list[DetailFinding]
+    missing_count: int
+    added_count: int
+    risks: list[str]
+    warnings: list[str]
+    negation_lexicons: list[LexiconRef]
+    limitations: list[str]
+
+
+# ---------- Feature 3: smart prompt optimizer (POST /api/optimize) ----------
+OptimizeMode = Literal["safe", "balanced", "aggressive"]
+MAX_OPT_TOKENIZERS = 4
+
+
+class OptimizeRequest(BaseModel):
+    text: str = Field(min_length=1, max_length=MAX_TEXT_CHARS)
+    language: LanguageCode | Literal["auto"] = "auto"
+    mode: OptimizeMode = "safe"
+    tokenizers: list[str] = Field(default_factory=lambda: ["cl100k_base"], min_length=1,
+                                  max_length=MAX_OPT_TOKENIZERS,
+                                  description="An edit must reduce tokens under at least one "
+                                              "and must not increase tokens under any.")
+    protected_terms: list[str] = Field(default_factory=list, max_length=MAX_PROTECTED_TERMS)
+
+    @field_validator("text")
+    @classmethod
+    def _not_blank(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("text is blank")
+        return v
+
+    @field_validator("tokenizers")
+    @classmethod
+    def _unique(cls, v: list[str]) -> list[str]:
+        if len(set(v)) != len(v):
+            raise ValueError("tokenizers must not repeat")
+        return v
+
+    @field_validator("protected_terms")
+    @classmethod
+    def _terms_ok(cls, v: list[str]) -> list[str]:
+        _check_terms(v)
+        if any(len(t) > 200 for t in v):
+            raise ValueError("protected terms must be at most 200 characters")
+        return v
+
+
+class OptimizeTokenCount(BaseModel):
+    tokenizer: TokenizerRef
+    status: CountStatus
+    before: int
+    after: int
+    saved: int
+    saved_pct: float
+
+
+class EditReport(BaseModel):
+    """One proposed edit. start/end are offsets into the NFC form of the original text."""
+    rule: str
+    start: int
+    end: int
+    before: str
+    after: str
+    token_delta: dict[str, int] | None = Field(
+        description="Per tokenizer: tokens after minus tokens before this edit (negative = saved). "
+                    "null when the edit was not measured.")
+    reason: str
+
+
+class AcceptedEdit(EditReport):
+    meaning_status: Literal["preserved"] = "preserved"
+
+
+class RejectedEdit(EditReport):
+    stage: Literal["protected", "overlap", "limit", "tokens", "meaning"]
+
+
+class OptimizeSuggestion(EditReport):
+    """Not applied. The user decides."""
+    kind: Literal["at_risk_edit", "duplicate_sentence", "script_variant"]
+    meaning_status: Literal["preserved", "at_risk"]
+    risks: list[str]
+    requires_review: Literal[True] = True
+
+
+class PhraseListRef(BaseModel):
+    id: str
+    language: LanguageCode
+    review_status: ReviewStatus
+    entries: int
+    applied: bool
+
+
+class OptimizeResponse(BaseModel):
+    method: str
+    mode: OptimizeMode
+    language: LanguageCode | None
+    original: str
+    optimized: str
+    changed: bool
+    token_counts: list[OptimizeTokenCount]
+    accepted: list[AcceptedEdit]
+    suggestions: list[OptimizeSuggestion]
+    rejected: list[RejectedEdit]
+    requires_review: bool
+    phrase_lists: list[PhraseListRef]
+    meaning_check: MeaningCheckResponse
+    warnings: list[str]
+    limitations: list[str]
