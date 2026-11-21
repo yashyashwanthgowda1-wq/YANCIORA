@@ -1,0 +1,4146 @@
+[
+ {
+  "prompt_id": "en_verbose-01",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hello! I would like you to help me with a task that is quite important for my work!!!  Please provide a summary of the attached quarterly sales report in a clear and concise manner.  The answer must have exactly 5 bullet points.  The deadline is 15 December 2026.  Do not include any customer names.  Format the output as a table with two columns.  Do not include any customer names.",
+  "optimized": "Hello! I would like you to help me with a task that is quite important for my work!!! Please summarize the attached quarterly sales report clearly and concisely. The answer must have exactly 5 bullet points. The deadline is 15 December 2026. Do not include any customer names. Format the output as a table with two columns.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    87,
+    70
+   ],
+   "o200k_base": [
+    87,
+    70
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "provide a summary of",
+    "after": "summarize"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "in a clear and concise manner",
+    "after": "clearly and concisely"
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  Do not include any customer names.",
+    "after": ""
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "at_risk_edit",
+    "risk": "wording",
+    "before": "I would like you to h",
+    "after": "H",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-02",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hi there. I hope you are doing well. It is important to note that I need your help with something. In order to help the new interns, provide an explanation of how Git branching works. Keep the response under 150 words. Use at most 3 short paragraphs. Do not use technical jargon. Write the final answer in a professional manner. Keep the response under 150 words.",
+  "optimized": "Hi there. I hope you are doing well. I need your help with something. To help the new interns, explain how Git branching works. Keep the response under 150 words. Use at most 3 short paragraphs. Do not use technical jargon. Write the final answer professionally.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    80,
+    58
+   ],
+   "o200k_base": [
+    79,
+    57
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "It is important to note that I",
+    "after": "I"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "In order to",
+    "after": "To"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "provide an explanation of",
+    "after": "explain"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "in a professional manner",
+    "after": "professionally"
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Keep the response under 150 words.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-03",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Good morning. As you may already know, I am working on a project and I need some assistance. Conduct an analysis of the customer feedback that we have collected on a monthly basis. The deadline is 15 December 2026. Do not include any customer names. Include the total cost of Rs 25,000 in the answer. Never share the internal pricing. Use a numbered list for the steps. Remember that customer names must not appear anywhere.",
+  "optimized": "Good morning. As you may already know, I am working on a project and I need some assistance. Analyze the customer feedback that we have collected monthly. The deadline is 15 December 2026. Do not include any customer names. Include the total cost of Rs 25,000 in the answer. Never share the internal pricing. Use a numbered list for the steps. Remember that customer names must not appear anywhere.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    91,
+    86
+   ],
+   "o200k_base": [
+    91,
+    85
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "Conduct an analysis of",
+    "after": "Analyze"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "on a monthly basis",
+    "after": "monthly"
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-04",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hello! I would like you to help me with a task that is quite important for my work.  Provide a description of the best irrigation schedule for tomato crops in the near future.  Use at most 3 short paragraphs.  The answer must have exactly 5 bullet points.  Do not exceed one page.  Format the output as a table with two columns.",
+  "optimized": "Hello! I would like you to help me with a task that is quite important for my work. Describe the best irrigation schedule for tomato crops soon. Use at most 3 short paragraphs. The answer must have exactly 5 bullet points. Do not exceed one page. Format the output as a table with two columns.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    75,
+    64
+   ],
+   "o200k_base": [
+    75,
+    64
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "Provide a description of",
+    "after": "Describe"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "in the near future",
+    "after": "soon"
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "at_risk_edit",
+    "risk": "wording",
+    "before": "I would like you to h",
+    "after": "H",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-05",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hi there. I hope you are doing well. It is important to note that I need your help with something. Make a comparison between train travel and bus travel from Bengaluru to Mysuru. Include the total cost of Rs 25,000 in the answer. Keep the response under 150 words. Do not include any customer names. Write the final answer in a professional manner. Do not include any customer names.",
+  "optimized": "Hi there. I hope you are doing well. I need your help with something. Compare train travel and bus travel from Bengaluru to Mysuru. Include the total cost of Rs 25,000 in the answer. Keep the response under 150 words. Do not include any customer names. Write the final answer professionally.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    85,
+    66
+   ],
+   "o200k_base": [
+    83,
+    64
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "It is important to note that I",
+    "after": "I"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "Make a comparison between",
+    "after": "Compare"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "in a professional manner",
+    "after": "professionally"
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Do not include any customer names.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-06",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Good morning!!! As you may already know, I am working on a project and I need some assistance. Give a summary of the meeting notes due to the fact that I missed the meeting. The answer must have exactly 5 bullet points. The deadline is 15 December 2026. Do not use technical jargon. Use a numbered list for the steps. The answer must have exactly 5 bullet points.",
+  "optimized": "Good morning!!! As you may already know, I am working on a project and I need some assistance. Summarize the meeting notes because I missed the meeting. The answer must have exactly 5 bullet points. The deadline is 15 December 2026. Do not use technical jargon. Use a numbered list for the steps.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    83,
+    68
+   ],
+   "o200k_base": [
+    82,
+    67
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "Give a summary of",
+    "after": "Summarize"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "due to the fact that",
+    "after": "because"
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " The answer must have exactly 5 bullet points.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-07",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hello! I would like you to help me with a task that is quite important for my work.  Write a Python function that is able to remove duplicate rows from a CSV file.  Keep the response under 150 words.  Do not include any customer names.  Use at most 3 short paragraphs.  Never share the internal pricing.  Format the output as a table with two columns.  Remember that customer names must not appear anywhere.",
+  "optimized": "Hello! I would like you to help me with a task that is quite important for my work. Write a Python function that can remove duplicate rows from a CSV file. Keep the response under 150 words. Do not include any customer names. Use at most 3 short paragraphs. Never share the internal pricing. Format the output as a table with two columns. Remember that customer names must not appear anywhere.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    91,
+    82
+   ],
+   "o200k_base": [
+    91,
+    82
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "is able to",
+    "after": "can"
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "at_risk_edit",
+    "risk": "wording",
+    "before": "I would like you to h",
+    "after": "H",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-08",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hi there. I hope you are doing well. It is important to note that I need your help with something. Provide a list of tasks for the product launch, taking into consideration the end result we want. The deadline is 15 December 2026. Include the total cost of Rs 25,000 in the answer. Do not exceed one page. Write the final answer in a professional manner.",
+  "optimized": "Hi there. I hope you are doing well. I need your help with something. List tasks for the product launch, taking into consideration the result we want. The deadline is 15 December 2026. Include the total cost of Rs 25,000 in the answer. Do not exceed one page. Write the final answer professionally.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    81,
+    68
+   ],
+   "o200k_base": [
+    81,
+    68
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "It is important to note that I",
+    "after": "I"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "Provide a list of",
+    "after": "List"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "end result",
+    "after": "result"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "in a professional manner",
+    "after": "professionally"
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-09",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Good morning. As you may already know, I am working on a project and I need some assistance. Please provide a summary of the attached quarterly sales report in a clear and concise manner. Use at most 3 short paragraphs. The answer must have exactly 5 bullet points. Do not include any customer names. Use a numbered list for the steps. Do not include any customer names.",
+  "optimized": "Good morning. As you may already know, I am working on a project and I need some assistance. Please summarize the attached quarterly sales report clearly and concisely. Use at most 3 short paragraphs. The answer must have exactly 5 bullet points. Do not include any customer names. Use a numbered list for the steps.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    78,
+    67
+   ],
+   "o200k_base": [
+    78,
+    67
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "provide a summary of",
+    "after": "summarize"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "in a clear and concise manner",
+    "after": "clearly and concisely"
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Do not include any customer names.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-10",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hello! I would like you to help me with a task that is quite important for my work.  In order to help the new interns, provide an explanation of how Git branching works.  Include the total cost of Rs 25,000 in the answer.  Keep the response under 150 words.  Do not use technical jargon.  Format the output as a table with two columns.  Include the total cost of Rs 25,000 in the answer.",
+  "optimized": "Hello! I would like you to help me with a task that is quite important for my work. To help the new interns, explain how Git branching works. Include the total cost of Rs 25,000 in the answer. Keep the response under 150 words. Do not use technical jargon. Format the output as a table with two columns.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    96,
+    71
+   ],
+   "o200k_base": [
+    95,
+    70
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "In order to",
+    "after": "To"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "provide an explanation of",
+    "after": "explain"
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  Include the total cost of Rs 25,000 in the answer.",
+    "after": ""
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "at_risk_edit",
+    "risk": "wording",
+    "before": "I would like you to h",
+    "after": "H",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-11",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hi there!!! I hope you are doing well. It is important to note that I need your help with something. Conduct an analysis of the customer feedback that we have collected on a monthly basis. The answer must have exactly 5 bullet points. Do not include any customer names. The deadline is 15 December 2026. Never share the internal pricing. Write the final answer in a professional manner. Remember that customer names must not appear anywhere.",
+  "optimized": "Hi there!!! I hope you are doing well. I need your help with something. Analyze the customer feedback that we have collected monthly. The answer must have exactly 5 bullet points. Do not include any customer names. The deadline is 15 December 2026. Never share the internal pricing. Write the final answer professionally. Remember that customer names must not appear anywhere.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    90,
+    76
+   ],
+   "o200k_base": [
+    90,
+    75
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "It is important to note that I",
+    "after": "I"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "Conduct an analysis of",
+    "after": "Analyze"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "on a monthly basis",
+    "after": "monthly"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "in a professional manner",
+    "after": "professionally"
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-12",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Good morning. As you may already know, I am working on a project and I need some assistance. Provide a description of the best irrigation schedule for tomato crops in the near future. Keep the response under 150 words. Use at most 3 short paragraphs. Do not exceed one page. Use a numbered list for the steps.",
+  "optimized": "Good morning. As you may already know, I am working on a project and I need some assistance. Describe the best irrigation schedule for tomato crops soon. Keep the response under 150 words. Use at most 3 short paragraphs. Do not exceed one page. Use a numbered list for the steps.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    67,
+    61
+   ],
+   "o200k_base": [
+    67,
+    61
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "Provide a description of",
+    "after": "Describe"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "in the near future",
+    "after": "soon"
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-13",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hello! I would like you to help me with a task that is quite important for my work.  Make a comparison between train travel and bus travel from Bengaluru to Mysuru.  The deadline is 15 December 2026.  Include the total cost of Rs 25,000 in the answer.  Do not include any customer names.  Format the output as a table with two columns.  Do not include any customer names.",
+  "optimized": "Hello! I would like you to help me with a task that is quite important for my work. Compare train travel and bus travel from Bengaluru to Mysuru. The deadline is 15 December 2026. Include the total cost of Rs 25,000 in the answer. Do not include any customer names. Format the output as a table with two columns.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    91,
+    75
+   ],
+   "o200k_base": [
+    89,
+    73
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "Make a comparison between",
+    "after": "Compare"
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  Do not include any customer names.",
+    "after": ""
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "at_risk_edit",
+    "risk": "wording",
+    "before": "I would like you to h",
+    "after": "H",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-14",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hi there. I hope you are doing well. It is important to note that I need your help with something. Give a summary of the meeting notes due to the fact that I missed the meeting. Use at most 3 short paragraphs. The answer must have exactly 5 bullet points. Do not use technical jargon. Write the final answer in a professional manner. Use at most 3 short paragraphs.",
+  "optimized": "Hi there. I hope you are doing well. I need your help with something. Summarize the meeting notes because I missed the meeting. Use at most 3 short paragraphs. The answer must have exactly 5 bullet points. Do not use technical jargon. Write the final answer professionally.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    82,
+    60
+   ],
+   "o200k_base": [
+    81,
+    59
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "It is important to note that I",
+    "after": "I"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "Give a summary of",
+    "after": "Summarize"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "due to the fact that",
+    "after": "because"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "in a professional manner",
+    "after": "professionally"
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Use at most 3 short paragraphs.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-15",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Good morning. As you may already know, I am working on a project and I need some assistance. Write a Python function that is able to remove duplicate rows from a CSV file. Include the total cost of Rs 25,000 in the answer. Do not include any customer names. Keep the response under 150 words. Never share the internal pricing. Use a numbered list for the steps. Remember that customer names must not appear anywhere.",
+  "optimized": "Good morning. As you may already know, I am working on a project and I need some assistance. Write a Python function that can remove duplicate rows from a CSV file. Include the total cost of Rs 25,000 in the answer. Do not include any customer names. Keep the response under 150 words. Never share the internal pricing. Use a numbered list for the steps. Remember that customer names must not appear anywhere.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    89,
+    87
+   ],
+   "o200k_base": [
+    89,
+    87
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "is able to",
+    "after": "can"
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-16",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hello! I would like you to help me with a task that is quite important for my work!!!  Provide a list of tasks for the product launch, taking into consideration the end result we want.  The answer must have exactly 5 bullet points.  The deadline is 15 December 2026.  Do not exceed one page.  Format the output as a table with two columns.",
+  "optimized": "Hello! I would like you to help me with a task that is quite important for my work!!! List tasks for the product launch, taking into consideration the result we want. The answer must have exactly 5 bullet points. The deadline is 15 December 2026. Do not exceed one page. Format the output as a table with two columns.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    80,
+    71
+   ],
+   "o200k_base": [
+    80,
+    71
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "Provide a list of",
+    "after": "List"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "end result",
+    "after": "result"
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "at_risk_edit",
+    "risk": "wording",
+    "before": "I would like you to h",
+    "after": "H",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-17",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hi there. I hope you are doing well. It is important to note that I need your help with something. Please provide a summary of the attached quarterly sales report in a clear and concise manner. Keep the response under 150 words. Use at most 3 short paragraphs. Do not include any customer names. Write the final answer in a professional manner. Do not include any customer names.",
+  "optimized": "Hi there. I hope you are doing well. I need your help with something. Please summarize the attached quarterly sales report clearly and concisely. Keep the response under 150 words. Use at most 3 short paragraphs. Do not include any customer names. Write the final answer professionally.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    79,
+    59
+   ],
+   "o200k_base": [
+    79,
+    59
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "It is important to note that I",
+    "after": "I"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "provide a summary of",
+    "after": "summarize"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "in a clear and concise manner",
+    "after": "clearly and concisely"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "in a professional manner",
+    "after": "professionally"
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Do not include any customer names.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-18",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Good morning. As you may already know, I am working on a project and I need some assistance. In order to help the new interns, provide an explanation of how Git branching works. The deadline is 15 December 2026. Include the total cost of Rs 25,000 in the answer. Do not use technical jargon. Use a numbered list for the steps. The deadline is 15 December 2026.",
+  "optimized": "Good morning. As you may already know, I am working on a project and I need some assistance. To help the new interns, explain how Git branching works. The deadline is 15 December 2026. Include the total cost of Rs 25,000 in the answer. Do not use technical jargon. Use a numbered list for the steps.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    87,
+    72
+   ],
+   "o200k_base": [
+    86,
+    71
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "In order to",
+    "after": "To"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "provide an explanation of",
+    "after": "explain"
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " The deadline is 15 December 2026.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-19",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hello! I would like you to help me with a task that is quite important for my work.  Conduct an analysis of the customer feedback that we have collected on a monthly basis.  Use at most 3 short paragraphs.  Do not include any customer names.  The answer must have exactly 5 bullet points.  Never share the internal pricing.  Format the output as a table with two columns.  Remember that customer names must not appear anywhere.",
+  "optimized": "Hello! I would like you to help me with a task that is quite important for my work. Analyze the customer feedback that we have collected monthly. Use at most 3 short paragraphs. Do not include any customer names. The answer must have exactly 5 bullet points. Never share the internal pricing. Format the output as a table with two columns. Remember that customer names must not appear anywhere.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    93,
+    81
+   ],
+   "o200k_base": [
+    93,
+    80
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "Conduct an analysis of",
+    "after": "Analyze"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "on a monthly basis",
+    "after": "monthly"
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "at_risk_edit",
+    "risk": "wording",
+    "before": "I would like you to h",
+    "after": "H",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en_verbose-20",
+  "variant": "en_verbose",
+  "mode": "balanced",
+  "original": "Hi there. I hope you are doing well. It is important to note that I need your help with something. Provide a description of the best irrigation schedule for tomato crops in the near future. Include the total cost of Rs 25,000 in the answer. Keep the response under 150 words. Do not exceed one page. Write the final answer in a professional manner.",
+  "optimized": "Hi there. I hope you are doing well. I need your help with something. Describe the best irrigation schedule for tomato crops soon. Include the total cost of Rs 25,000 in the answer. Keep the response under 150 words. Do not exceed one page. Write the final answer professionally.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    76,
+    61
+   ],
+   "o200k_base": [
+    76,
+    61
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "It is important to note that I",
+    "after": "I"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "Provide a description of",
+    "after": "Describe"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "in the near future",
+    "after": "soon"
+   },
+   {
+    "rule": "phrase:en",
+    "risk": "wording",
+    "before": "in a professional manner",
+    "after": "professionally"
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_verbose-01",
+  "variant": "kn_verbose",
+  "mode": "balanced",
+  "original": "ನಮಸ್ಕಾರ! ನನಗೆ ಒಂದು ಮುಖ್ಯವಾದ ಕೆಲಸದಲ್ಲಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು.  ಈ ತ್ರೈಮಾಸಿಕ ಮಾರಾಟ ವರದಿಯ ಸಾರಾಂಶವನ್ನು ಸರಳವಾಗಿ ಬರೆಯಿರಿ.  ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು.  ಕೊನೆಯ ದಿನಾಂಕ 15 ಡಿಸೆಂಬರ್ 2026.  ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ.  ಉತ್ತರವನ್ನು ಎರಡು ಕಾಲಮ್‌ಗಳ ಕೋಷ್ಟಕದಲ್ಲಿ ಕೊಡಿ.  ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ.\n\n\n",
+  "optimized": "ನಮಸ್ಕಾರ! ನನಗೆ ಒಂದು ಮುಖ್ಯವಾದ ಕೆಲಸದಲ್ಲಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು. ಈ ತ್ರೈಮಾಸಿಕ ಮಾರಾಟ ವರದಿಯ ಸಾರಾಂಶವನ್ನು ಸರಳವಾಗಿ ಬರೆಯಿರಿ. ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು. ಕೊನೆಯ ದಿನಾಂಕ 15 ಡಿಸೆಂಬರ್ 2026. ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ. ಉತ್ತರವನ್ನು ಎರಡು ಕಾಲಮ್‌ಗಳ ಕೋಷ್ಟಕದಲ್ಲಿ ಕೊಡಿ.\n\n\n",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    480,
+    419
+   ],
+   "o200k_base": [
+    112,
+    95
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_verbose-02",
+  "variant": "kn_verbose",
+  "mode": "balanced",
+  "original": "ದಯವಿಟ್ಟು ಈ ಕೆಳಗಿನ ಕೆಲಸವನ್ನು ಗಮನವಿಟ್ಟು ಮಾಡಿ. ಹೊಸ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ದ್ಯುತಿಸಂಶ್ಲೇಷಣೆಯನ್ನು ಸುಲಭವಾಗಿ ವಿವರಿಸಿ. ಉತ್ತರ 150 ಪದಗಳಿಗಿಂತ ಕಡಿಮೆ ಇರಲಿ. ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ. ತಾಂತ್ರಿಕ ಪದಗಳನ್ನು ಬಳಸಬೇಡಿ. ಹಂತಗಳಿಗೆ ಸಂಖ್ಯೆಯ ಪಟ್ಟಿ ಬಳಸಿ. ಉತ್ತರ 150 ಪದಗಳಿಗಿಂತ ಕಡಿಮೆ ಇರಲಿ.",
+  "optimized": "ದಯವಿಟ್ಟು ಈ ಕೆಳಗಿನ ಕೆಲಸವನ್ನು ಗಮನವಿಟ್ಟು ಮಾಡಿ. ಹೊಸ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ದ್ಯುತಿಸಂಶ್ಲೇಷಣೆಯನ್ನು ಸುಲಭವಾಗಿ ವಿವರಿಸಿ. ಉತ್ತರ 150 ಪದಗಳಿಗಿಂತ ಕಡಿಮೆ ಇರಲಿ. ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ. ತಾಂತ್ರಿಕ ಪದಗಳನ್ನು ಬಳಸಬೇಡಿ. ಹಂತಗಳಿಗೆ ಸಂಖ್ಯೆಯ ಪಟ್ಟಿ ಬಳಸಿ.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    423,
+    374
+   ],
+   "o200k_base": [
+    86,
+    74
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " ಉತ್ತರ 150 ಪದಗಳಿಗಿಂತ ಕಡಿಮೆ ಇರಲಿ.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_verbose-04",
+  "variant": "kn_verbose",
+  "mode": "balanced",
+  "original": "ನಮಸ್ಕಾರ! ನನಗೆ ಒಂದು ಮುಖ್ಯವಾದ ಕೆಲಸದಲ್ಲಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು.  ಟೊಮ್ಯಾಟೊ ಬೆಳೆಗೆ ಉತ್ತಮ ನೀರಾವರಿ ವೇಳಾಪಟ್ಟಿಯನ್ನು ಸೂಚಿಸಿ.  ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ.  ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು.  ಒಂದು ಪುಟಕ್ಕಿಂತ ಹೆಚ್ಚು ಬರೆಯಬೇಡಿ.  ಉತ್ತರವನ್ನು ಎರಡು ಕಾಲಮ್‌ಗಳ ಕೋಷ್ಟಕದಲ್ಲಿ ಕೊಡಿ.",
+  "optimized": "ನಮಸ್ಕಾರ! ನನಗೆ ಒಂದು ಮುಖ್ಯವಾದ ಕೆಲಸದಲ್ಲಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು. ಟೊಮ್ಯಾಟೊ ಬೆಳೆಗೆ ಉತ್ತಮ ನೀರಾವರಿ ವೇಳಾಪಟ್ಟಿಯನ್ನು ಸೂಚಿಸಿ. ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ. ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು. ಒಂದು ಪುಟಕ್ಕಿಂತ ಹೆಚ್ಚು ಬರೆಯಬೇಡಿ. ಉತ್ತರವನ್ನು ಎರಡು ಕಾಲಮ್‌ಗಳ ಕೋಷ್ಟಕದಲ್ಲಿ ಕೊಡಿ.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    429,
+    424
+   ],
+   "o200k_base": [
+    90,
+    85
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_verbose-05",
+  "variant": "kn_verbose",
+  "mode": "balanced",
+  "original": "ದಯವಿಟ್ಟು ಈ ಕೆಳಗಿನ ಕೆಲಸವನ್ನು ಗಮನವಿಟ್ಟು ಮಾಡಿ. ಬೆಂಗಳೂರಿನಿಂದ ಮೈಸೂರಿಗೆ ರೈಲು ಮತ್ತು ಬಸ್ ಪ್ರಯಾಣವನ್ನು ಹೋಲಿಸಿ. ಒಟ್ಟು ವೆಚ್ಚ ₹25,000 ಎಂದು ಉಲ್ಲೇಖಿಸಿ. ಉತ್ತರ 150 ಪದಗಳಿಗಿಂತ ಕಡಿಮೆ ಇರಲಿ. ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ. ಹಂತಗಳಿಗೆ ಸಂಖ್ಯೆಯ ಪಟ್ಟಿ ಬಳಸಿ. ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ.",
+  "optimized": "ದಯವಿಟ್ಟು ಈ ಕೆಳಗಿನ ಕೆಲಸವನ್ನು ಗಮನವಿಟ್ಟು ಮಾಡಿ. ಬೆಂಗಳೂರಿನಿಂದ ಮೈಸೂರಿಗೆ ರೈಲು ಮತ್ತು ಬಸ್ ಪ್ರಯಾಣವನ್ನು ಹೋಲಿಸಿ. ಒಟ್ಟು ವೆಚ್ಚ ₹25,000 ಎಂದು ಉಲ್ಲೇಖಿಸಿ. ಉತ್ತರ 150 ಪದಗಳಿಗಿಂತ ಕಡಿಮೆ ಇರಲಿ. ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ. ಹಂತಗಳಿಗೆ ಸಂಖ್ಯೆಯ ಪಟ್ಟಿ ಬಳಸಿ.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    433,
+    378
+   ],
+   "o200k_base": [
+    92,
+    81
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_verbose-06",
+  "variant": "kn_verbose",
+  "mode": "balanced",
+  "original": "ನಾನು ಒಂದು ಯೋಜನೆಯ ಮೇಲೆ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ, ಅದಕ್ಕಾಗಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು. ಸಭೆಯ ಟಿಪ್ಪಣಿಗಳ ಸಂಕ್ಷಿಪ್ತ ಸಾರಾಂಶ ಕೊಡಿ. ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು. ಕೊನೆಯ ದಿನಾಂಕ 15 ಡಿಸೆಂಬರ್ 2026. ತಾಂತ್ರಿಕ ಪದಗಳನ್ನು ಬಳಸಬೇಡಿ. ಉತ್ತರವನ್ನು ಔಪಚಾರಿಕ ಶೈಲಿಯಲ್ಲಿ ಬರೆಯಿರಿ. ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು.\n\n\n",
+  "optimized": "ನಾನು ಒಂದು ಯೋಜನೆಯ ಮೇಲೆ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ, ಅದಕ್ಕಾಗಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು. ಸಭೆಯ ಟಿಪ್ಪಣಿಗಳ ಸಂಕ್ಷಿಪ್ತ ಸಾರಾಂಶ ಕೊಡಿ. ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು. ಕೊನೆಯ ದಿನಾಂಕ 15 ಡಿಸೆಂಬರ್ 2026. ತಾಂತ್ರಿಕ ಪದಗಳನ್ನು ಬಳಸಬೇಡಿ. ಉತ್ತರವನ್ನು ಔಪಚಾರಿಕ ಶೈಲಿಯಲ್ಲಿ ಬರೆಯಿರಿ.\n\n\n",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    465,
+    402
+   ],
+   "o200k_base": [
+    106,
+    91
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_verbose-07",
+  "variant": "kn_verbose",
+  "mode": "balanced",
+  "original": "ನಮಸ್ಕಾರ! ನನಗೆ ಒಂದು ಮುಖ್ಯವಾದ ಕೆಲಸದಲ್ಲಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು.  CSV ಫೈಲ್‌ನಿಂದ ಪುನರಾವರ್ತಿತ ಸಾಲುಗಳನ್ನು ತೆಗೆಯುವ ಪೈಥಾನ್ ಕೋಡ್ ಬರೆಯಿರಿ.  ಉತ್ತರ 150 ಪದಗಳಿಗಿಂತ ಕಡಿಮೆ ಇರಲಿ.  ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ.  ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ.  ಆಂತರಿಕ ಬೆಲೆಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಬೇಡಿ.  ಉತ್ತರವನ್ನು ಎರಡು ಕಾಲಮ್‌ಗಳ ಕೋಷ್ಟಕದಲ್ಲಿ ಕೊಡಿ.  ನೆನಪಿಡಿ, ಯಾವುದೇ ಗ್ರಾಹಕರ ಹೆಸರು ಉತ್ತರದಲ್ಲಿ ಬರಬಾರದು.",
+  "optimized": "ನಮಸ್ಕಾರ! ನನಗೆ ಒಂದು ಮುಖ್ಯವಾದ ಕೆಲಸದಲ್ಲಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು. CSV ಫೈಲ್‌ನಿಂದ ಪುನರಾವರ್ತಿತ ಸಾಲುಗಳನ್ನು ತೆಗೆಯುವ ಪೈಥಾನ್ ಕೋಡ್ ಬರೆಯಿರಿ. ಉತ್ತರ 150 ಪದಗಳಿಗಿಂತ ಕಡಿಮೆ ಇರಲಿ. ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ. ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ. ಆಂತರಿಕ ಬೆಲೆಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಬೇಡಿ. ಉತ್ತರವನ್ನು ಎರಡು ಕಾಲಮ್‌ಗಳ ಕೋಷ್ಟಕದಲ್ಲಿ ಕೊಡಿ. ನೆನಪಿಡಿ, ಯಾವುದೇ ಗ್ರಾಹಕರ ಹೆಸರು ಉತ್ತರದಲ್ಲಿ ಬರಬಾರದು.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    578,
+    571
+   ],
+   "o200k_base": [
+    129,
+    122
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_verbose-09",
+  "variant": "kn_verbose",
+  "mode": "balanced",
+  "original": "ನಾನು ಒಂದು ಯೋಜನೆಯ ಮೇಲೆ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ, ಅದಕ್ಕಾಗಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು. ಈ ತ್ರೈಮಾಸಿಕ ಮಾರಾಟ ವರದಿಯ ಸಾರಾಂಶವನ್ನು ಸರಳವಾಗಿ ಬರೆಯಿರಿ. ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ. ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು. ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ. ಉತ್ತರವನ್ನು ಔಪಚಾರಿಕ ಶೈಲಿಯಲ್ಲಿ ಬರೆಯಿರಿ. ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ.",
+  "optimized": "ನಾನು ಒಂದು ಯೋಜನೆಯ ಮೇಲೆ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ, ಅದಕ್ಕಾಗಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು. ಈ ತ್ರೈಮಾಸಿಕ ಮಾರಾಟ ವರದಿಯ ಸಾರಾಂಶವನ್ನು ಸರಳವಾಗಿ ಬರೆಯಿರಿ. ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ. ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು. ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ. ಉತ್ತರವನ್ನು ಔಪಚಾರಿಕ ಶೈಲಿಯಲ್ಲಿ ಬರೆಯಿರಿ.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    494,
+    439
+   ],
+   "o200k_base": [
+    100,
+    89
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_verbose-10",
+  "variant": "kn_verbose",
+  "mode": "balanced",
+  "original": "ನಮಸ್ಕಾರ! ನನಗೆ ಒಂದು ಮುಖ್ಯವಾದ ಕೆಲಸದಲ್ಲಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು.  ಹೊಸ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ದ್ಯುತಿಸಂಶ್ಲೇಷಣೆಯನ್ನು ಸುಲಭವಾಗಿ ವಿವರಿಸಿ.  ಒಟ್ಟು ವೆಚ್ಚ ₹25,000 ಎಂದು ಉಲ್ಲೇಖಿಸಿ.  ಉತ್ತರ 150 ಪದಗಳಿಗಿಂತ ಕಡಿಮೆ ಇರಲಿ.  ತಾಂತ್ರಿಕ ಪದಗಳನ್ನು ಬಳಸಬೇಡಿ.  ಉತ್ತರವನ್ನು ಎರಡು ಕಾಲಮ್‌ಗಳ ಕೋಷ್ಟಕದಲ್ಲಿ ಕೊಡಿ.  ಒಟ್ಟು ವೆಚ್ಚ ₹25,000 ಎಂದು ಉಲ್ಲೇಖಿಸಿ.",
+  "optimized": "ನಮಸ್ಕಾರ! ನನಗೆ ಒಂದು ಮುಖ್ಯವಾದ ಕೆಲಸದಲ್ಲಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು. ಹೊಸ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ದ್ಯುತಿಸಂಶ್ಲೇಷಣೆಯನ್ನು ಸುಲಭವಾಗಿ ವಿವರಿಸಿ. ಒಟ್ಟು ವೆಚ್ಚ ₹25,000 ಎಂದು ಉಲ್ಲೇಖಿಸಿ. ಉತ್ತರ 150 ಪದಗಳಿಗಿಂತ ಕಡಿಮೆ ಇರಲಿ. ತಾಂತ್ರಿಕ ಪದಗಳನ್ನು ಬಳಸಬೇಡಿ. ಉತ್ತರವನ್ನು ಎರಡು ಕಾಲಮ್‌ಗಳ ಕೋಷ್ಟಕದಲ್ಲಿ ಕೊಡಿ.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    477,
+    420
+   ],
+   "o200k_base": [
+    109,
+    89
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  ಒಟ್ಟು ವೆಚ್ಚ ₹25,000 ಎಂದು ಉಲ್ಲೇಖಿಸಿ.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_verbose-13",
+  "variant": "kn_verbose",
+  "mode": "balanced",
+  "original": "ನಮಸ್ಕಾರ! ನನಗೆ ಒಂದು ಮುಖ್ಯವಾದ ಕೆಲಸದಲ್ಲಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು.  ಬೆಂಗಳೂರಿನಿಂದ ಮೈಸೂರಿಗೆ ರೈಲು ಮತ್ತು ಬಸ್ ಪ್ರಯಾಣವನ್ನು ಹೋಲಿಸಿ.  ಕೊನೆಯ ದಿನಾಂಕ 15 ಡಿಸೆಂಬರ್ 2026.  ಒಟ್ಟು ವೆಚ್ಚ ₹25,000 ಎಂದು ಉಲ್ಲೇಖಿಸಿ.  ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ.  ಉತ್ತರವನ್ನು ಎರಡು ಕಾಲಮ್‌ಗಳ ಕೋಷ್ಟಕದಲ್ಲಿ ಕೊಡಿ.  ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ.",
+  "optimized": "ನಮಸ್ಕಾರ! ನನಗೆ ಒಂದು ಮುಖ್ಯವಾದ ಕೆಲಸದಲ್ಲಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು. ಬೆಂಗಳೂರಿನಿಂದ ಮೈಸೂರಿಗೆ ರೈಲು ಮತ್ತು ಬಸ್ ಪ್ರಯಾಣವನ್ನು ಹೋಲಿಸಿ. ಕೊನೆಯ ದಿನಾಂಕ 15 ಡಿಸೆಂಬರ್ 2026. ಒಟ್ಟು ವೆಚ್ಚ ₹25,000 ಎಂದು ಉಲ್ಲೇಖಿಸಿ. ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ. ಉತ್ತರವನ್ನು ಎರಡು ಕಾಲಮ್‌ಗಳ ಕೋಷ್ಟಕದಲ್ಲಿ ಕೊಡಿ.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    476,
+    415
+   ],
+   "o200k_base": [
+    107,
+    90
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  ಗ್ರಾಹಕರ ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬೇಡಿ.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_verbose-14",
+  "variant": "kn_verbose",
+  "mode": "balanced",
+  "original": "ದಯವಿಟ್ಟು ಈ ಕೆಳಗಿನ ಕೆಲಸವನ್ನು ಗಮನವಿಟ್ಟು ಮಾಡಿ. ಸಭೆಯ ಟಿಪ್ಪಣಿಗಳ ಸಂಕ್ಷಿಪ್ತ ಸಾರಾಂಶ ಕೊಡಿ. ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ. ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು. ತಾಂತ್ರಿಕ ಪದಗಳನ್ನು ಬಳಸಬೇಡಿ. ಹಂತಗಳಿಗೆ ಸಂಖ್ಯೆಯ ಪಟ್ಟಿ ಬಳಸಿ. ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ.",
+  "optimized": "ದಯವಿಟ್ಟು ಈ ಕೆಳಗಿನ ಕೆಲಸವನ್ನು ಗಮನವಿಟ್ಟು ಮಾಡಿ. ಸಭೆಯ ಟಿಪ್ಪಣಿಗಳ ಸಂಕ್ಷಿಪ್ತ ಸಾರಾಂಶ ಕೊಡಿ. ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ. ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು. ತಾಂತ್ರಿಕ ಪದಗಳನ್ನು ಬಳಸಬೇಡಿ. ಹಂತಗಳಿಗೆ ಸಂಖ್ಯೆಯ ಪಟ್ಟಿ ಬಳಸಿ.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    393,
+    346
+   ],
+   "o200k_base": [
+    80,
+    74
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_verbose-16",
+  "variant": "kn_verbose",
+  "mode": "balanced",
+  "original": "ನಮಸ್ಕಾರ! ನನಗೆ ಒಂದು ಮುಖ್ಯವಾದ ಕೆಲಸದಲ್ಲಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು.  ಉತ್ಪನ್ನ ಬಿಡುಗಡೆಗೆ ಬೇಕಾದ ಕೆಲಸಗಳ ಪಟ್ಟಿ ಮಾಡಿ.  ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು.  ಕೊನೆಯ ದಿನಾಂಕ 15 ಡಿಸೆಂಬರ್ 2026.  ಒಂದು ಪುಟಕ್ಕಿಂತ ಹೆಚ್ಚು ಬರೆಯಬೇಡಿ.  ಉತ್ತರವನ್ನು ಎರಡು ಕಾಲಮ್‌ಗಳ ಕೋಷ್ಟಕದಲ್ಲಿ ಕೊಡಿ.\n\n\n",
+  "optimized": "ನಮಸ್ಕಾರ! ನನಗೆ ಒಂದು ಮುಖ್ಯವಾದ ಕೆಲಸದಲ್ಲಿ ನಿಮ್ಮ ಸಹಾಯ ಬೇಕು. ಉತ್ಪನ್ನ ಬಿಡುಗಡೆಗೆ ಬೇಕಾದ ಕೆಲಸಗಳ ಪಟ್ಟಿ ಮಾಡಿ. ಉತ್ತರದಲ್ಲಿ ನಿಖರವಾಗಿ 5 ಅಂಶಗಳು ಇರಬೇಕು. ಕೊನೆಯ ದಿನಾಂಕ 15 ಡಿಸೆಂಬರ್ 2026. ಒಂದು ಪುಟಕ್ಕಿಂತ ಹೆಚ್ಚು ಬರೆಯಬೇಡಿ. ಉತ್ತರವನ್ನು ಎರಡು ಕಾಲಮ್‌ಗಳ ಕೋಷ್ಟಕದಲ್ಲಿ ಕೊಡಿ.\n\n\n",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    406,
+    401
+   ],
+   "o200k_base": [
+    90,
+    85
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_roman_verbose-01",
+  "variant": "kn_roman",
+  "mode": "balanced",
+  "original": "Namaskara!  Ee report na summary kodi.  Customer hesaru haakabedi.  Customer hesaru haakabedi.  Kannadadalli matra uttarisi.",
+  "optimized": "Namaskara! Ee report na summary kodi. Customer hesaru haakabedi. Kannadadalli matra uttarisi.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    42,
+    30
+   ],
+   "o200k_base": [
+    40,
+    28
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  Customer hesaru haakabedi.",
+    "after": ""
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_roman_verbose-01",
+  "variant": "kn_roman_auto",
+  "mode": "balanced",
+  "original": "Namaskara!  Ee report na summary kodi.  Customer hesaru haakabedi.  Customer hesaru haakabedi.  Kannadadalli matra uttarisi.",
+  "optimized": "Namaskara! Ee report na summary kodi. Customer hesaru haakabedi. Customer hesaru haakabedi. Kannadadalli matra uttarisi.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    42,
+    38
+   ],
+   "o200k_base": [
+    40,
+    36
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  Customer hesaru haakabedi.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_roman_verbose-02",
+  "variant": "kn_roman",
+  "mode": "balanced",
+  "original": "Dayavittu   Python code bareyiri, CSV file inda duplicate rows tegeyalu. Explanation beda. Explanation beda.",
+  "optimized": "Dayavittu Python code bareyiri, CSV file inda duplicate rows tegeyalu. Explanation beda. Explanation beda.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    30,
+    29
+   ],
+   "o200k_base": [
+    25,
+    24
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_roman_verbose-02",
+  "variant": "kn_roman_auto",
+  "mode": "balanced",
+  "original": "Dayavittu   Python code bareyiri, CSV file inda duplicate rows tegeyalu. Explanation beda. Explanation beda.",
+  "optimized": "Dayavittu Python code bareyiri, CSV file inda duplicate rows tegeyalu. Explanation beda. Explanation beda.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    30,
+    29
+   ],
+   "o200k_base": [
+    25,
+    24
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_roman_verbose-03",
+  "variant": "kn_roman",
+  "mode": "balanced",
+  "original": "Please ee meeting notes na 5 points alli summary maadi. Deadline 15 December. Names haakabedi. Please ee meeting notes na 5 points alli summary maadi.",
+  "optimized": "Please ee meeting notes na 5 points alli summary maadi. Deadline 15 December. Names haakabedi.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    39,
+    25
+   ],
+   "o200k_base": [
+    37,
+    24
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Please ee meeting notes na 5 points alli summary maadi.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_roman_verbose-03",
+  "variant": "kn_roman_auto",
+  "mode": "balanced",
+  "original": "Please ee meeting notes na 5 points alli summary maadi. Deadline 15 December. Names haakabedi. Please ee meeting notes na 5 points alli summary maadi.",
+  "optimized": "Please ee meeting notes na 5 points alli summary maadi. Deadline 15 December. Names haakabedi.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    39,
+    25
+   ],
+   "o200k_base": [
+    37,
+    24
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Please ee meeting notes na 5 points alli summary maadi.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_roman_verbose-04",
+  "variant": "kn_roman",
+  "mode": "balanced",
+  "original": "Bengaluru inda Mysuru ge train mattu bus compare maadi!!!   Table format alli kodi. Price ₹500 kinta kammi irali.",
+  "optimized": "Bengaluru inda Mysuru ge train mattu bus compare maadi!!! Table format alli kodi. Price ₹500 kinta kammi irali.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    36,
+    35
+   ],
+   "o200k_base": [
+    32,
+    31
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_roman_verbose-04",
+  "variant": "kn_roman_auto",
+  "mode": "balanced",
+  "original": "Bengaluru inda Mysuru ge train mattu bus compare maadi!!!   Table format alli kodi. Price ₹500 kinta kammi irali.",
+  "optimized": "Bengaluru inda Mysuru ge train mattu bus compare maadi!!! Table format alli kodi. Price ₹500 kinta kammi irali.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    36,
+    35
+   ],
+   "o200k_base": [
+    32,
+    31
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_verbose-01",
+  "variant": "hi_verbose",
+  "mode": "balanced",
+  "original": "नमस्ते! मुझे एक बहुत ज़रूरी काम में आपकी मदद चाहिए।  इस तिमाही की बिक्री रिपोर्ट का सारांश सरल भाषा में लिखें।  उत्तर में ठीक 5 बिंदु होने चाहिए।  अंतिम तिथि 15 दिसंबर 2026 है।  ग्राहकों के नाम शामिल न करें।  उत्तर को दो कॉलम वाली तालिका में दें।  ग्राहकों के नाम शामिल न करें।\n\n\n",
+  "optimized": "नमस्ते! मुझे एक बहुत ज़रूरी काम में आपकी मदद चाहिए। इस तिमाही की बिक्री रिपोर्ट का सारांश सरल भाषा में लिखें। उत्तर में ठीक 5 बिंदु होने चाहिए। अंतिम तिथि 15 दिसंबर 2026 है। ग्राहकों के नाम शामिल न करें। उत्तर को दो कॉलम वाली तालिका में दें।\n\n",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    270,
+    236
+   ],
+   "o200k_base": [
+    89,
+    74
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  ग्राहकों के नाम शामिल न करें।",
+    "after": ""
+   },
+   {
+    "rule": "ws_lines",
+    "risk": "lossless",
+    "before": "\n\n\n",
+    "after": "\n\n"
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_verbose-02",
+  "variant": "hi_verbose",
+  "mode": "balanced",
+  "original": "कृपया नीचे दिए गए काम को ध्यान से करें। नए छात्रों को प्रकाश संश्लेषण आसान तरीके से समझाइए। उत्तर 150 शब्दों से कम होना चाहिए। केवल हिंदी में उत्तर दें। तकनीकी शब्दों का प्रयोग मत करें। चरणों के लिए क्रमांकित सूची का उपयोग करें। उत्तर 150 शब्दों से कम होना चाहिए।",
+  "optimized": "कृपया नीचे दिए गए काम को ध्यान से करें। नए छात्रों को प्रकाश संश्लेषण आसान तरीके से समझाइए। उत्तर 150 शब्दों से कम होना चाहिए। केवल हिंदी में उत्तर दें। तकनीकी शब्दों का प्रयोग मत करें। चरणों के लिए क्रमांकित सूची का उपयोग करें।",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    255,
+    223
+   ],
+   "o200k_base": [
+    74,
+    64
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " उत्तर 150 शब्दों से कम होना चाहिए।",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_verbose-04",
+  "variant": "hi_verbose",
+  "mode": "balanced",
+  "original": "नमस्ते! मुझे एक बहुत ज़रूरी काम में आपकी मदद चाहिए।  टमाटर की फसल के लिए सबसे अच्छा सिंचाई कार्यक्रम सुझाइए।  केवल हिंदी में उत्तर दें।  उत्तर में ठीक 5 बिंदु होने चाहिए।  एक पेज से ज़्यादा न लिखें।  उत्तर को दो कॉलम वाली तालिका में दें।",
+  "optimized": "नमस्ते! मुझे एक बहुत ज़रूरी काम में आपकी मदद चाहिए। टमाटर की फसल के लिए सबसे अच्छा सिंचाई कार्यक्रम सुझाइए। केवल हिंदी में उत्तर दें। उत्तर में ठीक 5 बिंदु होने चाहिए। एक पेज से ज़्यादा न लिखें। उत्तर को दो कॉलम वाली तालिका में दें।",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    237,
+    232
+   ],
+   "o200k_base": [
+    80,
+    75
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_verbose-05",
+  "variant": "hi_verbose",
+  "mode": "balanced",
+  "original": "कृपया नीचे दिए गए काम को ध्यान से करें। बेंगलुरु से मैसूरु तक ट्रेन और बस यात्रा की तुलना करें। कुल लागत ₹25,000 का उल्लेख करें। उत्तर 150 शब्दों से कम होना चाहिए। ग्राहकों के नाम शामिल न करें। चरणों के लिए क्रमांकित सूची का उपयोग करें। ग्राहकों के नाम शामिल न करें।",
+  "optimized": "कृपया नीचे दिए गए काम को ध्यान से करें। बेंगलुरु से मैसूरु तक ट्रेन और बस यात्रा की तुलना करें। कुल लागत ₹25,000 का उल्लेख करें। उत्तर 150 शब्दों से कम होना चाहिए। ग्राहकों के नाम शामिल न करें। चरणों के लिए क्रमांकित सूची का उपयोग करें।",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    252,
+    224
+   ],
+   "o200k_base": [
+    80,
+    72
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " ग्राहकों के नाम शामिल न करें।",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_verbose-06",
+  "variant": "hi_verbose",
+  "mode": "balanced",
+  "original": "मैं एक प्रोजेक्ट पर काम कर रहा हूँ और मुझे आपकी सहायता की आवश्यकता है। बैठक के नोट्स का संक्षिप्त सारांश दीजिए। उत्तर में ठीक 5 बिंदु होने चाहिए। अंतिम तिथि 15 दिसंबर 2026 है। तकनीकी शब्दों का प्रयोग मत करें। उत्तर औपचारिक शैली में लिखें। उत्तर में ठीक 5 बिंदु होने चाहिए।\n\n\n",
+  "optimized": "मैं एक प्रोजेक्ट पर काम कर रहा हूँ और मुझे आपकी सहायता की आवश्यकता है। बैठक के नोट्स का संक्षिप्त सारांश दीजिए। उत्तर में ठीक 5 बिंदु होने चाहिए। अंतिम तिथि 15 दिसंबर 2026 है। तकनीकी शब्दों का प्रयोग मत करें। उत्तर औपचारिक शैली में लिखें।\n\n",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    274,
+    240
+   ],
+   "o200k_base": [
+    86,
+    74
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " उत्तर में ठीक 5 बिंदु होने चाहिए।",
+    "after": ""
+   },
+   {
+    "rule": "ws_lines",
+    "risk": "lossless",
+    "before": "\n\n\n",
+    "after": "\n\n"
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_verbose-07",
+  "variant": "hi_verbose",
+  "mode": "balanced",
+  "original": "नमस्ते! मुझे एक बहुत ज़रूरी काम में आपकी मदद चाहिए।  CSV फ़ाइल से दोहराई गई पंक्तियाँ हटाने वाला पायथन कोड लिखिए।  उत्तर 150 शब्दों से कम होना चाहिए।  ग्राहकों के नाम शामिल न करें।  केवल हिंदी में उत्तर दें।  आंतरिक कीमतें साझा न करें।  उत्तर को दो कॉलम वाली तालिका में दें।  याद रखें, उत्तर में कहीं भी किसी ग्राहक का नाम नहीं आना चाहिए।",
+  "optimized": "नमस्ते! मुझे एक बहुत ज़रूरी काम में आपकी मदद चाहिए। CSV फ़ाइल से दोहराई गई पंक्तियाँ हटाने वाला पायथन कोड लिखिए। उत्तर 150 शब्दों से कम होना चाहिए। ग्राहकों के नाम शामिल न करें। केवल हिंदी में उत्तर दें। आंतरिक कीमतें साझा न करें। उत्तर को दो कॉलम वाली तालिका में दें। याद रखें, उत्तर में कहीं भी किसी ग्राहक का नाम नहीं आना चाहिए।",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    327,
+    320
+   ],
+   "o200k_base": [
+    108,
+    101
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_verbose-09",
+  "variant": "hi_verbose",
+  "mode": "balanced",
+  "original": "मैं एक प्रोजेक्ट पर काम कर रहा हूँ और मुझे आपकी सहायता की आवश्यकता है। इस तिमाही की बिक्री रिपोर्ट का सारांश सरल भाषा में लिखें। केवल हिंदी में उत्तर दें। उत्तर में ठीक 5 बिंदु होने चाहिए। ग्राहकों के नाम शामिल न करें। उत्तर औपचारिक शैली में लिखें। ग्राहकों के नाम शामिल न करें।",
+  "optimized": "मैं एक प्रोजेक्ट पर काम कर रहा हूँ और मुझे आपकी सहायता की आवश्यकता है। इस तिमाही की बिक्री रिपोर्ट का सारांश सरल भाषा में लिखें। केवल हिंदी में उत्तर दें। उत्तर में ठीक 5 बिंदु होने चाहिए। ग्राहकों के नाम शामिल न करें। उत्तर औपचारिक शैली में लिखें।",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    270,
+    242
+   ],
+   "o200k_base": [
+    77,
+    69
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " ग्राहकों के नाम शामिल न करें।",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_verbose-10",
+  "variant": "hi_verbose",
+  "mode": "balanced",
+  "original": "नमस्ते! मुझे एक बहुत ज़रूरी काम में आपकी मदद चाहिए।  नए छात्रों को प्रकाश संश्लेषण आसान तरीके से समझाइए।  कुल लागत ₹25,000 का उल्लेख करें।  उत्तर 150 शब्दों से कम होना चाहिए।  तकनीकी शब्दों का प्रयोग मत करें।  उत्तर को दो कॉलम वाली तालिका में दें।  कुल लागत ₹25,000 का उल्लेख करें।",
+  "optimized": "नमस्ते! मुझे एक बहुत ज़रूरी काम में आपकी मदद चाहिए। नए छात्रों को प्रकाश संश्लेषण आसान तरीके से समझाइए। कुल लागत ₹25,000 का उल्लेख करें। उत्तर 150 शब्दों से कम होना चाहिए। तकनीकी शब्दों का प्रयोग मत करें। उत्तर को दो कॉलम वाली तालिका में दें।",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    265,
+    232
+   ],
+   "o200k_base": [
+    87,
+    71
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  कुल लागत ₹25,000 का उल्लेख करें।",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_verbose-11",
+  "variant": "hi_verbose",
+  "mode": "balanced",
+  "original": "कृपया नीचे दिए गए काम को ध्यान से करें। ग्राहकों की प्रतिक्रिया का विश्लेषण करें और मुख्य समस्याएँ बताइए। उत्तर में ठीक 5 बिंदु होने चाहिए। ग्राहकों के नाम शामिल न करें। अंतिम तिथि 15 दिसंबर 2026 है। आंतरिक कीमतें साझा न करें। चरणों के लिए क्रमांकित सूची का उपयोग करें। याद रखें, उत्तर में कहीं भी किसी ग्राहक का नाम नहीं आना चाहिए।\n\n\n",
+  "optimized": "कृपया नीचे दिए गए काम को ध्यान से करें। ग्राहकों की प्रतिक्रिया का विश्लेषण करें और मुख्य समस्याएँ बताइए। उत्तर में ठीक 5 बिंदु होने चाहिए। ग्राहकों के नाम शामिल न करें। अंतिम तिथि 15 दिसंबर 2026 है। आंतरिक कीमतें साझा न करें। चरणों के लिए क्रमांकित सूची का उपयोग करें। याद रखें, उत्तर में कहीं भी किसी ग्राहक का नाम नहीं आना चाहिए।\n\n",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    322,
+    322
+   ],
+   "o200k_base": [
+    98,
+    97
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_lines",
+    "risk": "lossless",
+    "before": "\n\n\n",
+    "after": "\n\n"
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_verbose-13",
+  "variant": "hi_verbose",
+  "mode": "balanced",
+  "original": "नमस्ते! मुझे एक बहुत ज़रूरी काम में आपकी मदद चाहिए।  बेंगलुरु से मैसूरु तक ट्रेन और बस यात्रा की तुलना करें।  अंतिम तिथि 15 दिसंबर 2026 है।  कुल लागत ₹25,000 का उल्लेख करें।  ग्राहकों के नाम शामिल न करें।  उत्तर को दो कॉलम वाली तालिका में दें।  ग्राहकों के नाम शामिल न करें।",
+  "optimized": "नमस्ते! मुझे एक बहुत ज़रूरी काम में आपकी मदद चाहिए। बेंगलुरु से मैसूरु तक ट्रेन और बस यात्रा की तुलना करें। अंतिम तिथि 15 दिसंबर 2026 है। कुल लागत ₹25,000 का उल्लेख करें। ग्राहकों के नाम शामिल न करें। उत्तर को दो कॉलम वाली तालिका में दें।",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    262,
+    228
+   ],
+   "o200k_base": [
+    90,
+    76
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  ग्राहकों के नाम शामिल न करें।",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_verbose-14",
+  "variant": "hi_verbose",
+  "mode": "balanced",
+  "original": "कृपया नीचे दिए गए काम को ध्यान से करें। बैठक के नोट्स का संक्षिप्त सारांश दीजिए। केवल हिंदी में उत्तर दें। उत्तर में ठीक 5 बिंदु होने चाहिए। तकनीकी शब्दों का प्रयोग मत करें। चरणों के लिए क्रमांकित सूची का उपयोग करें। केवल हिंदी में उत्तर दें।",
+  "optimized": "कृपया नीचे दिए गए काम को ध्यान से करें। बैठक के नोट्स का संक्षिप्त सारांश दीजिए। केवल हिंदी में उत्तर दें। उत्तर में ठीक 5 बिंदु होने चाहिए। तकनीकी शब्दों का प्रयोग मत करें। चरणों के लिए क्रमांकित सूची का उपयोग करें।",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    242,
+    217
+   ],
+   "o200k_base": [
+    72,
+    66
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " केवल हिंदी में उत्तर दें।",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_verbose-16",
+  "variant": "hi_verbose",
+  "mode": "balanced",
+  "original": "नमस्ते! मुझे एक बहुत ज़रूरी काम में आपकी मदद चाहिए।  उत्पाद लॉन्च के लिए ज़रूरी कामों की सूची बनाइए।  उत्तर में ठीक 5 बिंदु होने चाहिए।  अंतिम तिथि 15 दिसंबर 2026 है।  एक पेज से ज़्यादा न लिखें।  उत्तर को दो कॉलम वाली तालिका में दें।\n\n\n",
+  "optimized": "नमस्ते! मुझे एक बहुत ज़रूरी काम में आपकी मदद चाहिए। उत्पाद लॉन्च के लिए ज़रूरी कामों की सूची बनाइए। उत्तर में ठीक 5 बिंदु होने चाहिए। अंतिम तिथि 15 दिसंबर 2026 है। एक पेज से ज़्यादा न लिखें। उत्तर को दो कॉलम वाली तालिका में दें।\n\n",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    238,
+    233
+   ],
+   "o200k_base": [
+    82,
+    76
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_lines",
+    "risk": "lossless",
+    "before": "\n\n\n",
+    "after": "\n\n"
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_roman_verbose-01",
+  "variant": "hi_roman",
+  "mode": "balanced",
+  "original": "Namaste!  Is report ka summary do.  Customer ke naam mat daalo.  Customer ke naam mat daalo.  Sirf Hindi mein jawab do.",
+  "optimized": "Namaste! Is report ka summary do. Customer ke naam mat daalo. Sirf Hindi mein jawab do.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    35,
+    24
+   ],
+   "o200k_base": [
+    34,
+    23
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  Customer ke naam mat daalo.",
+    "after": ""
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_roman_verbose-01",
+  "variant": "hi_roman_auto",
+  "mode": "balanced",
+  "original": "Namaste!  Is report ka summary do.  Customer ke naam mat daalo.  Customer ke naam mat daalo.  Sirf Hindi mein jawab do.",
+  "optimized": "Namaste! Is report ka summary do. Customer ke naam mat daalo. Customer ke naam mat daalo. Sirf Hindi mein jawab do.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    35,
+    31
+   ],
+   "o200k_base": [
+    34,
+    30
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  Customer ke naam mat daalo.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_roman_verbose-02",
+  "variant": "hi_roman",
+  "mode": "balanced",
+  "original": "Kripya   Python code likho jo CSV file se duplicate rows hataye. Explanation nahi chahiye. Explanation nahi chahiye.",
+  "optimized": "Kripya Python code likho jo CSV file se duplicate rows hataye. Explanation nahi chahiye.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    32,
+    24
+   ],
+   "o200k_base": [
+    29,
+    22
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Explanation nahi chahiye.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_roman_verbose-02",
+  "variant": "hi_roman_auto",
+  "mode": "balanced",
+  "original": "Kripya   Python code likho jo CSV file se duplicate rows hataye. Explanation nahi chahiye. Explanation nahi chahiye.",
+  "optimized": "Kripya Python code likho jo CSV file se duplicate rows hataye. Explanation nahi chahiye. Explanation nahi chahiye.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    32,
+    31
+   ],
+   "o200k_base": [
+    29,
+    28
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Explanation nahi chahiye.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_roman_verbose-03",
+  "variant": "hi_roman",
+  "mode": "balanced",
+  "original": "Please meeting notes ka 5 points mein summary banao. Deadline 15 December hai. Naam mat likhna. Please meeting notes ka 5 points mein summary banao.",
+  "optimized": "Please meeting notes ka 5 points mein summary banao. Deadline 15 December hai. Naam mat likhna.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    39,
+    26
+   ],
+   "o200k_base": [
+    35,
+    23
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Please meeting notes ka 5 points mein summary banao.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_roman_verbose-03",
+  "variant": "hi_roman_auto",
+  "mode": "balanced",
+  "original": "Please meeting notes ka 5 points mein summary banao. Deadline 15 December hai. Naam mat likhna. Please meeting notes ka 5 points mein summary banao.",
+  "optimized": "Please meeting notes ka 5 points mein summary banao. Deadline 15 December hai. Naam mat likhna.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    39,
+    26
+   ],
+   "o200k_base": [
+    35,
+    23
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Please meeting notes ka 5 points mein summary banao.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_roman_verbose-04",
+  "variant": "hi_roman",
+  "mode": "balanced",
+  "original": "Bengaluru se Mysuru train aur bus compare karo!!!   Table format mein do. Price ₹500 se kam ho.",
+  "optimized": "Bengaluru se Mysuru train aur bus compare karo!!! Table format mein do. Price ₹500 se kam ho.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    28,
+    27
+   ],
+   "o200k_base": [
+    26,
+    25
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_roman_verbose-04",
+  "variant": "hi_roman_auto",
+  "mode": "balanced",
+  "original": "Bengaluru se Mysuru train aur bus compare karo!!!   Table format mein do. Price ₹500 se kam ho.",
+  "optimized": "Bengaluru se Mysuru train aur bus compare karo!!! Table format mein do. Price ₹500 se kam ho.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    28,
+    27
+   ],
+   "o200k_base": [
+    26,
+    25
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_verbose-01",
+  "variant": "ta_verbose",
+  "mode": "balanced",
+  "original": "வணக்கம்! எனக்கு ஒரு முக்கியமான வேலையில் உங்கள் உதவி தேவை.  இந்த காலாண்டு விற்பனை அறிக்கையின் சுருக்கத்தை எளிமையாக எழுதுங்கள்.  பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும்.  கடைசி தேதி 15 டிசம்பர் 2026.  வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம்.  பதிலை இரண்டு நெடுவரிசை அட்டவணையாக கொடுங்கள்.  வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம்.\n\n\n",
+  "optimized": "வணக்கம்! எனக்கு ஒரு முக்கியமான வேலையில் உங்கள் உதவி தேவை. இந்த காலாண்டு விற்பனை அறிக்கையின் சுருக்கத்தை எளிமையாக எழுதுங்கள். பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும். கடைசி தேதி 15 டிசம்பர் 2026. வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம். பதிலை இரண்டு நெடுவரிசை அட்டவணையாக கொடுங்கள்.\n\n\n",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    449,
+    384
+   ],
+   "o200k_base": [
+    115,
+    96
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம்.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_verbose-02",
+  "variant": "ta_verbose",
+  "mode": "balanced",
+  "original": "தயவுசெய்து கீழே உள்ள வேலையை கவனமாக செய்யுங்கள். புதிய மாணவர்களுக்கு ஒளிச்சேர்க்கையை எளிதாக விளக்குங்கள். பதில் 150 சொற்களுக்குள் இருக்க வேண்டும். தமிழில் மட்டும் பதில் அளிக்கவும். தொழில்நுட்ப சொற்களை பயன்படுத்த வேண்டாம். படிகளுக்கு எண்ணிட்ட பட்டியலை பயன்படுத்துங்கள். பதில் 150 சொற்களுக்குள் இருக்க வேண்டும்.",
+  "optimized": "தயவுசெய்து கீழே உள்ள வேலையை கவனமாக செய்யுங்கள். புதிய மாணவர்களுக்கு ஒளிச்சேர்க்கையை எளிதாக விளக்குங்கள். பதில் 150 சொற்களுக்குள் இருக்க வேண்டும். தமிழில் மட்டும் பதில் அளிக்கவும். தொழில்நுட்ப சொற்களை பயன்படுத்த வேண்டாம். படிகளுக்கு எண்ணிட்ட பட்டியலை பயன்படுத்துங்கள்.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    404,
+    354
+   ],
+   "o200k_base": [
+    93,
+    81
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " பதில் 150 சொற்களுக்குள் இருக்க வேண்டும்.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_verbose-04",
+  "variant": "ta_verbose",
+  "mode": "balanced",
+  "original": "வணக்கம்! எனக்கு ஒரு முக்கியமான வேலையில் உங்கள் உதவி தேவை.  தக்காளி பயிருக்கு சிறந்த நீர்ப்பாசன அட்டவணையை பரிந்துரைக்கவும்.  தமிழில் மட்டும் பதில் அளிக்கவும்.  பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும்.  ஒரு பக்கத்திற்கு மேல் எழுத வேண்டாம்.  பதிலை இரண்டு நெடுவரிசை அட்டவணையாக கொடுங்கள்.",
+  "optimized": "வணக்கம்! எனக்கு ஒரு முக்கியமான வேலையில் உங்கள் உதவி தேவை. தக்காளி பயிருக்கு சிறந்த நீர்ப்பாசன அட்டவணையை பரிந்துரைக்கவும். தமிழில் மட்டும் பதில் அளிக்கவும். பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும். ஒரு பக்கத்திற்கு மேல் எழுத வேண்டாம். பதிலை இரண்டு நெடுவரிசை அட்டவணையாக கொடுங்கள்.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    383,
+    378
+   ],
+   "o200k_base": [
+    97,
+    92
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_verbose-05",
+  "variant": "ta_verbose",
+  "mode": "balanced",
+  "original": "தயவுசெய்து கீழே உள்ள வேலையை கவனமாக செய்யுங்கள். பெங்களூருவிலிருந்து மைசூருக்கு ரயில் மற்றும் பேருந்து பயணத்தை ஒப்பிடுங்கள். மொத்த செலவு ₹25,000 என்று குறிப்பிடுங்கள். பதில் 150 சொற்களுக்குள் இருக்க வேண்டும். வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம். படிகளுக்கு எண்ணிட்ட பட்டியலை பயன்படுத்துங்கள். வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம்.",
+  "optimized": "தயவுசெய்து கீழே உள்ள வேலையை கவனமாக செய்யுங்கள். பெங்களூருவிலிருந்து மைசூருக்கு ரயில் மற்றும் பேருந்து பயணத்தை ஒப்பிடுங்கள். மொத்த செலவு ₹25,000 என்று குறிப்பிடுங்கள். பதில் 150 சொற்களுக்குள் இருக்க வேண்டும். வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம். படிகளுக்கு எண்ணிட்ட பட்டியலை பயன்படுத்துங்கள்.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    448,
+    389
+   ],
+   "o200k_base": [
+    107,
+    94
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம்.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_verbose-06",
+  "variant": "ta_verbose",
+  "mode": "balanced",
+  "original": "நான் ஒரு திட்டத்தில் வேலை செய்கிறேன், அதற்கு உங்கள் உதவி தேவை. கூட்டக் குறிப்புகளின் சுருக்கமான சாராம்சத்தை கொடுங்கள். பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும். கடைசி தேதி 15 டிசம்பர் 2026. தொழில்நுட்ப சொற்களை பயன்படுத்த வேண்டாம். பதிலை முறையான நடையில் எழுதுங்கள். பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும்.\n\n\n",
+  "optimized": "நான் ஒரு திட்டத்தில் வேலை செய்கிறேன், அதற்கு உங்கள் உதவி தேவை. கூட்டக் குறிப்புகளின் சுருக்கமான சாராம்சத்தை கொடுங்கள். பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும். கடைசி தேதி 15 டிசம்பர் 2026. தொழில்நுட்ப சொற்களை பயன்படுத்த வேண்டாம். பதிலை முறையான நடையில் எழுதுங்கள்.\n\n\n",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    413,
+    355
+   ],
+   "o200k_base": [
+    93,
+    81
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும்.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_verbose-07",
+  "variant": "ta_verbose",
+  "mode": "balanced",
+  "original": "வணக்கம்! எனக்கு ஒரு முக்கியமான வேலையில் உங்கள் உதவி தேவை.  CSV கோப்பிலிருந்து மீண்டும் வரும் வரிசைகளை நீக்கும் பைத்தான் குறியீட்டை எழுதுங்கள்.  பதில் 150 சொற்களுக்குள் இருக்க வேண்டும்.  வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம்.  தமிழில் மட்டும் பதில் அளிக்கவும்.  உள் விலைகளை பகிர வேண்டாம்.  பதிலை இரண்டு நெடுவரிசை அட்டவணையாக கொடுங்கள்.  நினைவில் கொள்ளுங்கள், எந்த வாடிக்கையாளர் பெயரும் பதிலில் வரக்கூடாது.",
+  "optimized": "வணக்கம்! எனக்கு ஒரு முக்கியமான வேலையில் உங்கள் உதவி தேவை. CSV கோப்பிலிருந்து மீண்டும் வரும் வரிசைகளை நீக்கும் பைத்தான் குறியீட்டை எழுதுங்கள். பதில் 150 சொற்களுக்குள் இருக்க வேண்டும். வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம். தமிழில் மட்டும் பதில் அளிக்கவும். உள் விலைகளை பகிர வேண்டாம். பதிலை இரண்டு நெடுவரிசை அட்டவணையாக கொடுங்கள். நினைவில் கொள்ளுங்கள், எந்த வாடிக்கையாளர் பெயரும் பதிலில் வரக்கூடாது.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    541,
+    534
+   ],
+   "o200k_base": [
+    133,
+    126
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_verbose-09",
+  "variant": "ta_verbose",
+  "mode": "balanced",
+  "original": "நான் ஒரு திட்டத்தில் வேலை செய்கிறேன், அதற்கு உங்கள் உதவி தேவை. இந்த காலாண்டு விற்பனை அறிக்கையின் சுருக்கத்தை எளிமையாக எழுதுங்கள். தமிழில் மட்டும் பதில் அளிக்கவும். பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும். வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம். பதிலை முறையான நடையில் எழுதுங்கள். வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம்.",
+  "optimized": "நான் ஒரு திட்டத்தில் வேலை செய்கிறேன், அதற்கு உங்கள் உதவி தேவை. இந்த காலாண்டு விற்பனை அறிக்கையின் சுருக்கத்தை எளிமையாக எழுதுங்கள். தமிழில் மட்டும் பதில் அளிக்கவும். பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும். வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம். பதிலை முறையான நடையில் எழுதுங்கள்.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    438,
+    379
+   ],
+   "o200k_base": [
+    96,
+    83
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம்.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_verbose-10",
+  "variant": "ta_verbose",
+  "mode": "balanced",
+  "original": "வணக்கம்! எனக்கு ஒரு முக்கியமான வேலையில் உங்கள் உதவி தேவை.  புதிய மாணவர்களுக்கு ஒளிச்சேர்க்கையை எளிதாக விளக்குங்கள்.  மொத்த செலவு ₹25,000 என்று குறிப்பிடுங்கள்.  பதில் 150 சொற்களுக்குள் இருக்க வேண்டும்.  தொழில்நுட்ப சொற்களை பயன்படுத்த வேண்டாம்.  பதிலை இரண்டு நெடுவரிசை அட்டவணையாக கொடுங்கள்.  மொத்த செலவு ₹25,000 என்று குறிப்பிடுங்கள்.",
+  "optimized": "வணக்கம்! எனக்கு ஒரு முக்கியமான வேலையில் உங்கள் உதவி தேவை. புதிய மாணவர்களுக்கு ஒளிச்சேர்க்கையை எளிதாக விளக்குங்கள். மொத்த செலவு ₹25,000 என்று குறிப்பிடுங்கள். பதில் 150 சொற்களுக்குள் இருக்க வேண்டும். தொழில்நுட்ப சொற்களை பயன்படுத்த வேண்டாம். பதிலை இரண்டு நெடுவரிசை அட்டவணையாக கொடுங்கள்.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    428,
+    374
+   ],
+   "o200k_base": [
+    110,
+    91
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  மொத்த செலவு ₹25,000 என்று குறிப்பிடுங்கள்.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_verbose-13",
+  "variant": "ta_verbose",
+  "mode": "balanced",
+  "original": "வணக்கம்! எனக்கு ஒரு முக்கியமான வேலையில் உங்கள் உதவி தேவை.  பெங்களூருவிலிருந்து மைசூருக்கு ரயில் மற்றும் பேருந்து பயணத்தை ஒப்பிடுங்கள்.  கடைசி தேதி 15 டிசம்பர் 2026.  மொத்த செலவு ₹25,000 என்று குறிப்பிடுங்கள்.  வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம்.  பதிலை இரண்டு நெடுவரிசை அட்டவணையாக கொடுங்கள்.  வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம்.",
+  "optimized": "வணக்கம்! எனக்கு ஒரு முக்கியமான வேலையில் உங்கள் உதவி தேவை. பெங்களூருவிலிருந்து மைசூருக்கு ரயில் மற்றும் பேருந்து பயணத்தை ஒப்பிடுங்கள். கடைசி தேதி 15 டிசம்பர் 2026. மொத்த செலவு ₹25,000 என்று குறிப்பிடுங்கள். வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம். பதிலை இரண்டு நெடுவரிசை அட்டவணையாக கொடுங்கள்.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    450,
+    385
+   ],
+   "o200k_base": [
+    120,
+    101
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  வாடிக்கையாளர் பெயர்களை சேர்க்க வேண்டாம்.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_verbose-14",
+  "variant": "ta_verbose",
+  "mode": "balanced",
+  "original": "தயவுசெய்து கீழே உள்ள வேலையை கவனமாக செய்யுங்கள். கூட்டக் குறிப்புகளின் சுருக்கமான சாராம்சத்தை கொடுங்கள். தமிழில் மட்டும் பதில் அளிக்கவும். பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும். தொழில்நுட்ப சொற்களை பயன்படுத்த வேண்டாம். படிகளுக்கு எண்ணிட்ட பட்டியலை பயன்படுத்துங்கள். தமிழில் மட்டும் பதில் அளிக்கவும்.",
+  "optimized": "தயவுசெய்து கீழே உள்ள வேலையை கவனமாக செய்யுங்கள். கூட்டக் குறிப்புகளின் சுருக்கமான சாராம்சத்தை கொடுங்கள். தமிழில் மட்டும் பதில் அளிக்கவும். பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும். தொழில்நுட்ப சொற்களை பயன்படுத்த வேண்டாம். படிகளுக்கு எண்ணிட்ட பட்டியலை பயன்படுத்துங்கள்.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    404,
+    363
+   ],
+   "o200k_base": [
+    89,
+    80
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " தமிழில் மட்டும் பதில் அளிக்கவும்.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_verbose-16",
+  "variant": "ta_verbose",
+  "mode": "balanced",
+  "original": "வணக்கம்! எனக்கு ஒரு முக்கியமான வேலையில் உங்கள் உதவி தேவை.  தயாரிப்பு வெளியீட்டுக்கு தேவையான பணிகளை பட்டியலிடுங்கள்.  பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும்.  கடைசி தேதி 15 டிசம்பர் 2026.  ஒரு பக்கத்திற்கு மேல் எழுத வேண்டாம்.  பதிலை இரண்டு நெடுவரிசை அட்டவணையாக கொடுங்கள்.\n\n\n",
+  "optimized": "வணக்கம்! எனக்கு ஒரு முக்கியமான வேலையில் உங்கள் உதவி தேவை. தயாரிப்பு வெளியீட்டுக்கு தேவையான பணிகளை பட்டியலிடுங்கள். பதிலில் சரியாக 5 குறிப்புகள் இருக்க வேண்டும். கடைசி தேதி 15 டிசம்பர் 2026. ஒரு பக்கத்திற்கு மேல் எழுத வேண்டாம். பதிலை இரண்டு நெடுவரிசை அட்டவணையாக கொடுங்கள்.\n\n\n",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    366,
+    361
+   ],
+   "o200k_base": [
+    92,
+    87
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_roman_verbose-01",
+  "variant": "ta_roman",
+  "mode": "balanced",
+  "original": "Vanakkam!  Indha report-oda summary kodunga.  Customer peyar podaadheenga.  Customer peyar podaadheenga.  Tamil-la mattum badhil sollunga.",
+  "optimized": "Vanakkam! Indha report-oda summary kodunga. Customer peyar podaadheenga. Tamil-la mattum badhil sollunga.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    42,
+    30
+   ],
+   "o200k_base": [
+    42,
+    30
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  Customer peyar podaadheenga.",
+    "after": ""
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_roman_verbose-01",
+  "variant": "ta_roman_auto",
+  "mode": "balanced",
+  "original": "Vanakkam!  Indha report-oda summary kodunga.  Customer peyar podaadheenga.  Customer peyar podaadheenga.  Tamil-la mattum badhil sollunga.",
+  "optimized": "Vanakkam! Indha report-oda summary kodunga. Customer peyar podaadheenga. Tamil-la mattum badhil sollunga.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    42,
+    30
+   ],
+   "o200k_base": [
+    42,
+    30
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  Customer peyar podaadheenga.",
+    "after": ""
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_roman_verbose-02",
+  "variant": "ta_roman",
+  "mode": "balanced",
+  "original": "Thayavuseydhu   Python code ezhudhunga, CSV file-la irundhu duplicate rows neekka. Explanation vendaam. Explanation vendaam.",
+  "optimized": "Thayavuseydhu Python code ezhudhunga, CSV file-la irundhu duplicate rows neekka. Explanation vendaam. Explanation vendaam.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    35,
+    34
+   ],
+   "o200k_base": [
+    34,
+    33
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_roman_verbose-02",
+  "variant": "ta_roman_auto",
+  "mode": "balanced",
+  "original": "Thayavuseydhu   Python code ezhudhunga, CSV file-la irundhu duplicate rows neekka. Explanation vendaam. Explanation vendaam.",
+  "optimized": "Thayavuseydhu Python code ezhudhunga, CSV file-la irundhu duplicate rows neekka. Explanation vendaam. Explanation vendaam.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    35,
+    34
+   ],
+   "o200k_base": [
+    34,
+    33
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_roman_verbose-03",
+  "variant": "ta_roman",
+  "mode": "balanced",
+  "original": "Please meeting notes-ai 5 points-la summary pannunga. Deadline 15 December. Peyar podaadheenga. Please meeting notes-ai 5 points-la summary pannunga.",
+  "optimized": "Please meeting notes-ai 5 points-la summary pannunga. Deadline 15 December. Peyar podaadheenga.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    40,
+    26
+   ],
+   "o200k_base": [
+    36,
+    24
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Please meeting notes-ai 5 points-la summary pannunga.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_roman_verbose-03",
+  "variant": "ta_roman_auto",
+  "mode": "balanced",
+  "original": "Please meeting notes-ai 5 points-la summary pannunga. Deadline 15 December. Peyar podaadheenga. Please meeting notes-ai 5 points-la summary pannunga.",
+  "optimized": "Please meeting notes-ai 5 points-la summary pannunga. Deadline 15 December. Peyar podaadheenga.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    40,
+    26
+   ],
+   "o200k_base": [
+    36,
+    24
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Please meeting notes-ai 5 points-la summary pannunga.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_roman_verbose-04",
+  "variant": "ta_roman",
+  "mode": "balanced",
+  "original": "Bengaluru-la irundhu Mysuru-ku train and bus compare pannunga!!!   Table format-la kodunga. Price ₹500-ku kammiya irukkanum.",
+  "optimized": "Bengaluru-la irundhu Mysuru-ku train and bus compare pannunga!!! Table format-la kodunga. Price ₹500-ku kammiya irukkanum.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    40,
+    39
+   ],
+   "o200k_base": [
+    36,
+    35
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_roman_verbose-04",
+  "variant": "ta_roman_auto",
+  "mode": "balanced",
+  "original": "Bengaluru-la irundhu Mysuru-ku train and bus compare pannunga!!!   Table format-la kodunga. Price ₹500-ku kammiya irukkanum.",
+  "optimized": "Bengaluru-la irundhu Mysuru-ku train and bus compare pannunga!!! Table format-la kodunga. Price ₹500-ku kammiya irukkanum.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    40,
+    39
+   ],
+   "o200k_base": [
+    36,
+    35
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_verbose-01",
+  "variant": "te_verbose",
+  "mode": "balanced",
+  "original": "నమస్కారం! నాకు ఒక ముఖ్యమైన పనిలో మీ సహాయం కావాలి.  ఈ త్రైమాసిక అమ్మకాల నివేదిక సారాంశాన్ని సరళంగా రాయండి.  సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి.  చివరి తేదీ 15 డిసెంబర్ 2026.  కస్టమర్ పేర్లను చేర్చవద్దు.  సమాధానాన్ని రెండు నిలువు వరుసల పట్టికలో ఇవ్వండి.  కస్టమర్ పేర్లను చేర్చవద్దు.\n\n\n",
+  "optimized": "నమస్కారం! నాకు ఒక ముఖ్యమైన పనిలో మీ సహాయం కావాలి. ఈ త్రైమాసిక అమ్మకాల నివేదిక సారాంశాన్ని సరళంగా రాయండి. సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి. చివరి తేదీ 15 డిసెంబర్ 2026. కస్టమర్ పేర్లను చేర్చవద్దు. సమాధానాన్ని రెండు నిలువు వరుసల పట్టికలో ఇవ్వండి.\n\n\n",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    465,
+    410
+   ],
+   "o200k_base": [
+    119,
+    99
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  కస్టమర్ పేర్లను చేర్చవద్దు.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_verbose-02",
+  "variant": "te_verbose",
+  "mode": "balanced",
+  "original": "దయచేసి కింది పనిని శ్రద్ధగా చేయండి. కొత్త విద్యార్థులకు కిరణజన్య సంయోగక్రియను సులభంగా వివరించండి. సమాధానం 150 పదాలకు మించకూడదు. తెలుగులో మాత్రమే సమాధానం ఇవ్వండి. సాంకేతిక పదాలను ఉపయోగించవద్దు. దశలకు సంఖ్యల జాబితా ఉపయోగించండి. సమాధానం 150 పదాలకు మించకూడదు.",
+  "optimized": "దయచేసి కింది పనిని శ్రద్ధగా చేయండి. కొత్త విద్యార్థులకు కిరణజన్య సంయోగక్రియను సులభంగా వివరించండి. సమాధానం 150 పదాలకు మించకూడదు. తెలుగులో మాత్రమే సమాధానం ఇవ్వండి. సాంకేతిక పదాలను ఉపయోగించవద్దు. దశలకు సంఖ్యల జాబితా ఉపయోగించండి.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    437,
+    390
+   ],
+   "o200k_base": [
+    102,
+    89
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " సమాధానం 150 పదాలకు మించకూడదు.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_verbose-04",
+  "variant": "te_verbose",
+  "mode": "balanced",
+  "original": "నమస్కారం! నాకు ఒక ముఖ్యమైన పనిలో మీ సహాయం కావాలి.  టమాటా పంటకు మంచి నీటిపారుదల షెడ్యూల్ సూచించండి.  తెలుగులో మాత్రమే సమాధానం ఇవ్వండి.  సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి.  ఒక పేజీ కంటే ఎక్కువ రాయవద్దు.  సమాధానాన్ని రెండు నిలువు వరుసల పట్టికలో ఇవ్వండి.",
+  "optimized": "నమస్కారం! నాకు ఒక ముఖ్యమైన పనిలో మీ సహాయం కావాలి. టమాటా పంటకు మంచి నీటిపారుదల షెడ్యూల్ సూచించండి. తెలుగులో మాత్రమే సమాధానం ఇవ్వండి. సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి. ఒక పేజీ కంటే ఎక్కువ రాయవద్దు. సమాధానాన్ని రెండు నిలువు వరుసల పట్టికలో ఇవ్వండి.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    422,
+    417
+   ],
+   "o200k_base": [
+    100,
+    95
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_verbose-05",
+  "variant": "te_verbose",
+  "mode": "balanced",
+  "original": "దయచేసి కింది పనిని శ్రద్ధగా చేయండి. బెంగళూరు నుండి మైసూరుకు రైలు మరియు బస్సు ప్రయాణాన్ని పోల్చండి. మొత్తం ఖర్చు ₹25,000 అని పేర్కొనండి. సమాధానం 150 పదాలకు మించకూడదు. కస్టమర్ పేర్లను చేర్చవద్దు. దశలకు సంఖ్యల జాబితా ఉపయోగించండి. కస్టమర్ పేర్లను చేర్చవద్దు.",
+  "optimized": "దయచేసి కింది పనిని శ్రద్ధగా చేయండి. బెంగళూరు నుండి మైసూరుకు రైలు మరియు బస్సు ప్రయాణాన్ని పోల్చండి. మొత్తం ఖర్చు ₹25,000 అని పేర్కొనండి. సమాధానం 150 పదాలకు మించకూడదు. కస్టమర్ పేర్లను చేర్చవద్దు. దశలకు సంఖ్యల జాబితా ఉపయోగించండి.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    425,
+    376
+   ],
+   "o200k_base": [
+    107,
+    93
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " కస్టమర్ పేర్లను చేర్చవద్దు.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_verbose-06",
+  "variant": "te_verbose",
+  "mode": "balanced",
+  "original": "నేను ఒక ప్రాజెక్ట్‌పై పని చేస్తున్నాను, దానికి మీ సహాయం కావాలి. సమావేశ గమనికల సంక్షిప్త సారాంశం ఇవ్వండి. సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి. చివరి తేదీ 15 డిసెంబర్ 2026. సాంకేతిక పదాలను ఉపయోగించవద్దు. సమాధానాన్ని అధికారిక శైలిలో రాయండి. సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి.\n\n\n",
+  "optimized": "నేను ఒక ప్రాజెక్ట్‌పై పని చేస్తున్నాను, దానికి మీ సహాయం కావాలి. సమావేశ గమనికల సంక్షిప్త సారాంశం ఇవ్వండి. సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి. చివరి తేదీ 15 డిసెంబర్ 2026. సాంకేతిక పదాలను ఉపయోగించవద్దు. సమాధానాన్ని అధికారిక శైలిలో రాయండి.\n\n\n",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    454,
+    395
+   ],
+   "o200k_base": [
+    105,
+    90
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_verbose-07",
+  "variant": "te_verbose",
+  "mode": "balanced",
+  "original": "నమస్కారం! నాకు ఒక ముఖ్యమైన పనిలో మీ సహాయం కావాలి.  CSV ఫైల్ నుండి పునరావృత వరుసలను తొలగించే పైథాన్ కోడ్ రాయండి.  సమాధానం 150 పదాలకు మించకూడదు.  కస్టమర్ పేర్లను చేర్చవద్దు.  తెలుగులో మాత్రమే సమాధానం ఇవ్వండి.  అంతర్గత ధరలను పంచుకోవద్దు.  సమాధానాన్ని రెండు నిలువు వరుసల పట్టికలో ఇవ్వండి.  గుర్తుంచుకోండి, సమాధానంలో ఏ కస్టమర్ పేరు కూడా రాకూడదు.",
+  "optimized": "నమస్కారం! నాకు ఒక ముఖ్యమైన పనిలో మీ సహాయం కావాలి. CSV ఫైల్ నుండి పునరావృత వరుసలను తొలగించే పైథాన్ కోడ్ రాయండి. సమాధానం 150 పదాలకు మించకూడదు. కస్టమర్ పేర్లను చేర్చవద్దు. తెలుగులో మాత్రమే సమాధానం ఇవ్వండి. అంతర్గత ధరలను పంచుకోవద్దు. సమాధానాన్ని రెండు నిలువు వరుసల పట్టికలో ఇవ్వండి. గుర్తుంచుకోండి, సమాధానంలో ఏ కస్టమర్ పేరు కూడా రాకూడదు.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    568,
+    561
+   ],
+   "o200k_base": [
+    137,
+    130
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_verbose-09",
+  "variant": "te_verbose",
+  "mode": "balanced",
+  "original": "నేను ఒక ప్రాజెక్ట్‌పై పని చేస్తున్నాను, దానికి మీ సహాయం కావాలి. ఈ త్రైమాసిక అమ్మకాల నివేదిక సారాంశాన్ని సరళంగా రాయండి. తెలుగులో మాత్రమే సమాధానం ఇవ్వండి. సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి. కస్టమర్ పేర్లను చేర్చవద్దు. సమాధానాన్ని అధికారిక శైలిలో రాయండి. కస్టమర్ పేర్లను చేర్చవద్దు.",
+  "optimized": "నేను ఒక ప్రాజెక్ట్‌పై పని చేస్తున్నాను, దానికి మీ సహాయం కావాలి. ఈ త్రైమాసిక అమ్మకాల నివేదిక సారాంశాన్ని సరళంగా రాయండి. తెలుగులో మాత్రమే సమాధానం ఇవ్వండి. సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి. కస్టమర్ పేర్లను చేర్చవద్దు. సమాధానాన్ని అధికారిక శైలిలో రాయండి.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    481,
+    432
+   ],
+   "o200k_base": [
+    109,
+    95
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " కస్టమర్ పేర్లను చేర్చవద్దు.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_verbose-10",
+  "variant": "te_verbose",
+  "mode": "balanced",
+  "original": "నమస్కారం! నాకు ఒక ముఖ్యమైన పనిలో మీ సహాయం కావాలి.  కొత్త విద్యార్థులకు కిరణజన్య సంయోగక్రియను సులభంగా వివరించండి.  మొత్తం ఖర్చు ₹25,000 అని పేర్కొనండి.  సమాధానం 150 పదాలకు మించకూడదు.  సాంకేతిక పదాలను ఉపయోగించవద్దు.  సమాధానాన్ని రెండు నిలువు వరుసల పట్టికలో ఇవ్వండి.  మొత్తం ఖర్చు ₹25,000 అని పేర్కొనండి.",
+  "optimized": "నమస్కారం! నాకు ఒక ముఖ్యమైన పనిలో మీ సహాయం కావాలి. కొత్త విద్యార్థులకు కిరణజన్య సంయోగక్రియను సులభంగా వివరించండి. మొత్తం ఖర్చు ₹25,000 అని పేర్కొనండి. సమాధానం 150 పదాలకు మించకూడదు. సాంకేతిక పదాలను ఉపయోగించవద్దు. సమాధానాన్ని రెండు నిలువు వరుసల పట్టికలో ఇవ్వండి.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    492,
+    433
+   ],
+   "o200k_base": [
+    118,
+    98
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  మొత్తం ఖర్చు ₹25,000 అని పేర్కొనండి.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_verbose-13",
+  "variant": "te_verbose",
+  "mode": "balanced",
+  "original": "నమస్కారం! నాకు ఒక ముఖ్యమైన పనిలో మీ సహాయం కావాలి.  బెంగళూరు నుండి మైసూరుకు రైలు మరియు బస్సు ప్రయాణాన్ని పోల్చండి.  చివరి తేదీ 15 డిసెంబర్ 2026.  మొత్తం ఖర్చు ₹25,000 అని పేర్కొనండి.  కస్టమర్ పేర్లను చేర్చవద్దు.  సమాధానాన్ని రెండు నిలువు వరుసల పట్టికలో ఇవ్వండి.  కస్టమర్ పేర్లను చేర్చవద్దు.",
+  "optimized": "నమస్కారం! నాకు ఒక ముఖ్యమైన పనిలో మీ సహాయం కావాలి. బెంగళూరు నుండి మైసూరుకు రైలు మరియు బస్సు ప్రయాణాన్ని పోల్చండి. చివరి తేదీ 15 డిసెంబర్ 2026. మొత్తం ఖర్చు ₹25,000 అని పేర్కొనండి. కస్టమర్ పేర్లను చేర్చవద్దు. సమాధానాన్ని రెండు నిలువు వరుసల పట్టికలో ఇవ్వండి.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    473,
+    418
+   ],
+   "o200k_base": [
+    118,
+    98
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  కస్టమర్ పేర్లను చేర్చవద్దు.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_verbose-14",
+  "variant": "te_verbose",
+  "mode": "balanced",
+  "original": "దయచేసి కింది పనిని శ్రద్ధగా చేయండి. సమావేశ గమనికల సంక్షిప్త సారాంశం ఇవ్వండి. తెలుగులో మాత్రమే సమాధానం ఇవ్వండి. సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి. సాంకేతిక పదాలను ఉపయోగించవద్దు. దశలకు సంఖ్యల జాబితా ఉపయోగించండి. తెలుగులో మాత్రమే సమాధానం ఇవ్వండి.",
+  "optimized": "దయచేసి కింది పనిని శ్రద్ధగా చేయండి. సమావేశ గమనికల సంక్షిప్త సారాంశం ఇవ్వండి. తెలుగులో మాత్రమే సమాధానం ఇవ్వండి. సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి. సాంకేతిక పదాలను ఉపయోగించవద్దు. దశలకు సంఖ్యల జాబితా ఉపయోగించండి.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    421,
+    362
+   ],
+   "o200k_base": [
+    93,
+    83
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " తెలుగులో మాత్రమే సమాధానం ఇవ్వండి.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_verbose-16",
+  "variant": "te_verbose",
+  "mode": "balanced",
+  "original": "నమస్కారం! నాకు ఒక ముఖ్యమైన పనిలో మీ సహాయం కావాలి.  ఉత్పత్తి విడుదలకు కావలసిన పనుల జాబితా తయారు చేయండి.  సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి.  చివరి తేదీ 15 డిసెంబర్ 2026.  ఒక పేజీ కంటే ఎక్కువ రాయవద్దు.  సమాధానాన్ని రెండు నిలువు వరుసల పట్టికలో ఇవ్వండి.\n\n\n",
+  "optimized": "నమస్కారం! నాకు ఒక ముఖ్యమైన పనిలో మీ సహాయం కావాలి. ఉత్పత్తి విడుదలకు కావలసిన పనుల జాబితా తయారు చేయండి. సమాధానంలో సరిగ్గా 5 అంశాలు ఉండాలి. చివరి తేదీ 15 డిసెంబర్ 2026. ఒక పేజీ కంటే ఎక్కువ రాయవద్దు. సమాధానాన్ని రెండు నిలువు వరుసల పట్టికలో ఇవ్వండి.\n\n\n",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    409,
+    404
+   ],
+   "o200k_base": [
+    102,
+    97
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_roman_verbose-01",
+  "variant": "te_roman",
+  "mode": "balanced",
+  "original": "Namaskaram!  Ee report summary ivvandi.  Customer perlu cherchavaddu.  Customer perlu cherchavaddu.  Telugu lo matrame samadhanam ivvandi.",
+  "optimized": "Namaskaram! Ee report summary ivvandi. Customer perlu cherchavaddu. Telugu lo matrame samadhanam ivvandi.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    47,
+    34
+   ],
+   "o200k_base": [
+    38,
+    28
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  Customer perlu cherchavaddu.",
+    "after": ""
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_roman_verbose-01",
+  "variant": "te_roman_auto",
+  "mode": "balanced",
+  "original": "Namaskaram!  Ee report summary ivvandi.  Customer perlu cherchavaddu.  Customer perlu cherchavaddu.  Telugu lo matrame samadhanam ivvandi.",
+  "optimized": "Namaskaram! Ee report summary ivvandi. Customer perlu cherchavaddu. Telugu lo matrame samadhanam ivvandi.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    47,
+    34
+   ],
+   "o200k_base": [
+    38,
+    28
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   },
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  Customer perlu cherchavaddu.",
+    "after": ""
+   },
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_roman_verbose-02",
+  "variant": "te_roman",
+  "mode": "balanced",
+  "original": "Dayachesi   Python code rayandi, CSV file nundi duplicate rows teseyadaniki. Explanation vaddu. Explanation vaddu.",
+  "optimized": "Dayachesi Python code rayandi, CSV file nundi duplicate rows teseyadaniki. Explanation vaddu. Explanation vaddu.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    30,
+    29
+   ],
+   "o200k_base": [
+    28,
+    27
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_roman_verbose-02",
+  "variant": "te_roman_auto",
+  "mode": "balanced",
+  "original": "Dayachesi   Python code rayandi, CSV file nundi duplicate rows teseyadaniki. Explanation vaddu. Explanation vaddu.",
+  "optimized": "Dayachesi Python code rayandi, CSV file nundi duplicate rows teseyadaniki. Explanation vaddu. Explanation vaddu.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    30,
+    29
+   ],
+   "o200k_base": [
+    28,
+    27
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_roman_verbose-03",
+  "variant": "te_roman",
+  "mode": "balanced",
+  "original": "Please meeting notes ni 5 points lo summary cheyandi. Deadline 15 December. Perlu rayavaddu. Please meeting notes ni 5 points lo summary cheyandi.",
+  "optimized": "Please meeting notes ni 5 points lo summary cheyandi. Deadline 15 December. Perlu rayavaddu.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    38,
+    25
+   ],
+   "o200k_base": [
+    37,
+    24
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Please meeting notes ni 5 points lo summary cheyandi.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_roman_verbose-03",
+  "variant": "te_roman_auto",
+  "mode": "balanced",
+  "original": "Please meeting notes ni 5 points lo summary cheyandi. Deadline 15 December. Perlu rayavaddu. Please meeting notes ni 5 points lo summary cheyandi.",
+  "optimized": "Please meeting notes ni 5 points lo summary cheyandi. Deadline 15 December. Perlu rayavaddu.",
+  "meaning_status": "at_risk",
+  "token_counts": {
+   "cl100k_base": [
+    38,
+    25
+   ],
+   "o200k_base": [
+    37,
+    24
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " Please meeting notes ni 5 points lo summary cheyandi.",
+    "after": ""
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_roman_verbose-04",
+  "variant": "te_roman",
+  "mode": "balanced",
+  "original": "Bengaluru nundi Mysuru ki train mariyu bus compare cheyandi!!!   Table format lo ivvandi. Price ₹500 kanna takkuva undali.",
+  "optimized": "Bengaluru nundi Mysuru ki train mariyu bus compare cheyandi!!! Table format lo ivvandi. Price ₹500 kanna takkuva undali.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    38,
+    37
+   ],
+   "o200k_base": [
+    36,
+    35
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_roman_verbose-04",
+  "variant": "te_roman_auto",
+  "mode": "balanced",
+  "original": "Bengaluru nundi Mysuru ki train mariyu bus compare cheyandi!!!   Table format lo ivvandi. Price ₹500 kanna takkuva undali.",
+  "optimized": "Bengaluru nundi Mysuru ki train mariyu bus compare cheyandi!!! Table format lo ivvandi. Price ₹500 kanna takkuva undali.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    38,
+    37
+   ],
+   "o200k_base": [
+    36,
+    35
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ }
+]

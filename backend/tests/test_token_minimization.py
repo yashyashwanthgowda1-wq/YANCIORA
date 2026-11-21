@@ -88,11 +88,14 @@ def test_balanced_mode_removes_exact_repeat_in_every_language(lang):
 
 
 @pytest.mark.parametrize("lang", list(SENTENCES))
-def test_repeat_holding_a_detail_is_only_suggested(lang):
+def test_repeat_holding_a_detail(lang):
     text = f"{SENTENCES[lang]} {SENTENCES[lang]}"                     # repeat holds number + negation
-    r = opt(text, language=lang, mode="balanced")
-    assert not r.changed and r.optimized == text
-    assert [s.kind for s in r.suggestions] == ["duplicate_sentence"]
+    safe = opt(text, language=lang, mode="safe")                      # safe: suggestion only
+    assert not safe.changed and [s.kind for s in safe.suggestions] == ["duplicate_sentence"]
+    r = opt(text, language=lang, mode="balanced")                     # balanced (D64): removed
+    assert r.changed and r.optimized == SENTENCES[lang]
+    assert r.meaning_check.status == "at_risk"                        # never claimed 'preserved'
+    assert details(r.optimized, lang).keys() == details(text, lang).keys()   # every value survives
 
 
 # ---------- Romanized and code-mixed (needs the language for Romanized negations) ----------
@@ -182,8 +185,9 @@ def test_numbers_dates_and_names_untouched():
 def test_repeated_instruction_non_adjacent_and_case_insensitive():
     text = "Answer in Kannada only please. Summarise the article. answer in kannada only please."
     r = opt(text, mode="balanced")
-    # the repeat contains the constraint word "only", a critical detail → suggestion only
-    assert not r.changed and r.suggestions[0].kind == "duplicate_sentence"
+    # D64: the repeat holds the constraint "only"; the first copy keeps it, so balanced removes it
+    assert r.optimized == "Answer in Kannada only please. Summarise the article."
+    assert r.meaning_check.status == "at_risk"
     text2 = "Keep the tone friendly. Summarise the article. keep the tone friendly."
     r2 = opt(text2, mode="balanced")
     assert r2.optimized == "Keep the tone friendly. Summarise the article."
@@ -308,12 +312,13 @@ def test_aggressive_suggests_unreviewed_phrases_only():
     assert s and s[0].before == "in order to" and s[0].after == "to"
 
 
-def test_shipped_english_list_is_not_active_until_reviewed():
-    lists = R.load_phrase_lists()
-    en = next(pl for pl in lists if pl.id == "en")
-    assert en.review_status != "reviewed"
+def test_shipped_english_list_is_active_but_tone_changes_stay_suggestions():
+    # D64: approved list applies wording; removing a politeness frame is still only suggested.
+    en = next(pl for pl in R.load_phrase_lists() if pl.id == "en")
+    assert en.review_status == "reviewed"
     r = opt("Could you please summarise this in order to save time.", mode="balanced")
-    assert not any(a.rule.startswith("phrase:") for a in r.accepted)
+    assert r.optimized == "Could you please summarise this to save time."
+    assert any(s.before.lower().startswith("could you please") for s in r.suggestions)
 
 
 # ---------- real tokenizers (skipped when tiktoken encodings are unavailable) ----------

@@ -1,22 +1,29 @@
 # English verbose-phrase list for the optimizer's balanced mode (Feature 3).
 #
-# review_status: developer_curated — written by the developers; NOT active.
-# Team decision (2026-11-20): only lists with review_status: reviewed are applied.
-# To activate: a team member checks every entry, then sets review_status: reviewed and
-# reviewed_by: <name, date>.
+# review_status: reviewed — ACTIVE in balanced and aggressive mode.
+# Approved 2026-11-21 by the project owner (team member) in the working session, after the
+# validation matrix in docs/review/english_phrase_validation.md (decision D64). The English
+# review-dataset entries (backend/app/linguistics/review/en.yaml) stay pending_review; this list
+# is the one the optimizer applies.
+#
+# Safety is enforced per edit, not by this file: every edit must save tokens under every selected
+# encoding AND pass the meaning check (rules_v5). An edit that removes a politeness/request frame
+# ("could you please", "I would like you to") changes a register marker, so it is only ever a
+# suggestion. An edit that drops or adds a condition, constraint, number, negation or name is
+# rejected.
 #
 # Entry fields:
 #   pattern            case-insensitive, whitespace-flexible, whole words
 #   replacement        shorter text; capitalisation of the match's first letter is kept
 #   at_sentence_start  only match at the start of a sentence (required when replacement is "")
 #   capitalize_next    with an empty replacement: capitalise the next word ("Could you please write" → "Write")
-# Every edit is still measured (must save tokens) and checked by the meaning gate.
 
 id: en
 language: en
-review_status: developer_curated
-reviewed_by: null
+review_status: reviewed
+reviewed_by: "project owner (team member), working-session approval, 2026-11-21 (D64)"
 entries:
+  # ---- validated in the 7-context matrix (docs/review/english_phrase_validation.md) ----
   - {pattern: "in order to", replacement: "to"}
   - {pattern: "due to the fact that", replacement: "because"}
   - {pattern: "at this point in time", replacement: "now"}
@@ -24,7 +31,77 @@ entries:
   - {pattern: "for the purpose of", replacement: "for"}
   - {pattern: "with regard to", replacement: "about"}
   - {pattern: "a large number of", replacement: "many"}
+  # request frames: removal changes politeness → the meaning check makes these suggestions only
   - {pattern: "could you please", replacement: "", at_sentence_start: true, capitalize_next: true}
   - {pattern: "can you please", replacement: "", at_sentence_start: true, capitalize_next: true}
   - {pattern: "i would like you to", replacement: "", at_sentence_start: true, capitalize_next: true}
   - {pattern: "i want you to", replacement: "", at_sentence_start: true, capitalize_next: true}
+  # ---- wordy connectives (D64, 2026-11-21) ----
+  - {pattern: "owing to the fact that", replacement: "because"}
+  - {pattern: "in light of the fact that", replacement: "because"}
+  - {pattern: "for the reason that", replacement: "because"}
+  - {pattern: "in spite of the fact that", replacement: "although"}
+  - {pattern: "despite the fact that", replacement: "although"}
+  - {pattern: "at the present time", replacement: "now"}
+  - {pattern: "in the near future", replacement: "soon"}
+  - {pattern: "until such time as", replacement: "until"}
+  - {pattern: "prior to", replacement: "before"}
+  - {pattern: "subsequent to", replacement: "after"}
+  - {pattern: "with respect to", replacement: "about"}
+  - {pattern: "in relation to", replacement: "about"}
+  - {pattern: "on the subject of", replacement: "about"}
+  - {pattern: "on a daily basis", replacement: "daily"}
+  - {pattern: "on a weekly basis", replacement: "weekly"}
+  - {pattern: "on a monthly basis", replacement: "monthly"}
+  - {pattern: "on a regular basis", replacement: "regularly"}
+  - {pattern: "in close proximity to", replacement: "near"}
+  - {pattern: "a majority of", replacement: "most"}
+  - {pattern: "in the form of", replacement: "as"}
+  - {pattern: "first and foremost", replacement: "first"}
+  - {pattern: "as a matter of fact", replacement: "in fact"}
+  # ---- wordy verb phrases ----
+  - {pattern: "has the ability to", replacement: "can"}
+  - {pattern: "have the ability to", replacement: "can"}
+  - {pattern: "is able to", replacement: "can"}
+  - {pattern: "are able to", replacement: "can"}
+  - {pattern: "make an attempt to", replacement: "try to"}
+  - {pattern: "make a decision", replacement: "decide"}
+  - {pattern: "come to a conclusion", replacement: "conclude"}
+  - {pattern: "take into consideration", replacement: "consider"}
+  - {pattern: "give consideration to", replacement: "consider"}
+  - {pattern: "provide a summary of", replacement: "summarize"}
+  - {pattern: "give a summary of", replacement: "summarize"}
+  - {pattern: "write a summary of", replacement: "summarize"}
+  - {pattern: "provide an explanation of", replacement: "explain"}
+  - {pattern: "give an explanation of", replacement: "explain"}
+  - {pattern: "provide a description of", replacement: "describe"}
+  - {pattern: "give a description of", replacement: "describe"}
+  - {pattern: "conduct an analysis of", replacement: "analyze"}
+  - {pattern: "perform an analysis of", replacement: "analyze"}
+  - {pattern: "carry out an analysis of", replacement: "analyze"}
+  - {pattern: "make a comparison between", replacement: "compare"}
+  - {pattern: "provide a list of", replacement: "list"}
+  - {pattern: "in a clear and concise manner", replacement: "clearly and concisely"}
+  - {pattern: "in a concise manner", replacement: "concisely"}
+  - {pattern: "in a clear manner", replacement: "clearly"}
+  - {pattern: "in a detailed manner", replacement: "in detail"}
+  - {pattern: "in a simple manner", replacement: "simply"}
+  - {pattern: "in a professional manner", replacement: "professionally"}
+  # ---- redundant pairs ----
+  - {pattern: "end result", replacement: "result"}
+  - {pattern: "final outcome", replacement: "outcome"}
+  - {pattern: "past history", replacement: "history"}
+  - {pattern: "future plans", replacement: "plans"}
+  - {pattern: "brief summary", replacement: "summary"}
+  - {pattern: "basic fundamentals", replacement: "fundamentals"}
+  - {pattern: "completely eliminate", replacement: "eliminate"}
+  - {pattern: "absolutely essential", replacement: "essential"}
+  - {pattern: "advance planning", replacement: "planning"}
+  # ---- empty introductory phrases (sentence start only) ----
+  - {pattern: "it is important to note that", replacement: "", at_sentence_start: true, capitalize_next: true}
+  - {pattern: "it is worth noting that", replacement: "", at_sentence_start: true, capitalize_next: true}
+  - {pattern: "it is worth mentioning that", replacement: "", at_sentence_start: true, capitalize_next: true}
+  - {pattern: "keep in mind that", replacement: "", at_sentence_start: true, capitalize_next: true}
+  - {pattern: "bear in mind that", replacement: "", at_sentence_start: true, capitalize_next: true}
+  - {pattern: "as you may already know", replacement: "", at_sentence_start: true, capitalize_next: true}
+  - {pattern: "please note that", replacement: "", at_sentence_start: true, capitalize_next: true}

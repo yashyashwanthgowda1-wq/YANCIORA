@@ -1,0 +1,80 @@
+{
+  "run_id": "20261121T073031Z",
+  "kind": "everyday_prompt_evaluation",
+  "optimizer_method": "opt_rules_v4",
+  "meaning_method": "rules_v5",
+  "modes": [
+    "safe",
+    "balanced",
+    "aggressive"
+  ],
+  "tokenizers": [
+    {
+      "name": "cl100k_base",
+      "library": "tiktoken",
+      "version": "0.14.0"
+    },
+    {
+      "name": "o200k_base",
+      "library": "tiktoken",
+      "version": "0.14.0"
+    }
+  ],
+  "input": {
+    "path": "research\\datasets\\team_prompts\\prompts_v1.jsonl",
+    "sha256": "03d9603be73099b84ee35bd57bae3b8f3b3870a77adc5e11f769f3e32a8274d9",
+    "prompts": 100,
+    "provenance": [
+      "synthetic_ai_drafted"
+    ],
+    "review_status": [
+      "pending_review"
+    ]
+  },
+  "review_data": {
+    "en": {
+      "total": 17,
+      "pending_review": 17,
+      "approved": 0,
+      "rejected": 0,
+      "corrected": 0,
+      "auto_rules": 0
+    },
+    "hi": {
+      "total": 113,
+      "pending_review": 113,
+      "approved": 0,
+      "rejected": 0,
+      "corrected": 0,
+      "auto_rules": 0
+    },
+    "kn": {
+      "total": 90,
+      "pending_review": 90,
+      "approved": 0,
+      "rejected": 0,
+      "corrected": 0,
+      "auto_rules": 0
+    },
+    "ta": {
+      "total": 90,
+      "pending_review": 90,
+      "approved": 0,
+      "rejected": 0,
+      "corrected": 0,
+      "auto_rules": 0
+    },
+    "te": {
+      "total": 89,
+      "pending_review": 89,
+      "approved": 0,
+      "rejected": 0,
+      "corrected": 0,
+      "auto_rules": 0
+    }
+  },
+  "code_commit": "7a366a8",
+  "working_tree_dirty": true,
+  "elapsed_seconds": 4.3,
+  "note": "Synthetic AI-drafted prompts; tokenizer counts, not provider billing; rule-based meaning check."
+}

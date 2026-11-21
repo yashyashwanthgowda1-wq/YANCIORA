@@ -67,13 +67,14 @@ def test_negation_yaml_and_review_data_agree():
             assert (lx.language, lx.script, e.form, e.canonical, lx.id) in review, (lx.id, e.form)
 
 
-def test_english_phrase_list_is_mirrored_and_inactive():
+def test_english_phrase_list_is_approved_and_original_entries_mirrored():
+    # D64: the English phrase list is approved (active); its 11 original entries stay mirrored in
+    # the review dataset, whose entries remain pending_review.
     en_list = next(pl for pl in R.load_phrase_lists() if pl.id == "en")
-    assert en_list.review_status == "developer_curated"
-    mirrored = {e.original.lower() if e.original.islower() else e.expression for e in RV.load_all()["en"] if e.phrase_ref}
-    for entry in en_list.entries:
-        assert entry.pattern in {e.expression for e in RV.load_all()["en"] if e.phrase_ref}, entry.pattern
-    assert mirrored
+    assert en_list.review_status == "reviewed"
+    mirrored = {e.expression for e in RV.load_all()["en"] if e.phrase_ref}
+    assert len(mirrored) == 11 and mirrored <= {entry.pattern for entry in en_list.entries}
+    assert all(e.decision == "pending_review" for e in RV.load_all()["en"])
     politeness = [e for e in RV.load_all()["en"] if e.phrase_ref and e.changes_register == "yes"]
     assert len(politeness) == 4 and not any(e.safe_for_auto for e in politeness)
 

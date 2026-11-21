@@ -106,3 +106,14 @@ Savings are tokenizer counts, not provider billing, and on natural Indic text th
 of the token gap comes from how tokenizers split the script. The optimizer does not paraphrase or
 summarise. The meaning gate is rule-based (see `meaning_check.md`); `preserved` is not a guarantee
 of semantic equivalence.
+
+
+## opt_rules_v4 (2026-11-21, D64)
+
+- **English wording rules active** (`phrases/en.yaml`, `review_status: reviewed`, 76 rules). Each edit still has to save tokens under every selected encoding and pass the meaning check; politeness/request removals and opposite-word additions are suggestions only.
+- **Repeats with details** are removed in balanced/aggressive mode when every detail value remains in the first copy; the final meaning status is `at_risk`, with the removed details named. Safe mode only suggests them.
+- **Repeat matching** ignores case, whitespace and sentence-end punctuation. Short repeats (< 3 words) are removed only inside running text, never back to back (emphasis) or as a whole line (list items).
+- **Politeness by count:** a wording edit that lowers the count of a politeness/request marker is a suggestion.
+- **Suggestions after repeat removal** are judged against the optimized text; suggestions inside a removed repeat are dropped as superseded.
+- **Indic:** policy unchanged: formatting and repeats only; pending wording entries are aggressive-mode suggestions.
+- Evaluation: `research/PROMPT_EVAL_VERBOSE_V1.md` (synthetic verbose set) and the browser acceptance in `docs/integration/optimizer-acceptance/`.

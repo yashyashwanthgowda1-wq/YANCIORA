@@ -20,7 +20,7 @@ def test_optimize_endpoint():
     assert r.status_code == 200
     body = OptimizeResponse.model_validate(r.json())
     assert body.changed and body.optimized == "Please send ₹500 today!"
-    assert body.method == "opt_rules_v3" and body.mode == "safe"
+    assert body.method == "opt_rules_v4" and body.mode == "safe"
     assert body.token_counts[0].tokenizer.name == "fake_bytes"
     assert any("not provider billing" in w for w in body.warnings)
     assert body.limitations and body.meaning_check.status == "preserved"

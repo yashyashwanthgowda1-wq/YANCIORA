@@ -20,7 +20,7 @@ from pathlib import Path
 
 from app.core import text as T
 
-METHOD_ID = "opt_rules_v3"   # v3: review-data phrase rules, own-language rules only (D58-D59), per-edit records
+METHOD_ID = "opt_rules_v4"   # v3: review-data phrase rules, own-language rules only (D58-D59), per-edit records; v4: repeats with details removable in balanced when every value survives, punctuation-insensitive repeats, English list approved (D64)
 PHRASE_DIR = Path(__file__).with_name("phrases")
 MIN_DUPLICATE_WORDS = 3
 
@@ -144,8 +144,13 @@ def _units(src: str) -> list[tuple[int, int]]:
     return out
 
 
+_END_PUNCT = ".!?।॥。;:,"
+
+
 def _dup_key(s: str) -> str:
-    return T.normalize(s).casefold()
+    """Whitespace-, case- and end-punctuation-insensitive (opt_rules_v4): "Do not share it." and
+    "do not share it!" are the same instruction."""
+    return T.normalize(s).casefold().rstrip(_END_PUNCT + " ")
 
 
 def duplicate_sentences(src: str) -> list[Edit]:
@@ -155,10 +160,23 @@ def duplicate_sentences(src: str) -> list[Edit]:
     details inside) or only suggested."""
     seen: set[str] = set()
     edits = []
+    prev_key = None
     for s, e in _units(src):
         key = _dup_key(src[s:e])
-        if T.word_count(key) < MIN_DUPLICATE_WORDS:
+        words = T.word_count(key)
+        last, prev_key = prev_key, key
+        if words == 0:
             continue
+        if words < MIN_DUPLICATE_WORDS:
+            if key == last:
+                continue          # "Hurry. Hurry.": back-to-back short repeat = emphasis, kept
+            # opt_rules_v4: a short repeat ("Hello!" far from its first copy) is removable only
+            # inside running text; a short line on its own (a list item such as "Yes") stays.
+            ls = src.rfind("\n", 0, s) + 1
+            le = src.find("\n", e)
+            le = len(src) if le == -1 else le
+            if not src[ls:s].strip() and not src[e:le].strip():
+                continue
         if key in seen:
             start = s
             while start > 0 and src[start - 1].isspace():

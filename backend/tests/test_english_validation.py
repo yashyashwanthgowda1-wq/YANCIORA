@@ -54,9 +54,9 @@ def _run(text: str):
     return O.optimize(req, adapters=[FakeTokenizer()], phrase_lists=_as_reviewed())
 
 
-def test_matrix_covers_every_shipped_entry_and_all_contexts():
+def test_matrix_covers_the_original_entries_and_all_contexts():
     en = next(pl for pl in R.load_phrase_lists() if pl.id == "en")
-    assert {e.pattern for e in en.entries} == set(CONTEXTS)
+    assert set(CONTEXTS) <= {e.pattern for e in en.entries}   # D64 added more; see test_english_rules_v2
     want = {"negation", "condition", "constraint", "name", "question", "number/date", "tone"}
     assert all({c for c, _ in v} == want for v in CONTEXTS.values())
 
@@ -86,6 +86,6 @@ def test_request_frames_are_never_applied_automatically(pattern, context, text):
         assert r.requires_review and r.suggestions
 
 
-def test_shipped_english_list_still_inactive():
+def test_shipped_english_list_is_approved():
     en = next(pl for pl in R.load_phrase_lists() if pl.id == "en")
-    assert en.review_status == "developer_curated"
+    assert en.review_status == "reviewed" and en.language == "en"      # D64

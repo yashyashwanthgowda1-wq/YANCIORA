@@ -52,8 +52,9 @@ MODE_POLICY = {
              "punctuation and separator fixes that save tokens and pass the meaning check. "
              "Repeated sentences are offered as suggestions."),
     "balanced": ("Balanced (removes redundancy): safe fixes plus removal of exact repeats of an "
-                 "earlier sentence or line that contain no critical detail, plus phrase lists the "
-                 "team has reviewed. Repeats that contain details are suggestions."),
+                 "earlier sentence or line (also when the repeat holds numbers, negations or other "
+                 "details, as long as every value is still in the first copy), plus wording rules "
+                 "the team has approved. Each edit must save tokens and pass the meaning check."),
     "aggressive": ("Aggressive (may change meaning): everything in balanced, plus suggestions that "
                    "always need your approval: wording from phrase lists not yet reviewed and "
                    "script/transliteration variants. Nothing extra is applied automatically."),
@@ -184,6 +185,16 @@ def _only_lexicon_risk(mc) -> bool:
                                                               for r in mc.risks)
 
 
+REGISTER_DROP_RISK = ("Removes a politeness or request phrase (e.g. 'please', 'I would like you to'): "
+                      "the tone becomes more direct. Approve only if that is acceptable.")
+
+
+def _register_drop(before: str, after: str, markers) -> bool:
+    """True when any politeness/request marker occurs fewer times after the edit (count-based)."""
+    rb, ra = D.register_markers(before, markers=markers), D.register_markers(after, markers=markers)
+    return any(ra[k] < n for k, n in rb.items())
+
+
 def _repeat_only_loss(mc) -> bool:
     """Every difference is a lower count of a value that is still present (nothing added,
     nothing gone entirely) — what removing one copy of a repeated sentence does."""
@@ -290,8 +301,9 @@ def optimize(req: OptimizeRequest, adapters: list[TokenizerAdapter] | None = Non
     # repeat holds no critical detail (removing one copy of a detail lowers its count, which the
     # meaning gate reports as 'changed'); otherwise, and always in safe mode, a suggestion.
     duplicates = R.duplicate_sentences(src)
-    auto_dups = [e for e in duplicates if req.mode != "safe"
-                 and not any(_overlaps(e.start, e.end, d.start, d.end) for d in protected)]
+    # opt_rules_v4 (D64): in balanced/aggressive every exact repeat is tried automatically; one
+    # holding details is accepted only if each detail value is still present in the first copy.
+    auto_dups = [e for e in duplicates if req.mode != "safe"]
     review_only: list[tuple[str, R.Edit]] = [("duplicate_sentence", e) for e in duplicates
                                              if e not in auto_dups]
     for e in phrase_suggest:
@@ -332,7 +344,18 @@ def optimize(req: OptimizeRequest, adapters: list[TokenizerAdapter] | None = Non
             continue
         mc = gate(candidate)
         is_dup = e.rule == "duplicate_sentence"
-        if mc.status == "changed":
+        if not is_dup and mc.status != "changed" and _register_drop(_apply(src, accepted_edits), candidate, markers):
+            # opt_rules_v4: a wording edit that removes a politeness/request marker is a suggestion
+            # even when another copy of the marker remains elsewhere (set-based check would pass).
+            review_only.append(("at_risk_edit", e))
+            continue
+        if mc.status == "changed" and is_dup and _repeat_only_loss(mc):
+            lost = ", ".join(f"{f.category} '{f.example}'" for f in mc.findings if f.state == "missing")
+            accept(e, delta, "exact repeat of an earlier sentence; fewer tokens; every critical detail "
+                   f"is still in the first copy ({lost})", current, counts,
+                   "at_risk (repeat removed; every detail value still present)")
+            current = counts
+        elif mc.status == "changed":
             reject(e, "meaning", _meaning_summary(mc), delta, current, counts)
         elif mc.status == "preserved" or (is_dup and _only_lexicon_risk(mc)):
             accept(e, delta, "exact repeat of an earlier sentence; fewer tokens; meaning check "
@@ -354,7 +377,10 @@ def optimize(req: OptimizeRequest, adapters: list[TokenizerAdapter] | None = Non
         review_only.extend(("script_variant", e) for e in script_edits)
 
     # Suggestions: each measured on its own against the final optimized text.
+    removed_repeats = [a for a in accepted_edits if a.rule == "duplicate_sentence"]
     for kind, e in review_only:
+        if kind != "script_variant" and any(r.start <= e.start and e.end <= r.end for r in removed_repeats):
+            continue                     # inside a repeat that was removed: superseded, nothing to suggest
         if evaluated >= MAX_EVALUATED_EDITS:
             reject(e, "limit", f"not evaluated: limit of {MAX_EVALUATED_EDITS} edits per request")
             continue
@@ -375,10 +401,18 @@ def optimize(req: OptimizeRequest, adapters: list[TokenizerAdapter] | None = Non
             # writes it differently, so those markers are not compared (script-neutral checks are).
             mc = check_with_details(MeaningCheckRequest(original=src, candidate=candidate, language=req.language,
                                                         protected_terms=req.protected_terms), markers=())
+        elif removed_repeats and kind != "duplicate_sentence":
+            # Repeats are already removed in final_text; judge this suggestion against that text so
+            # the repeats' lower detail counts are not blamed on it (opt_rules_v4).
+            mc = check_with_details(MeaningCheckRequest(original=final_text, candidate=candidate,
+                                                        language=req.language, protected_terms=req.protected_terms))
         else:
             mc = gate(candidate)
         risks = list(mc.risks)
         status = mc.status
+        if kind != "duplicate_sentence" and status == "preserved" and kind != "script_variant"                 and _register_drop(final_text, candidate, markers):
+            status = "at_risk"
+            risks.append(REGISTER_DROP_RISK)
         if status == "changed" and kind == "duplicate_sentence" and _repeat_only_loss(mc):
             # Removing a repeated copy lowers a detail's count, but every value is still in the
             # first copy. Offered for review with the details named; never applied automatically.
@@ -411,8 +445,9 @@ def optimize(req: OptimizeRequest, adapters: list[TokenizerAdapter] | None = Non
     # Final safety net: the result must pass the gate and never cost more tokens.
     final_check = gate(final_text)
     before_counts = count(req.text)
-    dup_only_risk = _only_lexicon_risk(final_check) and any(
-        a.rule == "duplicate_sentence" for a in accepted_edits)
+    has_dup = any(a.rule == "duplicate_sentence" for a in accepted_edits)
+    repeat_loss = has_dup and final_check.status == "changed" and _repeat_only_loss(final_check)
+    dup_only_risk = has_dup and (_only_lexicon_risk(final_check) or repeat_loss)
     if accepted_edits and ((final_check.status != "preserved" and not dup_only_risk)
                            or any(final_counts[n] > before_counts[n] for n in final_counts)):
         for a in accepted:
@@ -422,6 +457,16 @@ def optimize(req: OptimizeRequest, adapters: list[TokenizerAdapter] | None = Non
         accepted, accepted_edits = [], []
         final_text, final_counts = req.text, before_counts
         final_check = gate(req.text)
+
+    if accepted_edits and repeat_loss:
+        # Removing repeated copies lowers detail counts; no value disappeared. Reported as
+        # at_risk (review recommended), never as 'preserved'.
+        lost = ", ".join(f"{f.category} '{f.example}'" for f in final_check.findings if f.state == "missing")
+        final_check = final_check.model_copy(update={
+            "status": "at_risk",
+            "risks": list(final_check.risks) + [
+                f"Repeated copies removed ({lost}). Every value is still present once; check the "
+                "repetition was not intentional emphasis."]})
 
     warnings = [BILLING_WARNING]
     skipped = sum(1 for x in rejected if x.stage == "limit")

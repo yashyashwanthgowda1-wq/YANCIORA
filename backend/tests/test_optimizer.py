@@ -107,7 +107,7 @@ def test_phrase_edits():
 
 def test_shipped_phrase_lists():
     lists = {pl.id: pl for pl in R.load_phrase_lists()}
-    assert lists["en"].review_status == "developer_curated" and lists["en"].entries
+    assert lists["en"].review_status == "reviewed" and lists["en"].entries      # approved (D64)
     for lang in ("kn", "hi", "ta", "te"):
         assert lists[lang].review_status == "unreviewed" and lists[lang].entries == ()
 
@@ -281,25 +281,48 @@ def test_duplicate_sentence_with_relative_day_names_the_date():
 
 
 def test_duplicate_sentence_with_number_is_reviewed_suggestion():
-    # opt_rules_v2: removing one copy lowers the number's count but the value stays in the first
+    # Safe mode: removing one copy lowers the number's count but the value stays in the first
     # copy, so the repeat is offered for review (at_risk, detail named), never applied.
     text = "Pay 5 people now please today. Pay 5 people now please today."
-    for mode in ("safe", "balanced"):
-        r = opt(text, mode=mode)
-        assert not r.changed and r.optimized == text
-        s = r.suggestions[0]
-        assert (s.kind, s.meaning_status) == ("duplicate_sentence", "at_risk")
-        assert any("number '5'" in x for x in s.risks)
+    r = opt(text, mode="safe")
+    assert not r.changed and r.optimized == text
+    s = r.suggestions[0]
+    assert (s.kind, s.meaning_status) == ("duplicate_sentence", "at_risk")
+    assert any("number '5'" in x for x in s.risks)
+
+
+def test_balanced_removes_repeat_with_details_when_every_value_survives():
+    # opt_rules_v4 (D64): balanced removes the repeat; every value stays in the first copy; the
+    # result is at_risk (never 'preserved') and names what was repeated.
+    text = "Pay 5 people now please today. Pay 5 people now please today."
+    r = opt(text, mode="balanced")
+    assert r.changed and r.optimized == "Pay 5 people now please today."
+    assert r.meaning_check.status == "at_risk"
+    assert any("Repeated copies removed" in x and "number '5'" in x for x in r.meaning_check.risks)
+    assert all(f.candidate_count >= 1 for f in r.meaning_check.findings)
+
+
+def test_balanced_never_removes_a_near_repeat_that_differs_in_a_detail():
+    text = "Pay 5 people now please today. Pay 6 people now please today."
+    r = opt(text, mode="balanced")
+    assert "Pay 5" in r.optimized and "Pay 6" in r.optimized
 
 
 # ---------- modes ----------
-def test_balanced_with_shipped_lists_applies_nothing_extra():
+def test_balanced_applies_approved_english_list():
+    # D64: the shipped English list is approved, so balanced mode rewrites wording.
     text = "In order to   win, practise."
     r = opt(text, mode="balanced")
-    assert r.optimized == "In order to win, practise."           # whitespace only
+    assert r.optimized == "To win, practise."
     en = next(p for p in r.phrase_lists if p.id == "en")
-    assert en.review_status == "developer_curated" and not en.applied
-    assert any("No approved wording rule" in w for w in r.warnings)
+    assert en.review_status == "reviewed" and en.applied
+    assert not any("No approved wording rule" in w for w in r.warnings)
+    assert opt(text, mode="safe").optimized == "In order to win, practise."   # safe: formatting only
+
+
+def test_balanced_indic_text_gets_no_english_wording_rules():
+    r = opt("ಸಭೆ in order to ನಾಳೆ ಇದೆ.", language="kn", mode="balanced")
+    assert "in order to" in r.optimized
 
 
 def test_balanced_applies_reviewed_list_but_safe_does_not():
