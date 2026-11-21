@@ -1,4 +1,4 @@
-PASS  Home loads and reports backend health  — {}
+PASS  Home loads and reports backend health  — {"healthCall":"GET /health → 200"}
 PASS  Counter · en · cl100k_base  — {"tokens":"26","tokenizer":"cl100k_base · tiktoken 0.14.0"}
 PASS  Counter · kn · cl100k_base  — {"tokens":"118","tokenizer":"cl100k_base · tiktoken 0.14.0"}
 PASS  Counter · hi · cl100k_base  — {"tokens":"64","tokenizer":"cl100k_base · tiktoken 0.14.0"}
@@ -17,7 +17,7 @@ PASS  Optimizer · hi  — {"accepted":"2","suggested":"0","finalStatus":"Preser
 PASS  Optimizer · ta  — {"accepted":"2","suggested":"0","finalStatus":"Preserved","reviewShown":false,"billingNote":true,"criticalDetailChips":1}
 PASS  Optimizer · te  — {"accepted":"2","suggested":"0","finalStatus":"Preserved","reviewShown":false,"billingNote":true,"criticalDetailChips":1}
 PASS  Optimizer · aggressive mode offers script variants as suggestions only (Kannada)  — {"optimizedStillKannada":true}
-PASS  Optimizer · Kannada at_risk edit is a suggestion that needs review  — {"suggested":"2","exclamationsKeptInOutput":true,"riskText":true}
+PASS  Optimizer · Kannada: formatting applied, repeat suggested (safe) and removed (balanced)  — {"safe":"193→190","balanced":["cl100k_base 193→129 (33.16%)","o200k_base 46→31 (32.61%)"],"chars":"120→77","script":"Knda","negationKept":true}
 PASS  Optimizer · gate rejects an edit that would change a detail  — {}
 PASS  Meaning check · user rewrite that drops a number and a negation is rejected  — {"rewrite1":"Your rewrite 1Pay before 5 pm.6-50.0%1.50Changed2 missing · 0 addedNot measuredRejected · details changedView","rewrite2":"Your rewrite 2Don't pay more than Rs. 500 before 5 pm.14+16.7%1.56Preserved0 missing · 0 addedNot measuredNo token savingView","findingsShown":true}
 PASS  Loading state and duplicate-submission prevention  — {"disabledWhileLoading":true,"spinnerShown":true,"optimizeRequests":1}
@@ -28,12 +28,15 @@ PASS  Meaning check (rules_v2) · unit change 5 kg → 5 g is rejected in the UI
 PASS  Research Dashboard shows the stored PostgreSQL run, values match the API  — {"runId":"20261120T214425Z","summaryRowsShown":10,"matchedApiValues":10,"problems":[]}
 PASS  Research Dashboard per-sample results load from the database  — {}
 PASS  Language Comparison loads an aligned FLORES-200 group from the database  — {"variantCards":5,"compareAligned":true,"languages":"en,kn,hi,ta,te"}
+PASS  Optimizer · decision: keep original, use optimized, approve a suggestion, copy  — {"optimizedTokens":"see screenshot","applyStatus":"preserved","tokens":"18→11","copiedShown":1}
+PASS  Linguistic Review · pending entries, approve/correct, sign, export (nothing approved on the server)  — {"exported":["kn-red-002:approved","kn-red-003:corrected"],"serverApproved":0,"serverPending":90}
+PASS  Optimizer · Kannada aggressive: pending wording is a labelled suggestion that needs approval  — {"suggestion":"ಮತ್ತೊಮ್ಮೆ ಮತ್ತೆ → ಮತ್ತೊಮ್ಮೆ (meaning_change)","meaning":"preserved"}
 PASS  Cost Calculator · backend estimate with optimized comparison (Kannada)  — {"inputTokens":24,"optimizedTokens":23,"total":0.0824,"savingsPct":0.12,"encoding":"o200k_base"}
 PASS  Model Recommendation · add user models, recommend, lock  — {"lowestCost":"test-model-cheap","claimedSupport":"test-model-kn","excluded":["test-model-cheap"]}
-PASS  AI Chat · analysis mode, approval, LLM not configured is explicit  — {"sessionId":"-1k6PK…","suggestions":1,"sendDisabled":true}
-PASS  Voice · text workflow: process, approve, final comparison; Vapi status  — {"tokens":19,"applied":2,"meaning":"at_risk","before":20,"after":18}
-PASS  Settings · real provider status (no secrets)  — {}
+PASS  AI Chat · analysis mode, approval, LLM not configured is explicit  — {"sessionId":"s77h4Z…","suggestions":0,"sendDisabled":true}
+PASS  Voice · text workflow: process, approve, final comparison; Vapi status  — {"tokens":19,"applied":2,"meaning":"preserved","before":20,"after":18}
+PASS  Settings · real provider status (no secrets)  — {"vapiSecretConfigured":true}
 
-35/35 passed; console errors: 2
+38/38 passed; console errors: 2
   console: http://localhost:3000/optimize :: Failed to load resource: net::ERR_CONNECTION_REFUSED
   console: http://localhost:3000/optimize :: Failed to load resource: the server responded with a status of 400 (Bad Request)

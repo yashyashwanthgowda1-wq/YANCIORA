@@ -1,0 +1,676 @@
+[
+ {
+  "prompt_id": "kn_native-02",
+  "variant": "kn_native",
+  "mode": "balanced",
+  "original": "ಪೈಥಾನ್‌ನಲ್ಲಿ ಒಂದು ಪಟ್ಟಿಯನ್ನು ಹೇಗೆ ವಿಂಗಡಿಸುವುದು? ಕೋಡ್ ಮಾತ್ರ ಕೊಡಿ.  ವಿವರಣೆ ಬೇಡ.",
+  "optimized": "ಪೈಥಾನ್‌ನಲ್ಲಿ ಒಂದು ಪಟ್ಟಿಯನ್ನು ಹೇಗೆ ವಿಂಗಡಿಸುವುದು? ಕೋಡ್ ಮಾತ್ರ ಕೊಡಿ. ವಿವರಣೆ ಬೇಡ.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    131,
+    130
+   ],
+   "o200k_base": [
+    28,
+    27
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_native-07",
+  "variant": "kn_native",
+  "mode": "balanced",
+  "original": "ಈ ಕೆಳಗಿನ ಹಂತಗಳನ್ನು ಅನುಸರಿಸಿ: ಮೊದಲು ಫಾರ್ಮ್ ತುಂಬಿ, ನಂತರ ಸಹಿ ಮಾಡಿ. ಸಹಿ ಮಾಡದೆ ಕಳುಹಿಸಬೇಡಿ.\n\n\n\nಸಹಿ ಮಾಡದೆ ಕಳುಹಿಸಬೇಡಿ.",
+  "optimized": "ಈ ಕೆಳಗಿನ ಹಂತಗಳನ್ನು ಅನುಸರಿಸಿ: ಮೊದಲು ಫಾರ್ಮ್ ತುಂಬಿ, ನಂತರ ಸಹಿ ಮಾಡಿ. ಸಹಿ ಮಾಡದೆ ಕಳುಹಿಸಬೇಡಿ.\n\n\n\nಸಹಿ ಮಾಡದೆ ಕಳುಹಿಸಬೇಡಿ.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    179,
+    179
+   ],
+   "o200k_base": [
+    50,
+    50
+   ]
+  },
+  "accepted": [],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "\n\n\n\nಸಹಿ ಮಾಡದೆ ಕಳುಹಿಸಬೇಡಿ.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_native-10",
+  "variant": "kn_native",
+  "mode": "balanced",
+  "original": "ನೀವು ಒಬ್ಬ ಸಹಾಯಕ ಶಿಕ್ಷಕರು.  ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ. ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ.",
+  "optimized": "ನೀವು ಒಬ್ಬ ಸಹಾಯಕ ಶಿಕ್ಷಕರು. ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ. ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    138,
+    137
+   ],
+   "o200k_base": [
+    23,
+    22
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " ಕನ್ನಡದಲ್ಲಿ ಮಾತ್ರ ಉತ್ತರಿಸಿ.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_native-08",
+  "variant": "hi_native",
+  "mode": "balanced",
+  "original": "कल दोपहर 3 बजे क्लाइंट के साथ मीटिंग तय करो और   सबको याद दिला देना।",
+  "optimized": "कल दोपहर 3 बजे क्लाइंट के साथ मीटिंग तय करो और सबको याद दिला देना।",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    68,
+    67
+   ],
+   "o200k_base": [
+    26,
+    25
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_native-10",
+  "variant": "hi_native",
+  "mode": "balanced",
+  "original": "आप एक मददगार सहायक हैं। हमेशा हिंदी में जवाब दें!!! हमेशा हिंदी में जवाब दें!!!",
+  "optimized": "आप एक मददगार सहायक हैं। हमेशा हिंदी में जवाब दें!!! हमेशा हिंदी में जवाब दें!!!",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    76,
+    76
+   ],
+   "o200k_base": [
+    20,
+    20
+   ]
+  },
+  "accepted": [],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " हमेशा हिंदी में जवाब दें!!!",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_native-05",
+  "variant": "ta_native",
+  "mode": "balanced",
+  "original": "சென்னையிலிருந்து மதுரைக்கு இரண்டு நாள் பயணம் திட்டமிடுங்கள்.  ரயிலில் செல்ல விரும்புகிறேன்.",
+  "optimized": "சென்னையிலிருந்து மதுரைக்கு இரண்டு நாள் பயணம் திட்டமிடுங்கள். ரயிலில் செல்ல விரும்புகிறேன்.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    118,
+    117
+   ],
+   "o200k_base": [
+    28,
+    27
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_native-10",
+  "variant": "ta_native",
+  "mode": "balanced",
+  "original": "நீங்கள் ஒரு உதவியாளர். தமிழில் மட்டும் பதில் சொல்லுங்கள்.\n\n\n\nதமிழில் மட்டும் பதில் சொல்லுங்கள்.",
+  "optimized": "நீங்கள் ஒரு உதவியாளர். தமிழில் மட்டும் பதில் சொல்லுங்கள்.\n\n\n\nதமிழில் மட்டும் பதில் சொல்லுங்கள்.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    118,
+    118
+   ],
+   "o200k_base": [
+    25,
+    25
+   ]
+  },
+  "accepted": [],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "\n\n\n\nதமிழில் மட்டும் பதில் சொல்லுங்கள்.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_native-05",
+  "variant": "te_native",
+  "mode": "balanced",
+  "original": "హైదరాబాద్ నుండి విశాఖపట్నం కు మూడు రోజుల పర్యటన ప్లాన్ చేయండి.  బడ్జెట్ ₹15,000.",
+  "optimized": "హైదరాబాద్ నుండి విశాఖపట్నం కు మూడు రోజుల పర్యటన ప్లాన్ చేయండి. బడ్జెట్ ₹15,000.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    127,
+    126
+   ],
+   "o200k_base": [
+    30,
+    29
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_native-10",
+  "variant": "te_native",
+  "mode": "balanced",
+  "original": "మీరు ఒక సహాయకుడు. తెలుగులో మాత్రమే సమాధానం ఇవ్వండి!!! తెలుగులో మాత్రమే సమాధానం ఇవ్వండి!!!",
+  "optimized": "మీరు ఒక సహాయకుడు. తెలుగులో మాత్రమే సమాధానం ఇవ్వండి!!! తెలుగులో మాత్రమే సమాధానం ఇవ్వండి!!!",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    147,
+    147
+   ],
+   "o200k_base": [
+    27,
+    27
+   ]
+  },
+  "accepted": [],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " తెలుగులో మాత్రమే సమాధానం ఇవ్వండి!!!",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_roman-07",
+  "variant": "kn_roman",
+  "mode": "balanced",
+  "original": "form fill maadi, aamele sign maadi. sign maadade kalisabedi.   sign maadade kalisabedi.",
+  "optimized": "form fill maadi, aamele sign maadi. sign maadade kalisabedi. sign maadade kalisabedi.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    31,
+    30
+   ],
+   "o200k_base": [
+    30,
+    29
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "   sign maadade kalisabedi.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "kn_roman-07",
+  "variant": "kn_roman_auto",
+  "mode": "balanced",
+  "original": "form fill maadi, aamele sign maadi. sign maadade kalisabedi.   sign maadade kalisabedi.",
+  "optimized": "form fill maadi, aamele sign maadi. sign maadade kalisabedi. sign maadade kalisabedi.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    31,
+    30
+   ],
+   "o200k_base": [
+    30,
+    29
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "   sign maadade kalisabedi.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_roman-10",
+  "variant": "hi_roman",
+  "mode": "balanced",
+  "original": "aap ek helpful assistant hain. hamesha hindi mein jawab dijiye. hamesha hindi mein jawab dijiye.",
+  "optimized": "aap ek helpful assistant hain. hamesha hindi mein jawab dijiye. hamesha hindi mein jawab dijiye.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    30,
+    30
+   ],
+   "o200k_base": [
+    27,
+    27
+   ]
+  },
+  "accepted": [],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " hamesha hindi mein jawab dijiye.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "hi_roman-10",
+  "variant": "hi_roman_auto",
+  "mode": "balanced",
+  "original": "aap ek helpful assistant hain. hamesha hindi mein jawab dijiye. hamesha hindi mein jawab dijiye.",
+  "optimized": "aap ek helpful assistant hain. hamesha hindi mein jawab dijiye. hamesha hindi mein jawab dijiye.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    30,
+    30
+   ],
+   "o200k_base": [
+    27,
+    27
+   ]
+  },
+  "accepted": [],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": " hamesha hindi mein jawab dijiye.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_roman-07",
+  "variant": "ta_roman",
+  "mode": "balanced",
+  "original": "password ah yaar kittayum share panna koodathu.  password ah yaar kittayum share panna koodathu.",
+  "optimized": "password ah yaar kittayum share panna koodathu. password ah yaar kittayum share panna koodathu.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    31,
+    30
+   ],
+   "o200k_base": [
+    29,
+    28
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  password ah yaar kittayum share panna koodathu.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "ta_roman-07",
+  "variant": "ta_roman_auto",
+  "mode": "balanced",
+  "original": "password ah yaar kittayum share panna koodathu.  password ah yaar kittayum share panna koodathu.",
+  "optimized": "password ah yaar kittayum share panna koodathu. password ah yaar kittayum share panna koodathu.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    31,
+    30
+   ],
+   "o200k_base": [
+    29,
+    28
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  password ah yaar kittayum share panna koodathu.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_roman-07",
+  "variant": "te_roman",
+  "mode": "balanced",
+  "original": "password evariki cheppakandi, vaddu.   password evariki cheppakandi, vaddu.",
+  "optimized": "password evariki cheppakandi, vaddu. password evariki cheppakandi, vaddu.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    27,
+    26
+   ],
+   "o200k_base": [
+    25,
+    24
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "   password evariki cheppakandi, vaddu.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "te_roman-07",
+  "variant": "te_roman_auto",
+  "mode": "balanced",
+  "original": "password evariki cheppakandi, vaddu.   password evariki cheppakandi, vaddu.",
+  "optimized": "password evariki cheppakandi, vaddu. password evariki cheppakandi, vaddu.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    27,
+    26
+   ],
+   "o200k_base": [
+    25,
+    24
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "   password evariki cheppakandi, vaddu.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "code_mixed-07",
+  "variant": "code_mixed",
+  "mode": "balanced",
+  "original": "இந்த email-ஐ 3 lines-ல summarize பண்ணுங்க.   Important dates மட்டும் வைங்க.",
+  "optimized": "இந்த email-ஐ 3 lines-ல summarize பண்ணுங்க. Important dates மட்டும் வைங்க.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    51,
+    50
+   ],
+   "o200k_base": [
+    22,
+    21
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "code_mixed-07",
+  "variant": "code_mixed_auto",
+  "mode": "balanced",
+  "original": "இந்த email-ஐ 3 lines-ல summarize பண்ணுங்க.   Important dates மட்டும் வைங்க.",
+  "optimized": "இந்த email-ஐ 3 lines-ல summarize பண்ணுங்க. Important dates மட்டும் வைங்க.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    51,
+    50
+   ],
+   "o200k_base": [
+    22,
+    21
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "   ",
+    "after": " "
+   }
+  ],
+  "suggestions": [],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en-07",
+  "variant": "en",
+  "mode": "balanced",
+  "original": "Follow these steps: fill the form, then sign it. Do not send it without signing.  Do not send it without signing.",
+  "optimized": "Follow these steps: fill the form, then sign it. Do not send it without signing. Do not send it without signing.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    27,
+    26
+   ],
+   "o200k_base": [
+    27,
+    26
+   ]
+  },
+  "accepted": [
+   {
+    "rule": "ws_inline",
+    "risk": "lossless",
+    "before": "  ",
+    "after": " "
+   }
+  ],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "  Do not send it without signing.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ },
+ {
+  "prompt_id": "en-10",
+  "variant": "en",
+  "mode": "balanced",
+  "original": "You are a helpful tutor. Answer only in English.\n\n\n\nAnswer only in English.",
+  "optimized": "You are a helpful tutor. Answer only in English.\n\n\n\nAnswer only in English.",
+  "meaning_status": "preserved",
+  "token_counts": {
+   "cl100k_base": [
+    16,
+    16
+   ],
+   "o200k_base": [
+    16,
+    16
+   ]
+  },
+  "accepted": [],
+  "suggestions": [
+   {
+    "kind": "duplicate_sentence",
+    "risk": "redundancy",
+    "before": "\n\n\n\nAnswer only in English.",
+    "after": "",
+    "status": "at_risk",
+    "source": null
+   }
+  ],
+  "rejected_by_meaning": []
+ }
+]

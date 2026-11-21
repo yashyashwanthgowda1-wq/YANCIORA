@@ -183,7 +183,7 @@ await step("Optimizer · aggressive mode offers script variants as suggestions o
   await waitTokenizers("#op-tok");
   await page.fill('textarea[aria-label="Original prompt"]', TEXT.kn);
   await page.selectOption("#op-lang", "kn");
-  await page.getByLabel(/Allow script or language alternatives/).check();
+  await page.getByRole("button", { name: "Aggressive", exact: true }).click();
   await page.getByRole("button", { name: "Optimize", exact: true }).click();
   await page.waitForSelector("text=Optimization result", { timeout: 60000 });
   const body = await page.textContent("body");
@@ -192,21 +192,31 @@ await step("Optimizer · aggressive mode offers script variants as suggestions o
     /script_variant/.test(body) && /ದಯವಿಟ್ಟು/.test(optimized), { optimizedStillKannada: /ದಯವಿಟ್ಟು/.test(optimized) });
   await shot("09-optimizer-aggressive-kannada");
 });
-await step("Optimizer · Kannada at_risk edit is a suggestion that needs review", async () => {
+await step("Optimizer · Kannada: formatting applied, repeat suggested (safe) and removed (balanced)", async () => {
   await page.goto(`${BASE}/optimize`, { waitUntil: "networkidle" });
   await waitTokenizers("#op-tok");
-  const text = "ದಯವಿಟ್ಟು​   ವರದಿ ಕಳುಹಿಸಿ!!!!!! ಹೆಸರು ಸೇರಿಸಬೇಡಿ";
+  const text = "ದಯವಿಟ್ಟು\u200b   ವರದಿ ಕಳುಹಿಸಿ!!!!!! ಹೆಸರು ಸೇರಿಸಬೇಡಿ.\n\n\n\nದಯವಿಟ್ಟು ಚಿಕ್ಕ ಅಂಶಗಳಲ್ಲಿ ಉತ್ತರಿಸಿ.\nದಯವಿಟ್ಟು ಚಿಕ್ಕ ಅಂಶಗಳಲ್ಲಿ ಉತ್ತರಿಸಿ.";
   await page.fill('textarea[aria-label="Original prompt"]', text);
   await page.selectOption("#op-lang", "kn");
+  const r1 = page.waitForResponse((r) => r.url().includes("/api/optimize"), { timeout: 60000 });
   await page.getByRole("button", { name: "Optimize", exact: true }).click();
+  const safe = await (await r1).json();
   await page.waitForSelector("text=Optimization result", { timeout: 60000 });
-  const body = await page.textContent("body");
-  const optimized = await page.locator(".side-by-side > div").nth(1).locator("p").textContent();
-  const suggested = (await page.locator("section.panel h2", { hasText: "Suggestions — not applied" }).textContent()).replace(/\D+/g, "");
-  record("Optimizer · Kannada at_risk edit is a suggestion that needs review",
-    Number(suggested) >= 1 && /Needs your review/.test(body) && /At risk/.test(body) && optimized.includes("!!!!!!"),
-    { suggested, exclamationsKeptInOutput: optimized.includes("!!!!!!"), riskText: /not yet approved by native speakers/.test(body) });
-  await shot("09b-optimizer-kannada-at-risk-suggestion");
+  const safeBody = await page.textContent("body");
+  await page.getByRole("button", { name: "Balanced", exact: true }).click();
+  const r2 = page.waitForResponse((r) => r.url().includes("/api/optimize"), { timeout: 60000 });
+  await page.getByRole("button", { name: "Optimize", exact: true }).click();
+  const bal = await (await r2).json();
+  await page.waitForSelector("text=Balanced (removes redundancy)", { timeout: 60000 });
+  const repeat = "ದಯವಿಟ್ಟು ಚಿಕ್ಕ ಅಂಶಗಳಲ್ಲಿ ಉತ್ತರಿಸಿ.";
+  const count = (t, x) => t.split(x).length - 1;
+  record("Optimizer · Kannada: formatting applied, repeat suggested (safe) and removed (balanced)",
+    !safe.optimized.includes("!!!!!!") && count(safe.optimized, repeat) === 2 && safe.suggestions.some((x) => x.kind === "duplicate_sentence")
+      && /Needs your review/.test(safeBody) && count(bal.optimized, repeat) === 1 && bal.optimized.includes("ಸೇರಿಸಬೇಡಿ")
+      && bal.token_counts.length === 2 && bal.meaning_check.status !== "changed",
+    { safe: `${safe.token_counts[0].before}→${safe.token_counts[0].after}`, balanced: bal.token_counts.map((t) => `${t.tokenizer.name} ${t.before}→${t.after} (${t.saved_pct}%)`),
+      chars: `${bal.original_chars}→${bal.optimized_chars}`, script: bal.script, negationKept: bal.optimized.includes("ಸೇರಿಸಬೇಡಿ") });
+  await shot("09b-optimizer-kannada-modes");
 });
 await step("Optimizer · gate rejects an edit that would change a detail", async () => {
   await page.goto(`${BASE}/optimize`, { waitUntil: "networkidle" });
@@ -298,13 +308,13 @@ await step("Optimizer · balanced mode reports that no phrase list is reviewed",
   await waitTokenizers("#op-tok");
   await page.fill('textarea[aria-label="Original prompt"]', "Practise daily in order to   improve.");
   await page.selectOption("#op-lang", "en");
-  await page.getByRole("button", { name: "+ Reviewed phrase lists" }).click();
+  await page.getByRole("button", { name: "Balanced", exact: true }).click();
   await page.getByRole("button", { name: "Optimize", exact: true }).click();
   await page.waitForSelector("text=Optimization result", { timeout: 60000 });
   const body = await page.textContent("body");
   const optimized = await page.locator(".side-by-side > div").nth(1).locator("p").textContent();
   record("Optimizer · balanced mode reports that no phrase list is reviewed",
-    /balanced mode/.test(body) && /No reviewed phrase list/.test(body) && /in order to/.test(optimized),
+    /balanced mode/.test(body) && /No approved wording rule/.test(body) && /in order to/.test(optimized),
     { phraseNotApplied: /in order to/.test(optimized), listStatus: /en — developer curated, 11 entries, not applied/.test(body) });
   await shot("14-optimizer-balanced-mode");
 });
@@ -379,6 +389,92 @@ await step("Language Comparison loads an aligned FLORES-200 group from the datab
   await shot("18-compare-aligned-sample-loader");
 });
 
+
+// ---------------------------------------------------------------- Token minimization milestone: accept / reject
+await step("Optimizer · decision: keep original, use optimized, approve a suggestion, copy", async () => {
+  await page.goto(`${BASE}/optimize`, { waitUntil: "networkidle" });
+  await waitTokenizers("#op-tok");
+  const text = "Please   answer in short points!!!\nDo not include names.\nPlease answer in short points!!!";
+  await page.fill('textarea[aria-label="Original prompt"]', text);
+  await page.selectOption("#op-lang", "en");
+  await page.getByRole("button", { name: "Optimize", exact: true }).click();
+  await page.waitForSelector("section[aria-label='Your decision']", { timeout: 60000 });
+  const finalText = async () => (await page.locator("[aria-label='Final prompt']").textContent()) ?? "";
+  const optimized = await finalText();
+  await page.getByLabel("Keep the original").check();
+  const original = await finalText();
+  await page.getByLabel(/Use the optimized version/).check();
+  const box = page.locator("section[aria-label='Your decision'] input[type=checkbox]").first();
+  await box.check();
+  const resp = page.waitForResponse((r) => r.url().includes("/api/pipeline/apply"), { timeout: 60000 });
+  await page.getByRole("button", { name: "Apply approved suggestions" }).click();
+  const ap = await (await resp).json();
+  await page.waitForTimeout(300);
+  const approvedText = await finalText();
+  await page.locator("section[aria-label='Your decision']").getByRole("button", { name: /Copy/ }).click();
+  const copiedShown = await page.locator("section[aria-label='Your decision']").getByRole("button", { name: /Copied/ }).count();
+  record("Optimizer · decision: keep original, use optimized, approve a suggestion, copy",
+    original === text && optimized !== text && !optimized.includes("   ") && approvedText.split("Please answer in short points").length - 1 === 1
+      && approvedText.includes("Do not include names") && ap.allowed === true,
+    { optimizedTokens: "see screenshot", applyStatus: ap.meaning_check.status, tokens: `${ap.tokens_before}→${ap.tokens_after}`, copiedShown });
+  await shot("24-optimizer-decision-panel");
+});
+
+// ---------------------------------------------------------------- Linguistic review milestone
+await step("Linguistic Review · pending entries, approve/correct, sign, export (nothing approved on the server)", async () => {
+  await page.goto(`${BASE}/review`, { waitUntil: "networkidle" });
+  await page.waitForSelector("section[aria-label^='Entry kn-']", { timeout: 60000 });
+  await page.evaluate(() => { localStorage.removeItem("redutax:review:kn"); localStorage.removeItem("redutax:review:reviewer"); });
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("section[aria-label^='Entry kn-']", { timeout: 60000 });
+  const body0 = await page.textContent("body");
+  await page.selectOption("#rv-cat", "redundant_expression");
+  const card = page.locator("section[aria-label='Entry kn-red-002']");
+  await card.getByRole("button", { name: "Approve" }).click();
+  await card.getByRole("radiogroup", { name: "Keeps the meaning" }).getByLabel("yes").check();
+  await card.getByRole("radiogroup", { name: "Changes tone or politeness" }).getByLabel("no").check();
+  await card.getByRole("radiogroup", { name: "Safe to apply without asking" }).getByLabel("no").check();
+  const card2 = page.locator("section[aria-label='Entry kn-red-003']");
+  await card2.getByRole("button", { name: "Correct" }).click();
+  const exportBtn = page.getByRole("button", { name: /Export 2 decisions/ });
+  const blockedWithoutName = await exportBtn.isDisabled();
+  const warnText = await page.textContent("section[aria-label='Export decisions']");
+  await card2.locator("input[id^='c-pr-']").fill("ಕೆಳಗಿನ");
+  await page.fill("#rv-name", "Browser Test Reviewer");
+  const dl = page.waitForEvent("download", { timeout: 30000 });
+  await exportBtn.click();
+  const download = await dl;
+  const fs = await import("node:fs");
+  const file = JSON.parse(fs.readFileSync(await download.path(), "utf8"));
+  const server = await (await fetch("http://localhost:8000/api/linguistics/review/kn")).json();
+  record("Linguistic Review · pending entries, approve/correct, sign, export (nothing approved on the server)",
+    /pending review/i.test(body0) && blockedWithoutName && /Enter your name/.test(warnText) && /needs the corrected/.test(warnText)
+      && file.schema === "redutax-review-decisions/v1" && file.reviewer === "Browser Test Reviewer" && file.decisions.length === 2
+      && file.decisions.some((d) => d.id === "kn-red-003" && d.correction?.proposed === "ಕೆಳಗಿನ")
+      && file.decisions.some((d) => d.id === "kn-red-002" && d.safe_for_auto === false)
+      && (server.counts.approved ?? 0) === 0 && server.counts.pending_review === server.entries.length,
+    { exported: file.decisions.map((d) => `${d.id}:${d.decision}`), serverApproved: server.counts.approved ?? 0, serverPending: server.counts.pending_review });
+  await page.evaluate(() => localStorage.removeItem("redutax:review:kn"));
+  await shot("25-linguistic-review");
+});
+await step("Optimizer · Kannada aggressive: pending wording is a labelled suggestion that needs approval", async () => {
+  await page.goto(`${BASE}/optimize`, { waitUntil: "networkidle" });
+  await waitTokenizers("#op-tok");
+  await page.fill('textarea[aria-label="Original prompt"]', "ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಮತ್ತೆ ವರದಿ ಕಳುಹಿಸಿ.");
+  await page.selectOption("#op-lang", "kn");
+  await page.getByRole("button", { name: "Aggressive", exact: true }).click();
+  const resp = page.waitForResponse((r) => r.url().includes("/api/optimize"), { timeout: 60000 });
+  await page.getByRole("button", { name: "Optimize", exact: true }).click();
+  const res = await (await resp).json();
+  await page.waitForSelector("text=Optimization result", { timeout: 60000 });
+  const body = await page.textContent("body");
+  const s = res.suggestions.find((x) => x.source === "kn-red-002");
+  record("Optimizer · Kannada aggressive: pending wording is a labelled suggestion that needs approval",
+    res.optimized === "ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಮತ್ತೆ ವರದಿ ಕಳುಹಿಸಿ." && s && s.kind === "unreviewed_phrase" && s.approval_required
+      && /May change meaning/.test(body) && /Approval required/.test(body) && /pending native-speaker review/.test(body),
+    { suggestion: s ? `${s.before} → ${s.after} (${s.risk})` : null, meaning: res.meaning_check.status });
+  await shot("26-optimizer-kannada-pending-wording");
+});
 
 // ---------------------------------------------------------------- Phase 2 screens (Features 4, 7, 8, 9, 10)
 // Test models are user-entered fixtures with made-up ids and prices (not real model data).
@@ -462,8 +558,10 @@ await step("Voice · text workflow: process, approve, final comparison; Vapi sta
   const ap = await (await resp2).json();
   await page.waitForSelector("text=Original vs final prompt", { timeout: 30000 });
   const body = await page.textContent("body");
+  const vs = await (await fetch("http://localhost:8000/api/vapi/status")).json();   // real backend state
+  const vapiText = vs.auth_configured ? /Backend ready/.test(body) && /bearer/.test(body) : /Secret not set/.test(body);
   record("Voice · text workflow: process, approve, final comparison; Vapi status",
-    a.language === "hi" && ap.allowed === true && /Implemented/.test(body) && /Secret not set/.test(body) && /Not yet/.test(body),
+    a.language === "hi" && ap.allowed === true && /Implemented/.test(body) && vapiText && /Not yet/.test(body) && vs.live_call_verified === false,
     { tokens: a.tokens.token_count, applied: ap.applied_count, meaning: ap.meaning_check.status, before: ap.tokens_before, after: ap.tokens_after });
   await shot("22-voice-workflow");
 });
@@ -472,7 +570,10 @@ await step("Settings · real provider status (no secrets)", async () => {
   await page.waitForSelector("text=Chat LLM provider", { timeout: 30000 });
   await page.waitForFunction(() => /analysis mode/.test(document.body.innerText), null, { timeout: 30000 });
   const body = await page.textContent("body");
-  record("Settings · real provider status (no secrets)", /Prepared · secret not set/.test(body) && /Empty · add verified models/.test(body) && !/sk-|npg_/.test(body), {});
+  const vs = await (await fetch("http://localhost:8000/api/vapi/status")).json();   // real backend state
+  const vapiText = vs.auth_configured ? /Secret configured/.test(body) : /Prepared · secret not set/.test(body);
+  record("Settings · real provider status (no secrets)", vapiText && /Empty · add verified models/.test(body) && !/sk-|npg_/.test(body),
+    { vapiSecretConfigured: vs.auth_configured });
   await shot("23-settings-providers");
 });
 

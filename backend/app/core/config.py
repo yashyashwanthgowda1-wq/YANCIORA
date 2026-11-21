@@ -31,7 +31,9 @@ def _load_dotenv(path: Path) -> None:
 class Settings(BaseModel):
     env: Literal["development", "test", "production"] = "development"
     log_level: str = "INFO"
-    cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:3000"])
+    # Both local addresses: a page opened at 127.0.0.1:3000 is a different origin from localhost:3000,
+    # and without it every API call is blocked by the browser (tokenizers "unavailable").
+    cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:3000", "http://127.0.0.1:3000"])
     database_url: str | None = None
     # ---- Phase 2 providers (all optional; features degrade to their documented fallbacks) ----
     # Model registry (verified model metadata and prices; ships empty).

@@ -34,6 +34,7 @@ for the frontend is a separate document given to Grok; its API types must match 
 - `backend/app/optimizer/` — optimizer rules (`rules.py`) and phrase lists (`phrases/*.yaml`)
 - `backend/app/services/` — counting/compare, dataset validation, benchmark logic, meaning
   check, optimizer, models/cost/recommendation, pipeline, chat (framework-free)
+- `backend/app/linguistics/` — native-speaker review datasets (`review/*.yaml`, all `pending_review` until a named reviewer approves; merge with `research/scripts/apply_review_decisions.py`, guide `docs/LINGUISTIC_REVIEW_GUIDE.md`)
 - `backend/app/integrations/` — external adapters: `providers.py` (OpenAI-compatible STT/LLM), `vapi.py` (webhook auth + tools). Inactive until env vars are set; tested with mocks only
 - `backend/app/api/` — FastAPI routes; `errors.py` gives `{"error": {"code", "message"}}`
 - `backend/app/schemas.py` — request/response models (mirror of the frontend's `lib/api/types.ts`)

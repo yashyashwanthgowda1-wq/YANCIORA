@@ -20,7 +20,7 @@ def test_optimize_endpoint():
     assert r.status_code == 200
     body = OptimizeResponse.model_validate(r.json())
     assert body.changed and body.optimized == "Please send ₹500 today!"
-    assert body.method == "opt_rules_v1" and body.mode == "safe"
+    assert body.method == "opt_rules_v3" and body.mode == "safe"
     assert body.token_counts[0].tokenizer.name == "fake_bytes"
     assert any("not provider billing" in w for w in body.warnings)
     assert body.limitations and body.meaning_check.status == "preserved"
@@ -28,11 +28,14 @@ def test_optimize_endpoint():
 
 def test_optimize_endpoint_suggestion_shape():
     r = client.post("/api/optimize", json={
-        "text": "ದಯವಿಟ್ಟು ಕಳುಹಿಸಿ!!!", "language": "kn", "tokenizers": ["fake_bytes"]})
+        "text": "ದಯವಿಟ್ಟು ವರದಿ ಕಳುಹಿಸಿ. ದಯವಿಟ್ಟು ವರದಿ ಕಳುಹಿಸಿ.", "language": "kn",
+        "tokenizers": ["fake_bytes"]})                       # safe mode: repeats are suggestions
     body = r.json()
     assert r.status_code == 200 and body["requires_review"] is True and body["changed"] is False
     s = body["suggestions"][0]
-    assert s["kind"] == "at_risk_edit" and s["requires_review"] is True and s["risks"]
+    assert s["kind"] == "duplicate_sentence" and s["requires_review"] is True and s["risks"]
+    assert body["original_chars"] == body["optimized_chars"] and body["chars_saved"] == 0
+    assert body["script"] == "Knda" and body["mode_policy"].startswith("Safe")
 
 
 @pytest.mark.parametrize("payload", [

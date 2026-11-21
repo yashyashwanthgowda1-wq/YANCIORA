@@ -58,11 +58,19 @@ export function TokenizerSelect({ id, value, onChange, disabled }: {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [list.join(","), value]);
   return (
-    <select id={id} className="select" value={value} onChange={(e) => onChange(e.target.value)} disabled={disabled || loading || !!error || !list.length}>
-      {loading && <option value="">Loading tokenizers…</option>}
-      {error && <option value="">Tokenizers unavailable</option>}
-      {list.map((t) => <option key={t} value={t}>{t}</option>)}
-    </select>
+    <>
+      <select id={id} className="select" value={value} onChange={(e) => onChange(e.target.value)} disabled={disabled || loading || !!error || !list.length}>
+        {loading && <option value="">Loading tokenizers…</option>}
+        {error && <option value="">Tokenizers unavailable</option>}
+        {list.map((t) => <option key={t} value={t}>{t}</option>)}
+      </select>
+      {error && (
+        <p className="field-error" role="alert">
+          Could not load tokenizers from the backend: {error instanceof Error ? error.message : String(error)}.
+          Check that the API is running and that this page&apos;s address ({typeof window !== "undefined" ? window.location.origin : "this origin"}) is allowed in REDUTAX_CORS_ORIGINS.
+        </p>
+      )}
+    </>
   );
 }
 

@@ -9,7 +9,7 @@ def test_defaults_without_env():
     assert s.env == "development"
     assert s.log_level == "INFO"
     assert s.database_url is None
-    assert s.cors_origins == ["http://localhost:3000"]
+    assert s.cors_origins == ["http://localhost:3000", "http://127.0.0.1:3000"]
 
 
 def test_reads_env_values():

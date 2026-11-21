@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { api, errorHint } from "@/lib/api/client";
 import { loadCustomModels, saveCustomModels } from "@/lib/models";
+import { editsForDecision } from "@/lib/optimize";
 import type { ModelSpec } from "@/lib/api/types";
 
 // Phase 2 (Features 4, 7, 8, 9, 10): client paths/methods, error hints, user-model storage.
@@ -90,5 +91,20 @@ describe("user-entered models (browser storage)", () => {
   it("returns [] when storage is unavailable", () => {
     vi.stubGlobal("window", { get localStorage() { throw new Error("blocked"); } });
     expect(loadCustomModels()).toEqual([]);
+  });
+});
+
+describe("optimizer decision edits", () => {
+  const e = (start: number, end: number, after = "") => ({ rule: "r", start, end, before: "", after, token_delta: null, reason: "" });
+  it("keeps accepted edits and adds approved suggestions in order", () => {
+    expect(editsForDecision([e(10, 12, " ")], [e(0, 3)])).toEqual([{ start: 0, end: 3, after: "" }, { start: 10, end: 12, after: " " }]);
+  });
+  it("drops an accepted edit that lies inside an approved suggestion (backend refuses overlaps)", () => {
+    const out = editsForDecision([e(5, 7, " "), e(20, 22, " ")], [e(4, 15)]);
+    expect(out).toEqual([{ start: 4, end: 15, after: "" }, { start: 20, end: 22, after: " " }]);
+    for (let i = 1; i < out.length; i++) expect(out[i]!.start).toBeGreaterThanOrEqual(out[i - 1]!.end);
+  });
+  it("with nothing approved returns the accepted edits unchanged", () => {
+    expect(editsForDecision([e(1, 2), e(3, 4)], [])).toHaveLength(2);
   });
 });

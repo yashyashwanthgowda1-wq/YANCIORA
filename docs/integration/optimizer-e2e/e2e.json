@@ -1,0 +1,335 @@
+{
+  "base": "http://127.0.0.1:3000",
+  "pass": 13,
+  "total": 16,
+  "consoleErrors": [],
+  "rows": [
+    {
+      "lang": "kn",
+      "mode": "Safe",
+      "ok": true,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": "kn",
+      "tokens": {
+        "cl100k_base": "100->100 (saved 0)",
+        "o200k_base": "25->25 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "ನಾಳೆ ಸಭೆಗೆ ಬರುವುದಿಲ್ಲ. ವರದಿಯನ್ನು ಸಂಜೆ 5 ಗಂಟೆಯೊಳಗೆ ಕಳುಹಿಸಿ.",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 0,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "datetime:ನಾಳೆ",
+        "negation:ಬರುವುದಿಲ್ಲ",
+        "number:5"
+      ]
+    },
+    {
+      "lang": "kn",
+      "mode": "Balanced",
+      "ok": true,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": "kn",
+      "tokens": {
+        "cl100k_base": "100->100 (saved 0)",
+        "o200k_base": "25->25 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "ನಾಳೆ ಸಭೆಗೆ ಬರುವುದಿಲ್ಲ. ವರದಿಯನ್ನು ಸಂಜೆ 5 ಗಂಟೆಯೊಳಗೆ ಕಳುಹಿಸಿ.",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 0,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "datetime:ನಾಳೆ",
+        "negation:ಬರುವುದಿಲ್ಲ",
+        "number:5"
+      ]
+    },
+    {
+      "lang": "kn",
+      "mode": "Aggressive",
+      "ok": true,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": "kn",
+      "tokens": {
+        "cl100k_base": "100->100 (saved 0)",
+        "o200k_base": "25->25 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "ನಾಳೆ ಸಭೆಗೆ ಬರುವುದಿಲ್ಲ. ವರದಿಯನ್ನು ಸಂಜೆ 5 ಗಂಟೆಯೊಳಗೆ ಕಳುಹಿಸಿ.",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 2,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "datetime:ನಾಳೆ",
+        "negation:ಬರುವುದಿಲ್ಲ",
+        "number:5"
+      ]
+    },
+    {
+      "lang": "hi",
+      "mode": "Safe",
+      "ok": true,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": "hi",
+      "tokens": {
+        "cl100k_base": "50->50 (saved 0)",
+        "o200k_base": "16->16 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "कृपया इस रिपोर्ट का तीन बिंदुओं में सारांश दें।",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 0,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "number:तीन"
+      ]
+    },
+    {
+      "lang": "hi",
+      "mode": "Balanced",
+      "ok": true,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": "hi",
+      "tokens": {
+        "cl100k_base": "50->50 (saved 0)",
+        "o200k_base": "16->16 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "कृपया इस रिपोर्ट का तीन बिंदुओं में सारांश दें।",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 0,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "number:तीन"
+      ]
+    },
+    {
+      "lang": "hi",
+      "mode": "Aggressive",
+      "ok": true,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": "hi",
+      "tokens": {
+        "cl100k_base": "50->50 (saved 0)",
+        "o200k_base": "16->16 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "कृपया इस रिपोर्ट का तीन बिंदुओं में सारांश दें।",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 5,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "number:तीन"
+      ]
+    },
+    {
+      "lang": "ta",
+      "mode": "Safe",
+      "ok": true,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": "ta",
+      "tokens": {
+        "cl100k_base": "71->71 (saved 0)",
+        "o200k_base": "16->16 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "இந்த அறிக்கையை மூன்று முக்கிய அம்சங்களாக சுருக்கவும்.",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 0,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "number:மூன்று"
+      ]
+    },
+    {
+      "lang": "ta",
+      "mode": "Balanced",
+      "ok": true,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": "ta",
+      "tokens": {
+        "cl100k_base": "71->71 (saved 0)",
+        "o200k_base": "16->16 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "இந்த அறிக்கையை மூன்று முக்கிய அம்சங்களாக சுருக்கவும்.",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 0,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "number:மூன்று"
+      ]
+    },
+    {
+      "lang": "ta",
+      "mode": "Aggressive",
+      "ok": true,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": "ta",
+      "tokens": {
+        "cl100k_base": "71->71 (saved 0)",
+        "o200k_base": "16->16 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "இந்த அறிக்கையை மூன்று முக்கிய அம்சங்களாக சுருக்கவும்.",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 5,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "number:மூன்று"
+      ]
+    },
+    {
+      "lang": "te",
+      "mode": "Safe",
+      "ok": true,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": "te",
+      "tokens": {
+        "cl100k_base": "93->93 (saved 0)",
+        "o200k_base": "18->18 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "ఈ నివేదికను మూడు ముఖ్యమైన అంశాలుగా సంక్షిప్తం చేయండి.",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 0,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "number:మూడు"
+      ]
+    },
+    {
+      "lang": "te",
+      "mode": "Balanced",
+      "ok": true,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": "te",
+      "tokens": {
+        "cl100k_base": "93->93 (saved 0)",
+        "o200k_base": "18->18 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "ఈ నివేదికను మూడు ముఖ్యమైన అంశాలుగా సంక్షిప్తం చేయండి.",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 0,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "number:మూడు"
+      ]
+    },
+    {
+      "lang": "te",
+      "mode": "Aggressive",
+      "ok": true,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": "te",
+      "tokens": {
+        "cl100k_base": "93->93 (saved 0)",
+        "o200k_base": "18->18 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "ఈ నివేదికను మూడు ముఖ్యమైన అంశాలుగా సంక్షిప్తం చేయండి.",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 4,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "number:మూడు"
+      ]
+    },
+    {
+      "lang": "en",
+      "mode": "Safe",
+      "ok": false,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": null,
+      "tokens": {
+        "cl100k_base": "18->18 (saved 0)",
+        "o200k_base": "18->18 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "Please summarize this report in three bullet points and do not remove any important dates or figures.",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 0,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "number:three",
+        "negation:not"
+      ]
+    },
+    {
+      "lang": "en",
+      "mode": "Balanced",
+      "ok": false,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": null,
+      "tokens": {
+        "cl100k_base": "18->18 (saved 0)",
+        "o200k_base": "18->18 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "Please summarize this report in three bullet points and do not remove any important dates or figures.",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 0,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "number:three",
+        "negation:not"
+      ]
+    },
+    {
+      "lang": "en",
+      "mode": "Aggressive",
+      "ok": false,
+      "ui_tokenizer": "cl100k_base",
+      "detected_language": null,
+      "tokens": {
+        "cl100k_base": "18->18 (saved 0)",
+        "o200k_base": "18->18 (saved 0)"
+      },
+      "changed": false,
+      "optimized": "Please summarize this report in three bullet points and do not remove any important dates or figures.",
+      "accepted": [],
+      "suggestions": [],
+      "rejected": 0,
+      "meaning": "preserved",
+      "risks": [],
+      "critical_details": [
+        "number:three",
+        "negation:not"
+      ]
+    },
+    {
+      "editing": true
+    }
+  ]
+}

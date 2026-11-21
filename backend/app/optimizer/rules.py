@@ -1,8 +1,13 @@
-"""Optimizer rules (Feature 3, opt_rules_v1).
+"""Optimizer rules (Feature 3, opt_rules_v2).
 
 Each rule is a pure function that *proposes* edits against the NFC original text. Rules never
 apply edits and never decide acceptance: the optimizer service measures every edit with the
 tokenizers and passes it through the Feature 5 meaning gate.
+
+v2 (2026-11-21): repeated punctuation is shortened by deleting the extra characters (so the
+first '?' — a protected question mark — is never touched); decorative separator runs
+(----, ====, ────) are shortened to three characters; repeated sentences are found anywhere in
+the text (not only back to back), including unpunctuated lines, from 3 words.
 
 Changing behaviour here means bumping METHOD_ID.
 """
@@ -15,9 +20,9 @@ from pathlib import Path
 
 from app.core import text as T
 
-METHOD_ID = "opt_rules_v1"
+METHOD_ID = "opt_rules_v3"   # v3: review-data phrase rules, own-language rules only (D58-D59), per-edit records
 PHRASE_DIR = Path(__file__).with_name("phrases")
-MIN_DUPLICATE_WORDS = 5
+MIN_DUPLICATE_WORDS = 3
 
 
 @dataclass(frozen=True)
@@ -26,6 +31,7 @@ class Edit:
     start: int       # offsets into the NFC original
     end: int
     after: str
+    source: str = ""     # review-dataset entry id for phrase rules
 
 
 @dataclass(frozen=True)
@@ -34,6 +40,7 @@ class PhraseEntry:
     replacement: str
     at_sentence_start: bool
     capitalize_next: bool
+    id: str = ""          # review-dataset entry id (empty for phrases/*.yaml entries)
 
 
 @dataclass(frozen=True)
@@ -42,6 +49,7 @@ class PhraseList:
     language: str
     review_status: str
     entries: tuple[PhraseEntry, ...]
+    suggest_only: bool = False   # approved, but not safe for automatic use (e.g. changes register)
 
     @property
     def reviewed(self) -> bool:
@@ -55,6 +63,9 @@ _TRAILING_WS = re.compile(r"[ \t ]+(?=\r?\n)")
 _INLINE_WS = re.compile(r"(?<=\S)[ \t ]{2,}(?=\S)|(?<=\S)\t(?=\S)")
 _PUNCT_RUN = re.compile(r"([!?,;])\1+")
 _DOT_RUN = re.compile(r"\.{4,}")
+# Decorative separators only. Not '#' (heading level), '*' (ratings, emphasis), '_' (fill-in
+# blanks) or '~' (code fences): shortening those can change meaning or structure.
+_SEPARATOR_RUN = re.compile(r"([-=─━═])\1{3,}")
 
 
 def invisible_chars(src: str) -> list[Edit]:
@@ -78,12 +89,20 @@ def ws_inline(src: str) -> list[Edit]:
 
 
 def punct_repeat(src: str) -> list[Edit]:
-    edits = [Edit("punct_repeat", m.start(), m.end(), m.group(1)) for m in _PUNCT_RUN.finditer(src)]
-    edits += [Edit("punct_repeat", m.start(), m.end(), "...") for m in _DOT_RUN.finditer(src)]
+    """Delete the extra characters of a run ('!!!' → '!', '.....' → '...'). The first character
+    stays in place, so a protected question mark is never inside the edit."""
+    edits = [Edit("punct_repeat", m.start() + 1, m.end(), "") for m in _PUNCT_RUN.finditer(src)]
+    edits += [Edit("punct_repeat", m.start() + 3, m.end(), "") for m in _DOT_RUN.finditer(src)]
     return sorted(edits, key=lambda e: e.start)
 
 
-SAFE_RULES = (invisible_chars, ws_lines, ws_inline, punct_repeat)
+def separator_runs(src: str) -> list[Edit]:
+    """'----------' → '---', '=======' → '===' (Markdown rules, table rows, underlines keep
+    working with three characters)."""
+    return [Edit("separator_runs", m.start() + 3, m.end(), "") for m in _SEPARATOR_RUN.finditer(src)]
+
+
+SAFE_RULES = (invisible_chars, ws_lines, ws_inline, punct_repeat, separator_runs)
 
 
 def safe_edits(src: str) -> list[Edit]:
@@ -109,20 +128,67 @@ def _sentences(src: str) -> list[tuple[int, int]]:
     return out
 
 
+def _units(src: str) -> list[tuple[int, int]]:
+    """Sentences (ending in . ! ? ।) and non-empty unpunctuated lines, as (start, end) with
+    surrounding whitespace excluded."""
+    out, start = [], 0
+    for m in list(_BOUNDARY.finditer(src)) + [None]:
+        end = len(src) if m is None else (m.start() if m.group(0) == "\n" else m.end())
+        seg = src[start:end]
+        if seg.strip():
+            lead = len(seg) - len(seg.lstrip())
+            out.append((start + lead, start + len(seg.rstrip())))
+        if m is None:
+            break
+        start = m.end()
+    return out
+
+
+def _dup_key(s: str) -> str:
+    return T.normalize(s).casefold()
+
+
 def duplicate_sentences(src: str) -> list[Edit]:
-    """Back-to-back identical sentences with >= MIN_DUPLICATE_WORDS words. Proposes deleting
-    the second copy (with the whitespace before it). Never applied automatically."""
-    sents = _sentences(src)
+    """A sentence or line that exactly repeats an earlier one (whitespace- and case-insensitive)
+    with >= MIN_DUPLICATE_WORDS words. Proposes deleting the later copy together with the
+    whitespace before it. The service decides whether it is applied (balanced mode, no critical
+    details inside) or only suggested."""
+    seen: set[str] = set()
     edits = []
-    for (ps, pe), (cs, ce) in zip(sents, sents[1:]):
-        a, b = T.normalize(src[ps:pe]), T.normalize(src[cs:ce])
-        if src[pe:cs].strip() == "" and a == b and T.word_count(a) >= MIN_DUPLICATE_WORDS:
-            edits.append(Edit("duplicate_sentence", pe, ce, ""))
+    for s, e in _units(src):
+        key = _dup_key(src[s:e])
+        if T.word_count(key) < MIN_DUPLICATE_WORDS:
+            continue
+        if key in seen:
+            start = s
+            while start > 0 and src[start - 1].isspace():
+                start -= 1
+            edits.append(Edit("duplicate_sentence", start, e, ""))
+        else:
+            seen.add(key)
     return edits
 
 
 # ---------- phrase lists (balanced / aggressive, reviewed lists only) ----------
 _WORDCHAR = r"\wऀ-෿"   # letters/digits plus Indic blocks (marks are not \w)
+
+
+@lru_cache
+def review_phrase_lists(directory: Path | None = None) -> tuple[PhraseList, ...]:
+    """Phrase lists built from the native-speaker review datasets (D58): per language an
+    approved list (applied in balanced mode), an approved-but-suggestion-only list (e.g. register
+    changes) and a pending list (aggressive-mode suggestions labelled pending review)."""
+    from app.linguistics.review import REVIEW_DIR, phrase_rule_sets
+
+    out = []
+    for lang, sets in phrase_rule_sets(directory or REVIEW_DIR).items():
+        for key, status, suggest_only in (("auto", "reviewed", False), ("approved_suggest", "reviewed", True),
+                                          ("pending", "unreviewed", False)):
+            entries = tuple(PhraseEntry(e.original, e.proposed, e.proposed == "", e.proposed == "", e.id)
+                            for e in sets[key])
+            if entries:
+                out.append(PhraseList(f"review-{lang}-{key}", lang, status, entries, suggest_only))
+    return tuple(out)
 
 
 @lru_cache
@@ -172,10 +238,10 @@ def phrase_edits(src: str, lists: list[PhraseList]) -> list[Edit]:
                     continue
                 if e.replacement:
                     edits.append(Edit(f"phrase:{pl.id}", m.start(), m.end(),
-                                      _keep_case(m.group(0), e.replacement)))
+                                      _keep_case(m.group(0), e.replacement), e.id))
                     continue
                 nxt = re.compile(r"\s+(\S)").match(src, m.end())
                 if not nxt:
                     continue
-                edits.append(Edit(f"phrase:{pl.id}", m.start(), nxt.end(), nxt.group(1).upper()))
+                edits.append(Edit(f"phrase:{pl.id}", m.start(), nxt.end(), nxt.group(1).upper(), e.id))
     return sorted(edits, key=lambda x: (x.start, x.rule))

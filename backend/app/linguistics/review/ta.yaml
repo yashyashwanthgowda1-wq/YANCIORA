@@ -1,0 +1,116 @@
+# Tamil linguistic review dataset (REDUTAX, schema redutax-review/v1).
+# EVERY entry was drafted by an AI assistant (Claude) on 2026-11-21 and is `pending_review`:
+# no Tamil speaker has checked it. See kn.yaml for how pending entries are used (protective only).
+schema: redutax-review/v1
+language: ta
+default_provenance: "Drafted by AI assistant (Claude) from general Tamil grammar knowledge, 2026-11-21; not verified by a native speaker."
+entries:
+  # ---------- negation (mirrors negation.yaml ta-Taml / ta-Latn, plus gaps) ----------
+  - {id: ta-neg-001, category: negation, script: Taml, expression: "இல்லை", gloss: "not / there is no", match: substring, detect_as: negation, canonical: "ta:illai", lexicon_ref: ta-Taml, review: {decision: pending_review}}
+  - {id: ta-neg-002, category: negation, script: Taml, expression: "ில்லை", gloss: "negative ending (e.g. வரவில்லை, did not come)", match: substring, detect_as: negation, canonical: "ta:illai", lexicon_ref: ta-Taml, review: {decision: pending_review}}
+  - {id: ta-neg-003, category: negation, script: Taml, expression: "வேண்டாம்", gloss: "do not / don't want", match: substring, detect_as: negation, canonical: "ta:vendam", lexicon_ref: ta-Taml, review: {decision: pending_review}}
+  - {id: ta-neg-004, category: negation, script: Taml, expression: "அல்ல", gloss: "is not (identity)", match: substring, detect_as: negation, canonical: "ta:alla", lexicon_ref: ta-Taml, review: {decision: pending_review}}
+  - {id: ta-neg-005, category: negation, script: Taml, expression: "ாது", gloss: "negative ending (e.g. முடியாது, cannot)", match: suffix, detect_as: negation, canonical: "ta:aadhu", lexicon_ref: ta-Taml, review: {decision: pending_review}}
+  - {id: ta-neg-006, category: negation, script: Taml, expression: "கூடாது", gloss: "must not (e.g. செய்யக்கூடாது)", match: suffix, detect_as: negation, canonical: "ta:koodathu", note: "Gap: not in negation.yaml as its own form (ாது ending covers it).", review: {decision: pending_review}}
+  - {id: ta-neg-007, category: negation, script: Latn, expression: "illai", gloss: "Romanized இல்லை", match: suffix, detect_as: negation, canonical: "ta:illai", lexicon_ref: ta-Latn, review: {decision: pending_review}}
+  - {id: ta-neg-008, category: negation, script: Latn, expression: "illa", gloss: "Romanized இல்ல (colloquial)", match: suffix, detect_as: negation, canonical: "ta:illai", lexicon_ref: ta-Latn, review: {decision: pending_review}}
+  - {id: ta-neg-009, category: negation, script: Latn, expression: "vendam", gloss: "Romanized வேண்டாம்", match: word, detect_as: negation, canonical: "ta:vendam", lexicon_ref: ta-Latn, review: {decision: pending_review}}
+  - {id: ta-neg-010, category: negation, script: Latn, expression: "venda", gloss: "Romanized வேண்டா (colloquial)", match: word, detect_as: negation, canonical: "ta:vendam", lexicon_ref: ta-Latn, review: {decision: pending_review}}
+
+  # ---------- conditions ----------
+  - {id: ta-cond-001, category: condition, script: Taml, expression: "ால்", gloss: "conditional ending 'if …' (e.g. வந்தால், if (s/he) comes)", match: suffix, detect_as: condition, canonical: "ta:if", note: "Same ending as the instrumental case (-ஆல், 'by'); protective over-detection.", review: {decision: pending_review}}
+  - {id: ta-cond-002, category: condition, script: Taml, expression: "என்றால்", gloss: "if (lit. if (one) says)", match: word, detect_as: condition, canonical: "ta:if", review: {decision: pending_review}}
+  - {id: ta-cond-003, category: condition, script: Taml, expression: "ஒருவேளை", gloss: "in case / perhaps", match: word, detect_as: condition, canonical: "ta:in_case", review: {decision: pending_review}}
+  - {id: ta-cond-004, category: condition, script: Taml, expression: "இல்லையென்றால்", gloss: "otherwise / if not", match: word, detect_as: condition, canonical: "ta:otherwise", review: {decision: pending_review}}
+  - {id: ta-cond-005, category: condition, script: Taml, expression: "வரை", gloss: "until", match: suffix, detect_as: condition, canonical: "ta:until", review: {decision: pending_review}}
+  - {id: ta-cond-006, category: condition, script: Taml, expression: "தவிர", gloss: "except", match: word, detect_as: condition, canonical: "ta:except", review: {decision: pending_review}}
+
+  # ---------- constraints ----------
+  - {id: ta-cons-001, category: constraint, script: Taml, expression: "மட்டும்", gloss: "only", match: suffix, detect_as: constraint, canonical: "ta:only", review: {decision: pending_review}}
+  - {id: ta-cons-002, category: constraint, script: Taml, expression: "குறைந்தது", gloss: "at least", match: word, detect_as: constraint, canonical: "ta:at_least", review: {decision: pending_review}}
+  - {id: ta-cons-003, category: constraint, script: Taml, expression: "குறைந்தபட்சம்", gloss: "minimum", match: word, detect_as: constraint, canonical: "ta:at_least", review: {decision: pending_review}}
+  - {id: ta-cons-004, category: constraint, script: Taml, expression: "அதிகபட்சம்", gloss: "maximum / at most", match: word, detect_as: constraint, canonical: "ta:at_most", review: {decision: pending_review}}
+  - {id: ta-cons-005, category: constraint, script: Taml, expression: "கட்டாயம்", gloss: "mandatory", match: substring, detect_as: constraint, canonical: "ta:required", review: {decision: pending_review}}
+  - {id: ta-cons-006, category: constraint, script: Taml, expression: "வேண்டும்", gloss: "must / should (e.g. செய்யவேண்டும்)", match: suffix, detect_as: constraint, canonical: "ta:must", review: {decision: pending_review}}
+  - {id: ta-cons-007, category: constraint, script: Taml, expression: "எப்போதும்", gloss: "always", match: word, detect_as: constraint, canonical: "ta:always", review: {decision: pending_review}}
+  - {id: ta-cons-008, category: constraint, script: Taml, expression: "அனைத்து", gloss: "all", match: word, detect_as: constraint, canonical: "ta:all", review: {decision: pending_review}}
+
+  # ---------- questions ----------
+  - {id: ta-q-001, category: question, script: Taml, expression: "என்ன", gloss: "what", match: word, detect_as: question, canonical: "ta:what", review: {decision: pending_review}}
+  - {id: ta-q-002, category: question, script: Taml, expression: "யார்", gloss: "who", match: word, detect_as: question, canonical: "ta:who", review: {decision: pending_review}}
+  - {id: ta-q-003, category: question, script: Taml, expression: "எப்போது", gloss: "when", match: word, detect_as: question, canonical: "ta:when", review: {decision: pending_review}}
+  - {id: ta-q-004, category: question, script: Taml, expression: "எங்கே", gloss: "where", match: word, detect_as: question, canonical: "ta:where", review: {decision: pending_review}}
+  - {id: ta-q-005, category: question, script: Taml, expression: "ஏன்", gloss: "why", match: word, detect_as: question, canonical: "ta:why", review: {decision: pending_review}}
+  - {id: ta-q-006, category: question, script: Taml, expression: "எப்படி", gloss: "how", match: word, detect_as: question, canonical: "ta:how", review: {decision: pending_review}}
+  - {id: ta-q-007, category: question, script: Taml, expression: "எவ்வளவு", gloss: "how much", match: word, detect_as: question, canonical: "ta:how_much", review: {decision: pending_review}}
+  - {id: ta-q-008, category: question, script: Taml, expression: "எந்த", gloss: "which", match: word, detect_as: question, canonical: "ta:which", review: {decision: pending_review}}
+
+  # ---------- names and entities ----------
+  - {id: ta-ent-001, category: entity, script: Taml, expression: "திரு", gloss: "Mr. / Thiru", match: word, detect_as: entity, canonical: "title", note: "Often written திரு. — the full stop is a separator.", review: {decision: pending_review}}
+  - {id: ta-ent-002, category: entity, script: Taml, expression: "திருமதி", gloss: "Mrs.", match: word, detect_as: entity, canonical: "title", review: {decision: pending_review}}
+  - {id: ta-ent-003, category: entity, script: Taml, expression: "டாக்டர்", gloss: "Doctor", match: word, detect_as: entity, canonical: "title", review: {decision: pending_review}}
+
+  # ---------- quantities, dates and numbers ----------
+  - {id: ta-num-001, category: quantity, script: Taml, expression: "ஒன்று", gloss: "one", match: word, detect_as: number, canonical: "1", review: {decision: pending_review}}
+  - {id: ta-num-002, category: quantity, script: Taml, expression: "இரண்டு", gloss: "two", match: word, detect_as: number, canonical: "2", review: {decision: pending_review}}
+  - {id: ta-num-003, category: quantity, script: Taml, expression: "மூன்று", gloss: "three", match: word, detect_as: number, canonical: "3", review: {decision: pending_review}}
+  - {id: ta-num-004, category: quantity, script: Taml, expression: "நான்கு", gloss: "four", match: word, detect_as: number, canonical: "4", review: {decision: pending_review}}
+  - {id: ta-num-005, category: quantity, script: Taml, expression: "ஐந்து", gloss: "five", match: word, detect_as: number, canonical: "5", review: {decision: pending_review}}
+  - {id: ta-num-006, category: quantity, script: Taml, expression: "ஆறு", gloss: "six (also 'river')", match: word, detect_as: number, canonical: "6", review: {decision: pending_review}}
+  - {id: ta-num-007, category: quantity, script: Taml, expression: "ஏழு", gloss: "seven", match: word, detect_as: number, canonical: "7", review: {decision: pending_review}}
+  - {id: ta-num-008, category: quantity, script: Taml, expression: "எட்டு", gloss: "eight", match: word, detect_as: number, canonical: "8", review: {decision: pending_review}}
+  - {id: ta-num-009, category: quantity, script: Taml, expression: "ஒன்பது", gloss: "nine", match: word, detect_as: number, canonical: "9", review: {decision: pending_review}}
+  - {id: ta-num-010, category: quantity, script: Taml, expression: "பத்து", gloss: "ten", match: word, detect_as: number, canonical: "10", review: {decision: pending_review}}
+  - {id: ta-num-011, category: quantity, script: Taml, expression: "நூறு", gloss: "hundred", match: word, detect_as: number, canonical: "100", review: {decision: pending_review}}
+  - {id: ta-num-012, category: quantity, script: Taml, expression: "ஆயிரம்", gloss: "thousand", match: word, detect_as: number, canonical: "1000", review: {decision: pending_review}}
+  - {id: ta-num-013, category: quantity, script: Taml, expression: "லட்சம்", gloss: "lakh", match: word, detect_as: number, canonical: "100000", review: {decision: pending_review}}
+  - {id: ta-num-014, category: quantity, script: Taml, expression: "இலட்சம்", gloss: "lakh (formal spelling)", match: word, detect_as: number, canonical: "100000", review: {decision: pending_review}}
+  - {id: ta-num-015, category: quantity, script: Taml, expression: "கோடி", gloss: "crore", match: word, detect_as: number, canonical: "10000000", review: {decision: pending_review}}
+  - {id: ta-unit-001, category: quantity, script: Taml, expression: "கிலோ", gloss: "kilo", match: word, detect_as: number, canonical: "unit:kg", review: {decision: pending_review}}
+  - {id: ta-unit-002, category: quantity, script: Taml, expression: "கிராம்", gloss: "gram", match: word, detect_as: number, canonical: "unit:g", review: {decision: pending_review}}
+  - {id: ta-unit-003, category: quantity, script: Taml, expression: "லிட்டர்", gloss: "litre", match: word, detect_as: number, canonical: "unit:l", review: {decision: pending_review}}
+  - {id: ta-unit-004, category: quantity, script: Taml, expression: "நாள்", gloss: "day", match: word, detect_as: number, canonical: "unit:day", review: {decision: pending_review}}
+  - {id: ta-unit-005, category: quantity, script: Taml, expression: "மணி", gloss: "hour / o'clock", match: word, detect_as: number, canonical: "unit:hour", review: {decision: pending_review}}
+  - {id: ta-month-01, category: quantity, script: Taml, expression: "ஜனவரி", gloss: "January", match: word, detect_as: datetime, canonical: "month:1", review: {decision: pending_review}}
+  - {id: ta-month-02, category: quantity, script: Taml, expression: "பிப்ரவரி", gloss: "February", match: word, detect_as: datetime, canonical: "month:2", review: {decision: pending_review}}
+  - {id: ta-month-03, category: quantity, script: Taml, expression: "மார்ச்", gloss: "March", match: word, detect_as: datetime, canonical: "month:3", review: {decision: pending_review}}
+  - {id: ta-month-04, category: quantity, script: Taml, expression: "ஏப்ரல்", gloss: "April", match: word, detect_as: datetime, canonical: "month:4", review: {decision: pending_review}}
+  - {id: ta-month-05, category: quantity, script: Taml, expression: "மே", gloss: "May", match: word, detect_as: datetime, canonical: "month:5", review: {decision: pending_review}}
+  - {id: ta-month-06, category: quantity, script: Taml, expression: "ஜூன்", gloss: "June", match: word, detect_as: datetime, canonical: "month:6", review: {decision: pending_review}}
+  - {id: ta-month-07, category: quantity, script: Taml, expression: "ஜூலை", gloss: "July", match: word, detect_as: datetime, canonical: "month:7", review: {decision: pending_review}}
+  - {id: ta-month-08, category: quantity, script: Taml, expression: "ஆகஸ்ட்", gloss: "August", match: word, detect_as: datetime, canonical: "month:8", review: {decision: pending_review}}
+  - {id: ta-month-09, category: quantity, script: Taml, expression: "செப்டம்பர்", gloss: "September", match: word, detect_as: datetime, canonical: "month:9", review: {decision: pending_review}}
+  - {id: ta-month-10, category: quantity, script: Taml, expression: "அக்டோபர்", gloss: "October", match: word, detect_as: datetime, canonical: "month:10", review: {decision: pending_review}}
+  - {id: ta-month-11, category: quantity, script: Taml, expression: "நவம்பர்", gloss: "November", match: word, detect_as: datetime, canonical: "month:11", review: {decision: pending_review}}
+  - {id: ta-month-12, category: quantity, script: Taml, expression: "டிசம்பர்", gloss: "December", match: word, detect_as: datetime, canonical: "month:12", review: {decision: pending_review}}
+  - {id: ta-time-001, category: quantity, script: Taml, expression: "நாளை", gloss: "tomorrow", match: word, detect_as: datetime, canonical: "day:+1", review: {decision: pending_review}}
+  - {id: ta-time-002, category: quantity, script: Taml, expression: "இன்று", gloss: "today", match: word, detect_as: datetime, canonical: "day:0", review: {decision: pending_review}}
+  - {id: ta-time-003, category: quantity, script: Taml, expression: "நேற்று", gloss: "yesterday", match: word, detect_as: datetime, canonical: "day:-1", review: {decision: pending_review}}
+
+  # ---------- formal vs informal (register) ----------
+  - {id: ta-reg-001, category: register, script: Taml, expression: "தயவுசெய்து", gloss: "please", match: word, detect_as: register, canonical: "ta:please", review: {decision: pending_review}}
+  - {id: ta-reg-002, category: register, script: Taml, expression: "நீங்கள்", gloss: "you (formal / plural)", match: word, detect_as: register, canonical: "ta:you_formal", review: {decision: pending_review}}
+  - {id: ta-reg-003, category: register, script: Taml, expression: "நீ", gloss: "you (informal)", match: word, detect_as: register, canonical: "ta:you_informal", review: {decision: pending_review}}
+  - {id: ta-reg-004, category: register, script: Taml, expression: "அவர்கள்", gloss: "they / honorific he-she", match: word, detect_as: register, canonical: "ta:honorific_they", review: {decision: pending_review}}
+
+  # ---------- common redundant expressions ----------
+  - {id: ta-red-001, category: redundant_expression, script: Taml, expression: "சுருக்கமாக சுருக்கம்", gloss: "briefly summary → summary", original: "சுருக்கமாக சுருக்கம்", proposed: "சுருக்கம்", preserves_meaning: unknown, changes_register: "no", safe_for_auto: false, review: {decision: pending_review}}
+  - {id: ta-red-002, category: redundant_expression, script: Taml, expression: "மீண்டும் ஒருமுறை", gloss: "once again → again", original: "மீண்டும் ஒருமுறை", proposed: "மீண்டும்", preserves_meaning: unknown, changes_register: "no", safe_for_auto: false, review: {decision: pending_review}}
+  - {id: ta-red-003, category: redundant_expression, script: Taml, expression: "கீழே கொடுக்கப்பட்டுள்ள", gloss: "given below → below", original: "கீழே கொடுக்கப்பட்டுள்ள", proposed: "கீழுள்ள", preserves_meaning: unknown, changes_register: unknown, safe_for_auto: false, review: {decision: pending_review}}
+
+  # ---------- wording-level shortening candidates ----------
+  - {id: ta-short-001, category: shortening, script: Taml, expression: "நான் உங்களிடம் கேட்டுக்கொள்கிறேன்", gloss: "I request you → (drop)", original: "நான் உங்களிடம் கேட்டுக்கொள்கிறேன்", proposed: "", preserves_meaning: unknown, changes_register: "yes", safe_for_auto: false, note: "Removes a polite request frame: suggestion only.", review: {decision: pending_review}}
+  - {id: ta-short-002, category: shortening, script: Taml, expression: "பற்றிய தகவல் கொடுங்கள்", gloss: "give information about → tell about", original: "பற்றிய தகவல் கொடுங்கள்", proposed: "பற்றி சொல்லுங்கள்", preserves_meaning: unknown, changes_register: unknown, safe_for_auto: false, review: {decision: pending_review}}
+
+  # ---------- Romanized Tamil (used only when the language is set to Tamil) ----------
+  - {id: ta-rom-001, category: romanized, script: Latn, expression: "mattum", gloss: "Romanized மட்டும் (only)", match: word, detect_as: constraint, canonical: "ta:only", review: {decision: pending_review}}
+  - {id: ta-rom-002, category: romanized, script: Latn, expression: "vendum", gloss: "Romanized வேண்டும் (must)", match: suffix, detect_as: constraint, canonical: "ta:must", review: {decision: pending_review}}
+  - {id: ta-rom-003, category: romanized, script: Latn, expression: "venum", gloss: "Romanized வேணும் (must, colloquial)", match: suffix, detect_as: constraint, canonical: "ta:must", review: {decision: pending_review}}
+  - {id: ta-rom-004, category: romanized, script: Latn, expression: "koodathu", gloss: "Romanized கூடாது (must not)", match: suffix, detect_as: negation, canonical: "ta:koodathu", review: {decision: pending_review}}
+  - {id: ta-rom-005, category: romanized, script: Latn, expression: "enna", gloss: "Romanized என்ன (what)", match: word, detect_as: question, canonical: "ta:what", review: {decision: pending_review}}
+  - {id: ta-rom-006, category: romanized, script: Latn, expression: "eppo", gloss: "Romanized எப்போ (when, colloquial)", match: word, detect_as: question, canonical: "ta:when", review: {decision: pending_review}}
+  - {id: ta-rom-007, category: romanized, script: Latn, expression: "eppadi", gloss: "Romanized எப்படி (how)", match: word, detect_as: question, canonical: "ta:how", review: {decision: pending_review}}
+  - {id: ta-rom-008, category: romanized, script: Latn, expression: "enge", gloss: "Romanized எங்கே (where)", match: word, detect_as: question, canonical: "ta:where", review: {decision: pending_review}}
+  - {id: ta-rom-009, category: romanized, script: Latn, expression: "thayavu seithu", gloss: "Romanized தயவுசெய்து (please)", match: phrase, detect_as: register, canonical: "ta:please", review: {decision: pending_review}}
+  - {id: ta-rom-010, category: romanized, script: Latn, expression: "neenga", gloss: "Romanized நீங்க (you, formal, colloquial)", match: word, detect_as: register, canonical: "ta:you_formal", review: {decision: pending_review}}
+  - {id: ta-rom-011, category: romanized, script: Latn, expression: "naalai", gloss: "Romanized நாளை (tomorrow)", match: word, detect_as: datetime, canonical: "day:+1", review: {decision: pending_review}}

@@ -244,9 +244,10 @@ export type KnownErrorCode =
   | "bad_response"
   | "transliteration_unavailable";
 
-// ---------- POST /api/critical-details, POST /api/meaning-check (Feature 5, rules_v2) ----------
+// ---------- POST /api/critical-details, POST /api/meaning-check (Feature 5, rules_v4) ----------
 export type DetailCategory =
-  | "code" | "url" | "email" | "quoted" | "money" | "datetime" | "number" | "negation" | "protected_term";
+  | "code" | "url" | "email" | "quoted" | "money" | "datetime" | "number"
+  | "condition" | "constraint" | "question" | "negation" | "entity" | "protected_term";
 export type MeaningStatus = "preserved" | "at_risk" | "changed";
 export type ReviewStatus = "reviewed" | "developer_curated" | "unreviewed";
 export const MAX_PROTECTED_TERMS = 50;
@@ -311,10 +312,12 @@ export interface MeaningCheckResponse {
   risks: string[];
   warnings: string[];
   negation_lexicons: LexiconRef[];
+  /** review-data word lists used (rules_v4); "unreviewed" = pending native-speaker review */
+  marker_lists?: LexiconRef[];
   limitations: string[];
 }
 
-// ---------- POST /api/optimize (Feature 3, opt_rules_v1) ----------
+// ---------- POST /api/optimize (Feature 3, opt_rules_v2) ----------
 export type OptimizeMode = "safe" | "balanced" | "aggressive";
 
 export interface OptimizeRequest {
@@ -344,7 +347,19 @@ export interface EditReport {
   /** per tokenizer: tokens after minus before this edit (negative = saved); null if not measured */
   token_delta: Record<string, number> | null;
   reason: string;
+  /** language whose rule produced the edit */
+  language?: LanguageCode | null;
+  /** review-dataset entry id for phrase rules */
+  source?: string | null;
+  risk?: EditRisk;
+  approval_required?: boolean;
+  /** meaning-check status, or the stage that rejected the edit */
+  validation?: string;
+  tokens_before?: Record<string, number> | null;
+  tokens_after?: Record<string, number> | null;
 }
+
+export type EditRisk = "lossless" | "redundancy" | "wording" | "meaning_change";
 
 export interface AcceptedEdit extends EditReport {
   meaning_status: "preserved";
@@ -356,7 +371,7 @@ export interface RejectedEdit extends EditReport {
 
 /** Not applied. The user decides. */
 export interface OptimizeSuggestion extends EditReport {
-  kind: "at_risk_edit" | "duplicate_sentence" | "script_variant";
+  kind: "at_risk_edit" | "duplicate_sentence" | "script_variant" | "unreviewed_phrase" | "approved_phrase";
   meaning_status: "preserved" | "at_risk";
   risks: string[];
   requires_review: true;
@@ -373,10 +388,17 @@ export interface PhraseListRef {
 export interface OptimizeResponse {
   method: string;
   mode: OptimizeMode;
+  /** what this mode applies automatically and what it only suggests */
+  mode_policy: string;
   language: LanguageCode | null;
+  script: Script | null;
   original: string;
   optimized: string;
   changed: boolean;
+  /** Unicode code points; a character reduction is not a token reduction */
+  original_chars: number;
+  optimized_chars: number;
+  chars_saved: number;
   token_counts: OptimizeTokenCount[];
   accepted: AcceptedEdit[];
   suggestions: OptimizeSuggestion[];
@@ -658,3 +680,16 @@ export interface VapiStatusResponse {
   connection_guide: string;
   live_call_verified: boolean;
 }
+
+// ---------- GET /api/linguistics/* (native-speaker review datasets, read-only) ----------
+export type ReviewDecision = "pending_review" | "approved" | "rejected" | "corrected";
+export interface ReviewEntry {
+  id: string; language: LanguageCode; category: string; script: string; expression: string; gloss: string;
+  match: string | null; detect_as: string | null; canonical: string | null; original: string | null; proposed: string | null;
+  preserves_meaning: string; changes_register: string; safe_for_auto: boolean; auto_eligible: boolean;
+  /** how the optimizer uses the entry today */
+  use: string;
+  decision: ReviewDecision; reviewer: string | null; reviewed_at: string | null; review_notes: string; note: string; provenance: string;
+}
+export interface ReviewLanguageResponse { language: LanguageCode; schema_id: string; entries: ReviewEntry[]; counts: Record<string, number>; how_to_submit: string }
+export interface ReviewSummaryResponse { languages: Record<string, { total: number; decisions: Record<ReviewDecision, number>; auto_rules: number; categories: Record<string, Record<ReviewDecision, number>> }>; note: string }

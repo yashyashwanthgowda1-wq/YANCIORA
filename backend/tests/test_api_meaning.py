@@ -18,13 +18,17 @@ def test_meaning_check_endpoint_changed():
     assert r.status_code == 200
     body = MeaningCheckResponse.model_validate(r.json())
     assert body.status == "changed" and body.missing_count == 2 and body.added_count == 1
-    assert body.method == "rules_v2" and body.limitations
+    assert body.method == "rules_v5" and body.limitations
 
 
 def test_meaning_check_endpoint_preserved():
     r = client.post("/api/meaning-check", json={
-        "original": "Please do not share the code `X1`.", "candidate": "Don't share the code `X1`."})
+        "original": "Please do not share the code `X1`.", "candidate": "Please don't share the code `X1`."})
     assert r.status_code == 200 and r.json()["status"] == "preserved"
+    # rules_v4: dropping the politeness marker makes the check ask for review (register), not 'changed'
+    r2 = client.post("/api/meaning-check", json={
+        "original": "Please do not share the code `X1`.", "candidate": "Don't share the code `X1`."})
+    assert r2.json()["status"] == "at_risk" and any("Politeness" in x for x in r2.json()["risks"])
 
 
 def test_critical_details_endpoint():

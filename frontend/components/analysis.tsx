@@ -16,7 +16,8 @@ import { Badge, Callout, CountStatusBadge, TokenizerTag } from "./ui";
 // ---------------------------------------------------------------- labels
 export const CATEGORY_LABELS: Record<DetailCategory, string> = {
   code: "Code", url: "URL", email: "Email", quoted: "Quoted text", money: "Money", datetime: "Date / time",
-  number: "Number", negation: "Negation", protected_term: "Protected term",
+  number: "Number", condition: "Condition", constraint: "Constraint", question: "Question",
+  negation: "Negation", entity: "Name (Latin script)", protected_term: "Protected term",
 };
 
 const STATUS_TEXT: Record<MeaningStatus, { label: string; tone: "blue" | "neutral" | "red"; title: string }> = {
@@ -124,6 +125,18 @@ export function CriticalDetailChips({ details }: { details: CriticalDetail[] }) 
 }
 
 // ---------------------------------------------------------------- Feature 3
+const RISK_TEXT: Record<string, { label: string; tone: "blue" | "neutral" | "outline" | "red"; title: string }> = {
+  lossless: { label: "Lossless", tone: "blue", title: "Formatting only: no word changed" },
+  redundancy: { label: "Redundancy", tone: "neutral", title: "Removes an exact repeat of an earlier sentence" },
+  wording: { label: "Wording", tone: "outline", title: "Changes wording using an approved rule" },
+  meaning_change: { label: "May change meaning", tone: "red", title: "Unreviewed wording or a script change: never applied without your approval" },
+};
+
+export function RiskBadge({ risk }: { risk?: string }) {
+  const r = RISK_TEXT[risk ?? "lossless"] ?? RISK_TEXT.lossless!;
+  return <Badge tone={r.tone} title={r.title}>{r.label}</Badge>;
+}
+
 function EditRows({ edits, kind }: { edits: (EditReport & { stage?: RejectedEdit["stage"]; meaning_status?: string; risks?: string[]; kind?: string })[]; kind: "accepted" | "suggested" | "rejected" }) {
   return (
     <tbody>
@@ -131,11 +144,18 @@ function EditRows({ edits, kind }: { edits: (EditReport & { stage?: RejectedEdit
         <tr key={i}>
           <td>
             <code className="small">{e.rule}</code>
+            <div className="btn-row" style={{ marginTop: 2 }}>
+              <RiskBadge risk={e.risk} />
+              {e.approval_required ? <Badge tone="outline" title="Not applied unless you approve it">Approval required</Badge> : null}
+              {e.language && <span className="small subtle">{e.language}</span>}
+            </div>
+            {e.source && <div className="small subtle">rule {e.source}</div>}
             {kind === "rejected" && e.stage && <div><Badge tone={e.stage === "meaning" ? "red" : "outline"}>{e.stage}</Badge></div>}
             {kind === "suggested" && e.kind && <div className="small subtle">{e.kind.replace(/_/g, " ")}</div>}
           </td>
           <td className="indic"><code>{clip(visible(e.before))}</code> → <code>{clip(visible(e.after))}</code></td>
-          <td className="num small">{deltaText(e.token_delta)}</td>
+          <td className="num small">{deltaText(e.token_delta)}{e.tokens_before && e.tokens_after && (
+            <div className="subtle">{Object.keys(e.tokens_before).map((k) => `${k} ${e.tokens_before![k]}→${e.tokens_after![k]}`).join(" · ")}</div>)}</td>
           <td className="small">
             {kind === "suggested" && e.meaning_status && <div className="btn-row" style={{ marginBottom: 4 }}><MeaningStatusBadge status={e.meaning_status as MeaningStatus} /><ReviewBadge /></div>}
             {e.reason}
@@ -184,6 +204,12 @@ export function OptimizeResults({ res }: { res: OptimizeResponse }) {
         {res.requires_review && <ReviewBadge />}
         {!res.changed && <Badge tone="neutral">Original kept</Badge>}
       </div>
+      <p className="small muted">{res.mode_policy}</p>
+      <p className="small subtle">
+        Language <b>{res.language ?? "unknown"}</b> · script <b>{res.script ?? "unknown"}</b> · characters{" "}
+        <span className="num">{fmtInt(res.original_chars)} → {fmtInt(res.optimized_chars)}</span> ({fmtInt(res.chars_saved)} removed; characters are not tokens).
+        Each tokenizer below counts the original and the optimized text with the same encoding.
+      </p>
 
       <div className="table-wrap">
         <table className="table">

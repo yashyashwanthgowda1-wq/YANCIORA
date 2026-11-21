@@ -20,6 +20,12 @@ _FACTORIES: dict[str, Callable[[], TokenizerAdapter]] = {
 }
 _CACHE: dict[str, TokenizerAdapter] = {}
 
+# Experimental Unigram: listed only when the library AND a trained model are present.
+from app.tokenizers import sentencepiece_adapter as _spm  # noqa: E402
+
+if _spm.status()["available"]:
+    _FACTORIES[_spm.NAME] = _spm.SentencePieceAdapter
+
 
 def available_tokenizers() -> list[str]:
     return sorted(_FACTORIES)

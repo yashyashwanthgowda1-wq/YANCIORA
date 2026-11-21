@@ -91,7 +91,9 @@ def _transliterate(text: str, src: str, dst: str) -> str:
 # ---------- span selection ----------
 def _protected_spans(src: str, req: ScriptVariantsRequest) -> list[tuple[int, int]]:
     lexes = D.active_lexicons(req.language, src)
-    found = D.extract_details(src, protected_terms=req.protected_terms, lexicons=lexes)
+    # Review-data markers (rules_v4) are Indic WORDS (number words, months, titles); converting the
+    # script does not remove them, so they must not be excluded from transliteration.
+    found = D.extract_details(src, protected_terms=req.protected_terms, lexicons=lexes, markers=())
     return [(d.start, d.end) for d in found if d.category in PROTECTED_CATEGORIES]
 
 

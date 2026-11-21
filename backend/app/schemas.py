@@ -186,7 +186,8 @@ class BenchmarkResultsResponse(BaseModel):
 
 # ---------- Feature 5: meaning preservation (POST /api/meaning-check, /api/critical-details) ----------
 DetailCategory = Literal["code", "url", "email", "quoted", "money", "datetime", "number",
-                         "negation", "protected_term"]
+                         "condition", "constraint", "question", "negation", "entity",
+                         "protected_term"]
 MeaningStatus = Literal["preserved", "at_risk", "changed"]
 ReviewStatus = Literal["reviewed", "developer_curated", "unreviewed"]
 MAX_PROTECTED_TERMS = 50
@@ -285,6 +286,8 @@ class MeaningCheckResponse(BaseModel):
     risks: list[str]
     warnings: list[str]
     negation_lexicons: list[LexiconRef]
+    marker_lists: list[LexiconRef] = Field(default_factory=list,
+                                           description="Review-data word lists used (rules_v4); 'unreviewed' = pending native-speaker review.")
     limitations: list[str]
 
 
@@ -346,6 +349,15 @@ class EditReport(BaseModel):
         description="Per tokenizer: tokens after minus tokens before this edit (negative = saved). "
                     "null when the edit was not measured.")
     reason: str
+    language: LanguageCode | None = Field(default=None, description="Language whose rule produced the edit.")
+    source: str | None = Field(default=None, description="Review-dataset entry id for phrase rules.")
+    risk: Literal["lossless", "redundancy", "wording", "meaning_change"] = Field(
+        default="lossless", description="lossless formatting · redundancy (exact repeat) · wording "
+                                         "(approved phrase) · meaning_change (needs approval)")
+    approval_required: bool = False
+    validation: str = Field(default="", description="Meaning-check status or the stage that rejected the edit.")
+    tokens_before: dict[str, int] | None = Field(default=None, description="Per tokenizer: text tokens before this edit.")
+    tokens_after: dict[str, int] | None = Field(default=None, description="Per tokenizer: text tokens after this edit.")
 
 
 class AcceptedEdit(EditReport):
@@ -358,7 +370,7 @@ class RejectedEdit(EditReport):
 
 class OptimizeSuggestion(EditReport):
     """Not applied. The user decides."""
-    kind: Literal["at_risk_edit", "duplicate_sentence", "script_variant"]
+    kind: Literal["at_risk_edit", "duplicate_sentence", "script_variant", "unreviewed_phrase", "approved_phrase"]
     meaning_status: Literal["preserved", "at_risk"]
     risks: list[str]
     requires_review: Literal[True] = True
@@ -375,10 +387,15 @@ class PhraseListRef(BaseModel):
 class OptimizeResponse(BaseModel):
     method: str
     mode: OptimizeMode
+    mode_policy: str = Field(description="What this mode applies automatically and what it only suggests.")
     language: LanguageCode | None
+    script: Script | None
     original: str
     optimized: str
     changed: bool
+    original_chars: int = Field(description="Characters (Unicode code points) of the original as sent.")
+    optimized_chars: int
+    chars_saved: int = Field(description="Character reduction. Not a token reduction: see token_counts.")
     token_counts: list[OptimizeTokenCount]
     accepted: list[AcceptedEdit]
     suggestions: list[OptimizeSuggestion]
@@ -794,3 +811,45 @@ class VapiStatusResponse(BaseModel):
     assistant_config: str
     connection_guide: str
     live_call_verified: bool            # always false until the team confirms a real call
+
+
+# ---------- Linguistic review datasets (GET /api/linguistics/*) ----------
+ReviewDecision = Literal["pending_review", "approved", "rejected", "corrected"]
+
+
+class ReviewEntryOut(BaseModel):
+    id: str
+    language: LanguageCode
+    category: str
+    script: str
+    expression: str
+    gloss: str
+    match: str | None
+    detect_as: str | None
+    canonical: str | None
+    original: str | None
+    proposed: str | None
+    preserves_meaning: str
+    changes_register: str
+    safe_for_auto: bool
+    auto_eligible: bool = Field(description="True only when approved, meaning-preserving, register-neutral and safe for automatic use.")
+    use: str = Field(description="How the optimizer uses the entry today.")
+    decision: ReviewDecision
+    reviewer: str | None
+    reviewed_at: str | None
+    review_notes: str
+    note: str
+    provenance: str
+
+
+class ReviewLanguageResponse(BaseModel):
+    language: LanguageCode
+    schema_id: str
+    entries: list[ReviewEntryOut]
+    counts: dict[str, int]
+    how_to_submit: str
+
+
+class ReviewSummaryResponse(BaseModel):
+    languages: dict[str, dict]
+    note: str

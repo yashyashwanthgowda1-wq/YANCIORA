@@ -1,0 +1,139 @@
+# Hindi linguistic review dataset (REDUTAX, schema redutax-review/v1).
+# EVERY entry was drafted by an AI assistant (Claude) on 2026-11-21 and is `pending_review`:
+# no Hindi speaker has checked it. See kn.yaml for how pending entries are used (protective only).
+schema: redutax-review/v1
+language: hi
+default_provenance: "Drafted by AI assistant (Claude) from general Hindi grammar knowledge, 2026-11-21; not verified by a native speaker."
+entries:
+  # ---------- negation (mirrors negation.yaml hi-Deva / hi-Latn, plus gaps) ----------
+  - {id: hi-neg-001, category: negation, script: Deva, expression: "नहीं", gloss: "not / no", match: word, detect_as: negation, canonical: "hi:nahin", lexicon_ref: hi-Deva, review: {decision: pending_review}}
+  - {id: hi-neg-002, category: negation, script: Deva, expression: "न", gloss: "not (subjunctive/polite)", match: word, detect_as: negation, canonical: "hi:na", lexicon_ref: hi-Deva, review: {decision: pending_review}}
+  - {id: hi-neg-003, category: negation, script: Deva, expression: "ना", gloss: "not (colloquial)", match: word, detect_as: negation, canonical: "hi:na", lexicon_ref: hi-Deva, note: "Also a tag particle ('…, ना?'); protective over-detection.", review: {decision: pending_review}}
+  - {id: hi-neg-004, category: negation, script: Deva, expression: "मत", gloss: "don't (imperative)", match: word, detect_as: negation, canonical: "hi:mat", lexicon_ref: hi-Deva, review: {decision: pending_review}}
+  - {id: hi-neg-005, category: negation, script: Deva, expression: "बिना", gloss: "without", match: word, detect_as: negation, canonical: "hi:bina", lexicon_ref: hi-Deva, review: {decision: pending_review}}
+  - {id: hi-neg-006, category: negation, script: Deva, expression: "मना", gloss: "forbidden / refuse", match: word, detect_as: negation, canonical: "hi:mana", note: "Gap: not in negation.yaml.", review: {decision: pending_review}}
+  - {id: hi-neg-007, category: negation, script: Deva, expression: "कभी नहीं", gloss: "never", match: phrase, detect_as: negation, canonical: "hi:nahin", note: "Two-word phrase; matched as one negation.", review: {decision: pending_review}}
+  - {id: hi-neg-008, category: negation, script: Latn, expression: "nahi", gloss: "Romanized नहीं", match: word, detect_as: negation, canonical: "hi:nahin", lexicon_ref: hi-Latn, review: {decision: pending_review}}
+  - {id: hi-neg-009, category: negation, script: Latn, expression: "nahin", gloss: "Romanized नहीं", match: word, detect_as: negation, canonical: "hi:nahin", lexicon_ref: hi-Latn, review: {decision: pending_review}}
+  - {id: hi-neg-010, category: negation, script: Latn, expression: "nhi", gloss: "Romanized नहीं (chat spelling)", match: word, detect_as: negation, canonical: "hi:nahin", lexicon_ref: hi-Latn, review: {decision: pending_review}}
+  - {id: hi-neg-011, category: negation, script: Latn, expression: "mat", gloss: "Romanized मत", match: word, detect_as: negation, canonical: "hi:mat", lexicon_ref: hi-Latn, review: {decision: pending_review}}
+  - {id: hi-neg-012, category: negation, script: Latn, expression: "bina", gloss: "Romanized बिना", match: word, detect_as: negation, canonical: "hi:bina", lexicon_ref: hi-Latn, review: {decision: pending_review}}
+
+  # ---------- conditions ----------
+  - {id: hi-cond-001, category: condition, script: Deva, expression: "अगर", gloss: "if", match: word, detect_as: condition, canonical: "hi:if", review: {decision: pending_review}}
+  - {id: hi-cond-002, category: condition, script: Deva, expression: "यदि", gloss: "if (formal)", match: word, detect_as: condition, canonical: "hi:if", review: {decision: pending_review}}
+  - {id: hi-cond-003, category: condition, script: Deva, expression: "वरना", gloss: "otherwise", match: word, detect_as: condition, canonical: "hi:otherwise", review: {decision: pending_review}}
+  - {id: hi-cond-004, category: condition, script: Deva, expression: "नहीं तो", gloss: "otherwise (lit. if not then)", match: phrase, detect_as: condition, canonical: "hi:otherwise", note: "Two-word phrase.", review: {decision: pending_review}}
+  - {id: hi-cond-005, category: condition, script: Deva, expression: "बशर्ते", gloss: "provided that", match: word, detect_as: condition, canonical: "hi:provided", review: {decision: pending_review}}
+  - {id: hi-cond-006, category: condition, script: Deva, expression: "जब तक", gloss: "until / as long as", match: phrase, detect_as: condition, canonical: "hi:until", note: "Two-word phrase.", review: {decision: pending_review}}
+  - {id: hi-cond-007, category: condition, script: Deva, expression: "सिवाय", gloss: "except", match: word, detect_as: condition, canonical: "hi:except", review: {decision: pending_review}}
+
+  # ---------- constraints ----------
+  - {id: hi-cons-001, category: constraint, script: Deva, expression: "केवल", gloss: "only", match: word, detect_as: constraint, canonical: "hi:only", review: {decision: pending_review}}
+  - {id: hi-cons-002, category: constraint, script: Deva, expression: "सिर्फ़", gloss: "only (with nukta)", match: word, detect_as: constraint, canonical: "hi:only", review: {decision: pending_review}}
+  - {id: hi-cons-003, category: constraint, script: Deva, expression: "सिर्फ", gloss: "only (without nukta)", match: word, detect_as: constraint, canonical: "hi:only", review: {decision: pending_review}}
+  - {id: hi-cons-004, category: constraint, script: Deva, expression: "ज़रूर", gloss: "definitely / must", match: word, detect_as: constraint, canonical: "hi:must", review: {decision: pending_review}}
+  - {id: hi-cons-005, category: constraint, script: Deva, expression: "जरूर", gloss: "definitely / must (without nukta)", match: word, detect_as: constraint, canonical: "hi:must", review: {decision: pending_review}}
+  - {id: hi-cons-006, category: constraint, script: Deva, expression: "अवश्य", gloss: "necessarily (formal)", match: word, detect_as: constraint, canonical: "hi:must", review: {decision: pending_review}}
+  - {id: hi-cons-007, category: constraint, script: Deva, expression: "चाहिए", gloss: "should / is needed", match: word, detect_as: constraint, canonical: "hi:should", review: {decision: pending_review}}
+  - {id: hi-cons-008, category: constraint, script: Deva, expression: "अधिकतम", gloss: "at most / maximum", match: word, detect_as: constraint, canonical: "hi:at_most", review: {decision: pending_review}}
+  - {id: hi-cons-009, category: constraint, script: Deva, expression: "न्यूनतम", gloss: "at least / minimum", match: word, detect_as: constraint, canonical: "hi:at_least", review: {decision: pending_review}}
+  - {id: hi-cons-010, category: constraint, script: Deva, expression: "हमेशा", gloss: "always", match: word, detect_as: constraint, canonical: "hi:always", review: {decision: pending_review}}
+  - {id: hi-cons-011, category: constraint, script: Deva, expression: "सभी", gloss: "all", match: word, detect_as: constraint, canonical: "hi:all", review: {decision: pending_review}}
+  - {id: hi-cons-012, category: constraint, script: Deva, expression: "कम से कम", gloss: "at least", match: phrase, detect_as: constraint, canonical: "hi:at_least", note: "Three-word phrase.", review: {decision: pending_review}}
+
+  # ---------- questions ----------
+  - {id: hi-q-001, category: question, script: Deva, expression: "क्या", gloss: "what / yes-no question marker", match: word, detect_as: question, canonical: "hi:what", review: {decision: pending_review}}
+  - {id: hi-q-002, category: question, script: Deva, expression: "कौन", gloss: "who", match: word, detect_as: question, canonical: "hi:who", review: {decision: pending_review}}
+  - {id: hi-q-003, category: question, script: Deva, expression: "कब", gloss: "when", match: word, detect_as: question, canonical: "hi:when", review: {decision: pending_review}}
+  - {id: hi-q-004, category: question, script: Deva, expression: "कहाँ", gloss: "where", match: word, detect_as: question, canonical: "hi:where", review: {decision: pending_review}}
+  - {id: hi-q-005, category: question, script: Deva, expression: "कहां", gloss: "where (anusvara spelling)", match: word, detect_as: question, canonical: "hi:where", review: {decision: pending_review}}
+  - {id: hi-q-006, category: question, script: Deva, expression: "क्यों", gloss: "why", match: word, detect_as: question, canonical: "hi:why", review: {decision: pending_review}}
+  - {id: hi-q-007, category: question, script: Deva, expression: "कैसे", gloss: "how", match: word, detect_as: question, canonical: "hi:how", review: {decision: pending_review}}
+  - {id: hi-q-008, category: question, script: Deva, expression: "कितना", gloss: "how much", match: word, detect_as: question, canonical: "hi:how_much", review: {decision: pending_review}}
+  - {id: hi-q-009, category: question, script: Deva, expression: "कितने", gloss: "how many", match: word, detect_as: question, canonical: "hi:how_much", review: {decision: pending_review}}
+
+  # ---------- names and entities ----------
+  - {id: hi-ent-001, category: entity, script: Deva, expression: "श्री", gloss: "Mr. / Shri", match: word, detect_as: entity, canonical: "title", review: {decision: pending_review}}
+  - {id: hi-ent-002, category: entity, script: Deva, expression: "श्रीमती", gloss: "Mrs. / Shrimati", match: word, detect_as: entity, canonical: "title", review: {decision: pending_review}}
+  - {id: hi-ent-003, category: entity, script: Deva, expression: "डॉ.", gloss: "Dr.", match: word, detect_as: entity, canonical: "title", note: "Matched as डॉ.", review: {decision: pending_review}}
+  - {id: hi-ent-004, category: entity, script: Deva, expression: "कुमारी", gloss: "Miss", match: word, detect_as: entity, canonical: "title", review: {decision: pending_review}}
+
+  # ---------- quantities, dates and numbers ----------
+  - {id: hi-num-001, category: quantity, script: Deva, expression: "एक", gloss: "one (also 'a')", match: word, detect_as: number, canonical: "1", review: {decision: pending_review}}
+  - {id: hi-num-002, category: quantity, script: Deva, expression: "दो", gloss: "two (also imperative 'give')", match: word, detect_as: number, canonical: "2", note: "दो also means 'give!': protective over-detection.", review: {decision: pending_review}}
+  - {id: hi-num-003, category: quantity, script: Deva, expression: "तीन", gloss: "three", match: word, detect_as: number, canonical: "3", review: {decision: pending_review}}
+  - {id: hi-num-004, category: quantity, script: Deva, expression: "चार", gloss: "four", match: word, detect_as: number, canonical: "4", review: {decision: pending_review}}
+  - {id: hi-num-005, category: quantity, script: Deva, expression: "पाँच", gloss: "five", match: word, detect_as: number, canonical: "5", review: {decision: pending_review}}
+  - {id: hi-num-006, category: quantity, script: Deva, expression: "पांच", gloss: "five (anusvara spelling)", match: word, detect_as: number, canonical: "5", review: {decision: pending_review}}
+  - {id: hi-num-007, category: quantity, script: Deva, expression: "छह", gloss: "six", match: word, detect_as: number, canonical: "6", review: {decision: pending_review}}
+  - {id: hi-num-008, category: quantity, script: Deva, expression: "सात", gloss: "seven", match: word, detect_as: number, canonical: "7", review: {decision: pending_review}}
+  - {id: hi-num-009, category: quantity, script: Deva, expression: "आठ", gloss: "eight", match: word, detect_as: number, canonical: "8", review: {decision: pending_review}}
+  - {id: hi-num-010, category: quantity, script: Deva, expression: "नौ", gloss: "nine", match: word, detect_as: number, canonical: "9", review: {decision: pending_review}}
+  - {id: hi-num-011, category: quantity, script: Deva, expression: "दस", gloss: "ten", match: word, detect_as: number, canonical: "10", review: {decision: pending_review}}
+  - {id: hi-num-012, category: quantity, script: Deva, expression: "सौ", gloss: "hundred", match: word, detect_as: number, canonical: "100", review: {decision: pending_review}}
+  - {id: hi-num-013, category: quantity, script: Deva, expression: "हज़ार", gloss: "thousand (with nukta)", match: word, detect_as: number, canonical: "1000", review: {decision: pending_review}}
+  - {id: hi-num-014, category: quantity, script: Deva, expression: "हजार", gloss: "thousand", match: word, detect_as: number, canonical: "1000", review: {decision: pending_review}}
+  - {id: hi-num-015, category: quantity, script: Deva, expression: "लाख", gloss: "lakh", match: word, detect_as: number, canonical: "100000", review: {decision: pending_review}}
+  - {id: hi-num-016, category: quantity, script: Deva, expression: "करोड़", gloss: "crore", match: word, detect_as: number, canonical: "10000000", review: {decision: pending_review}}
+  - {id: hi-unit-001, category: quantity, script: Deva, expression: "किलो", gloss: "kilo", match: word, detect_as: number, canonical: "unit:kg", review: {decision: pending_review}}
+  - {id: hi-unit-002, category: quantity, script: Deva, expression: "ग्राम", gloss: "gram (also 'village')", match: word, detect_as: number, canonical: "unit:g", note: "ग्राम also means 'village'.", review: {decision: pending_review}}
+  - {id: hi-unit-003, category: quantity, script: Deva, expression: "लीटर", gloss: "litre", match: word, detect_as: number, canonical: "unit:l", review: {decision: pending_review}}
+  - {id: hi-unit-004, category: quantity, script: Deva, expression: "दिन", gloss: "day", match: word, detect_as: number, canonical: "unit:day", review: {decision: pending_review}}
+  - {id: hi-unit-005, category: quantity, script: Deva, expression: "घंटे", gloss: "hours", match: word, detect_as: number, canonical: "unit:hour", review: {decision: pending_review}}
+  - {id: hi-unit-006, category: quantity, script: Deva, expression: "बजे", gloss: "o'clock", match: word, detect_as: number, canonical: "unit:oclock", review: {decision: pending_review}}
+  - {id: hi-month-01, category: quantity, script: Deva, expression: "जनवरी", gloss: "January", match: word, detect_as: datetime, canonical: "month:1", review: {decision: pending_review}}
+  - {id: hi-month-02, category: quantity, script: Deva, expression: "फ़रवरी", gloss: "February", match: word, detect_as: datetime, canonical: "month:2", review: {decision: pending_review}}
+  - {id: hi-month-02b, category: quantity, script: Deva, expression: "फरवरी", gloss: "February (without nukta)", match: word, detect_as: datetime, canonical: "month:2", review: {decision: pending_review}}
+  - {id: hi-month-03, category: quantity, script: Deva, expression: "मार्च", gloss: "March", match: word, detect_as: datetime, canonical: "month:3", review: {decision: pending_review}}
+  - {id: hi-month-04, category: quantity, script: Deva, expression: "अप्रैल", gloss: "April", match: word, detect_as: datetime, canonical: "month:4", review: {decision: pending_review}}
+  - {id: hi-month-05, category: quantity, script: Deva, expression: "मई", gloss: "May", match: word, detect_as: datetime, canonical: "month:5", review: {decision: pending_review}}
+  - {id: hi-month-06, category: quantity, script: Deva, expression: "जून", gloss: "June", match: word, detect_as: datetime, canonical: "month:6", review: {decision: pending_review}}
+  - {id: hi-month-07, category: quantity, script: Deva, expression: "जुलाई", gloss: "July", match: word, detect_as: datetime, canonical: "month:7", review: {decision: pending_review}}
+  - {id: hi-month-08, category: quantity, script: Deva, expression: "अगस्त", gloss: "August", match: word, detect_as: datetime, canonical: "month:8", review: {decision: pending_review}}
+  - {id: hi-month-09, category: quantity, script: Deva, expression: "सितंबर", gloss: "September", match: word, detect_as: datetime, canonical: "month:9", review: {decision: pending_review}}
+  - {id: hi-month-10, category: quantity, script: Deva, expression: "अक्टूबर", gloss: "October", match: word, detect_as: datetime, canonical: "month:10", review: {decision: pending_review}}
+  - {id: hi-month-11, category: quantity, script: Deva, expression: "नवंबर", gloss: "November", match: word, detect_as: datetime, canonical: "month:11", review: {decision: pending_review}}
+  - {id: hi-month-12, category: quantity, script: Deva, expression: "दिसंबर", gloss: "December", match: word, detect_as: datetime, canonical: "month:12", review: {decision: pending_review}}
+  - {id: hi-time-001, category: quantity, script: Deva, expression: "कल", gloss: "tomorrow OR yesterday (context decides)", match: word, detect_as: datetime, canonical: "day:+-1", note: "Ambiguous in Hindi; only its presence is protected.", review: {decision: pending_review}}
+  - {id: hi-time-002, category: quantity, script: Deva, expression: "आज", gloss: "today", match: word, detect_as: datetime, canonical: "day:0", review: {decision: pending_review}}
+  - {id: hi-time-003, category: quantity, script: Deva, expression: "परसों", gloss: "day after tomorrow / day before yesterday", match: word, detect_as: datetime, canonical: "day:+-2", review: {decision: pending_review}}
+
+  # ---------- formal vs informal (register) ----------
+  - {id: hi-reg-001, category: register, script: Deva, expression: "कृपया", gloss: "please", match: word, detect_as: register, canonical: "hi:please", review: {decision: pending_review}}
+  - {id: hi-reg-002, category: register, script: Deva, expression: "आप", gloss: "you (formal)", match: word, detect_as: register, canonical: "hi:you_formal", review: {decision: pending_review}}
+  - {id: hi-reg-003, category: register, script: Deva, expression: "तुम", gloss: "you (familiar)", match: word, detect_as: register, canonical: "hi:you_familiar", review: {decision: pending_review}}
+  - {id: hi-reg-004, category: register, script: Deva, expression: "तू", gloss: "you (intimate)", match: word, detect_as: register, canonical: "hi:you_intimate", review: {decision: pending_review}}
+  - {id: hi-reg-005, category: register, script: Deva, expression: "जी", gloss: "honorific particle (e.g. शर्मा जी)", match: word, detect_as: register, canonical: "hi:ji", review: {decision: pending_review}}
+
+  # ---------- common redundant expressions ----------
+  - {id: hi-red-001, category: redundant_expression, script: Deva, expression: "कृपया करके", gloss: "please do → please", original: "कृपया करके", proposed: "कृपया", preserves_meaning: unknown, changes_register: "no", safe_for_auto: false, note: "Drafter's proposal: 'करके' adds nothing after कृपया in common usage.", review: {decision: pending_review}}
+  - {id: hi-red-002, category: redundant_expression, script: Deva, expression: "संक्षेप में सारांश", gloss: "summary in brief → summary", original: "संक्षेप में सारांश", proposed: "सारांश", preserves_meaning: unknown, changes_register: "no", safe_for_auto: false, review: {decision: pending_review}}
+  - {id: hi-red-003, category: redundant_expression, script: Deva, expression: "एक बार फिर से", gloss: "once again → again", original: "एक बार फिर से", proposed: "फिर से", preserves_meaning: unknown, changes_register: "no", safe_for_auto: false, review: {decision: pending_review}}
+  - {id: hi-red-004, category: redundant_expression, script: Deva, expression: "इस बात का ध्यान रखें कि", gloss: "keep this in mind that → keep in mind that", original: "इस बात का ध्यान रखें कि", proposed: "ध्यान रखें कि", preserves_meaning: unknown, changes_register: "no", safe_for_auto: false, review: {decision: pending_review}}
+
+  # ---------- wording-level shortening candidates ----------
+  - {id: hi-short-001, category: shortening, script: Deva, expression: "आपसे अनुरोध है कि", gloss: "(I) request you that → (drop)", original: "आपसे अनुरोध है कि", proposed: "", preserves_meaning: unknown, changes_register: "yes", safe_for_auto: false, note: "Removes a polite request frame: suggestion only.", review: {decision: pending_review}}
+  - {id: hi-short-002, category: shortening, script: Deva, expression: "के बारे में जानकारी दीजिए", gloss: "give information about → tell about", original: "के बारे में जानकारी दीजिए", proposed: "के बारे में बताइए", preserves_meaning: unknown, changes_register: unknown, safe_for_auto: false, review: {decision: pending_review}}
+
+  # ---------- Romanized Hindi (used only when the language is set to Hindi) ----------
+  - {id: hi-rom-001, category: romanized, script: Latn, expression: "nai", gloss: "Romanized नहीं (chat spelling)", match: word, detect_as: negation, canonical: "hi:nahin", note: "Gap: not in negation.yaml.", review: {decision: pending_review}}
+  - {id: hi-rom-002, category: romanized, script: Latn, expression: "na", gloss: "Romanized न / ना", match: word, detect_as: negation, canonical: "hi:na", note: "Gap; also a tag particle.", review: {decision: pending_review}}
+  - {id: hi-rom-003, category: romanized, script: Latn, expression: "agar", gloss: "Romanized अगर (if)", match: word, detect_as: condition, canonical: "hi:if", review: {decision: pending_review}}
+  - {id: hi-rom-004, category: romanized, script: Latn, expression: "warna", gloss: "Romanized वरना (otherwise)", match: word, detect_as: condition, canonical: "hi:otherwise", review: {decision: pending_review}}
+  - {id: hi-rom-005, category: romanized, script: Latn, expression: "sirf", gloss: "Romanized सिर्फ़ (only)", match: word, detect_as: constraint, canonical: "hi:only", review: {decision: pending_review}}
+  - {id: hi-rom-006, category: romanized, script: Latn, expression: "kewal", gloss: "Romanized केवल (only)", match: word, detect_as: constraint, canonical: "hi:only", review: {decision: pending_review}}
+  - {id: hi-rom-007, category: romanized, script: Latn, expression: "zaroor", gloss: "Romanized ज़रूर (must)", match: word, detect_as: constraint, canonical: "hi:must", review: {decision: pending_review}}
+  - {id: hi-rom-008, category: romanized, script: Latn, expression: "jaroor", gloss: "Romanized ज़रूर (must), spelling variant", match: word, detect_as: constraint, canonical: "hi:must", review: {decision: pending_review}}
+  - {id: hi-rom-009, category: romanized, script: Latn, expression: "chahiye", gloss: "Romanized चाहिए (should)", match: word, detect_as: constraint, canonical: "hi:should", review: {decision: pending_review}}
+  - {id: hi-rom-010, category: romanized, script: Latn, expression: "kya", gloss: "Romanized क्या (what)", match: word, detect_as: question, canonical: "hi:what", review: {decision: pending_review}}
+  - {id: hi-rom-011, category: romanized, script: Latn, expression: "kab", gloss: "Romanized कब (when)", match: word, detect_as: question, canonical: "hi:when", review: {decision: pending_review}}
+  - {id: hi-rom-012, category: romanized, script: Latn, expression: "kaise", gloss: "Romanized कैसे (how)", match: word, detect_as: question, canonical: "hi:how", review: {decision: pending_review}}
+  - {id: hi-rom-013, category: romanized, script: Latn, expression: "kyun", gloss: "Romanized क्यों (why)", match: word, detect_as: question, canonical: "hi:why", review: {decision: pending_review}}
+  - {id: hi-rom-014, category: romanized, script: Latn, expression: "kahan", gloss: "Romanized कहाँ (where)", match: word, detect_as: question, canonical: "hi:where", review: {decision: pending_review}}
+  - {id: hi-rom-015, category: romanized, script: Latn, expression: "kripya", gloss: "Romanized कृपया (please)", match: word, detect_as: register, canonical: "hi:please", review: {decision: pending_review}}
+  - {id: hi-rom-016, category: romanized, script: Latn, expression: "aap", gloss: "Romanized आप (you, formal)", match: word, detect_as: register, canonical: "hi:you_formal", review: {decision: pending_review}}
+  - {id: hi-rom-017, category: romanized, script: Latn, expression: "tum", gloss: "Romanized तुम (you, familiar)", match: word, detect_as: register, canonical: "hi:you_familiar", review: {decision: pending_review}}
+  - {id: hi-rom-018, category: romanized, script: Latn, expression: "kal", gloss: "Romanized कल (tomorrow/yesterday)", match: word, detect_as: datetime, canonical: "day:+-1", review: {decision: pending_review}}
+  - {id: hi-rom-020, category: romanized, script: Latn, expression: "hamesha", gloss: "Romanized हमेशा (always)", match: word, detect_as: constraint, canonical: "hi:always", note: "Found by the everyday-prompt evaluation.", review: {decision: pending_review}}
+  - {id: hi-rom-019, category: romanized, script: Latn, expression: "aaj", gloss: "Romanized आज (today)", match: word, detect_as: datetime, canonical: "day:0", review: {decision: pending_review}}

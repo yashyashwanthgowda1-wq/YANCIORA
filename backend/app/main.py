@@ -11,7 +11,7 @@ import uuid
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import benchmarks, counting, health, meaning, optimizer, phase2, samples, transliteration
+from app.api import benchmarks, counting, health, linguistics, meaning, optimizer, phase2, samples, transliteration
 from app.api.errors import install_error_handlers
 from app.core.config import APP_NAME, APP_VERSION, get_settings
 
@@ -57,6 +57,7 @@ def create_app() -> FastAPI:
     app.include_router(optimizer.router)
     app.include_router(transliteration.router)
     app.include_router(phase2.router)
+    app.include_router(linguistics.router)
     logger.info("starting %s %s settings=%s", APP_NAME, APP_VERSION, settings.safe_dict())
     logger.info("database: %s; connectivity is reported by GET /health",
                 "configured" if settings.database_url else "not configured")

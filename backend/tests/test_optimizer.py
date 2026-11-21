@@ -76,8 +76,10 @@ def test_ws_lines():
 
 def test_punct_repeat():
     src = "Wait!!! Why?? ok,, so... and..... really?!"
-    assert [(src[e.start:e.end], e.after) for e in R.punct_repeat(src)] == [
-        ("!!!", "!"), ("??", "?"), (",,", ","), (".....", "...")]
+    # opt_rules_v2: the extra characters are deleted; the first one stays in place.
+    edits = R.punct_repeat(src)
+    assert [(src[e.start:e.end], e.after) for e in edits] == [("!!", ""), ("?", ""), (",", ""), ("..", "")]
+    assert O._apply(src, edits) == "Wait! Why? ok, so... and... really?!"
 
 
 def test_invisible_chars_keep_zwj_zwnj():
@@ -89,8 +91,10 @@ def test_duplicate_sentences_rule():
     src = "Send the full report to the team. Send the full report to the team. Thanks."
     assert len(R.duplicate_sentences(src)) == 1
     assert R.duplicate_sentences("Hurry. Hurry.") == []                      # too short
-    assert R.duplicate_sentences("Send the full report to the team. Wait. "
-                                 "Send the full report to the team.") == []  # not adjacent
+    assert R.duplicate_sentences("Hurry up now. Hurry up.") == []           # not identical
+    # opt_rules_v2: repeats are found anywhere, not only back to back
+    assert len(R.duplicate_sentences("Send the full report to the team. Wait. "
+                                     "Send the full report to the team.")) == 1
 
 
 def test_phrase_edits():
@@ -210,12 +214,33 @@ def test_every_proposed_edit_is_accounted_for():
 
 # ---------- review-only outcomes ----------
 def test_at_risk_edit_becomes_suggestion_not_applied():
-    r = opt("ದಯವಿಟ್ಟು   ಈ ವರದಿಯನ್ನು ಸಂಕ್ಷೇಪಿಸಿ!!!", language="kn")
-    assert r.optimized == "ದಯವಿಟ್ಟು ಈ ವರದಿಯನ್ನು ಸಂಕ್ಷೇಪಿಸಿ!!!"       # whitespace applied, !!! not
+    # A word-changing edit from a (test-fixture) APPROVED Kannada list: the Kannada negation and
+    # marker lists are pending review, so the gate says at_risk and the edit is only suggested.
+    lists = make_list(("ಸಂಕ್ಷಿಪ್ತವಾಗಿ ಸಾರಾಂಶ", "ಸಾರಾಂಶ", False, False), lang="kn")
+    r = opt("ವರದಿಯ   ಸಂಕ್ಷಿಪ್ತವಾಗಿ ಸಾರಾಂಶ ಕಳುಹಿಸಿ!!!", language="kn", mode="balanced", lists=lists)
+    assert r.optimized == "ವರದಿಯ ಸಂಕ್ಷಿಪ್ತವಾಗಿ ಸಾರಾಂಶ ಕಳುಹಿಸಿ!"       # formatting applied, wording not
     s = r.suggestions[0]
-    assert (s.kind, s.meaning_status, s.requires_review, s.before) == ("at_risk_edit", "at_risk", True, "!!!")
+    assert (s.kind, s.meaning_status, s.requires_review, s.before) == ("at_risk_edit", "at_risk", True, "ಸಂಕ್ಷಿಪ್ತವಾಗಿ ಸಾರಾಂಶ")
     assert s.token_delta["fake_bytes"] < 0 and any("kn-Knda" in x for x in s.risks)
+    assert s.approval_required and s.risk == "wording" and s.language == "kn"
     assert r.requires_review and r.meaning_check.status == "preserved"
+
+
+def test_english_rules_never_apply_to_indic_text():
+    # D59: an English phrase rule is not applied (or suggested) inside Kannada/Hindi/Tamil/Telugu text.
+    lists = make_list(("in order to", "to", False, False))
+    for lang in ("kn", "hi", "ta", "te", "auto"):
+        r = opt("ವರದಿ in order to ಕಳುಹಿಸಿ.", language=lang, mode="aggressive", lists=lists)
+        assert not any(x.rule.startswith("phrase:") for x in r.accepted + r.suggestions + r.rejected)
+    r = opt("Read it in order to learn.", language="en", mode="balanced", lists=lists)
+    assert r.optimized == "Read it to learn."
+
+
+def test_formatting_only_edits_apply_in_indic_text():
+    # rules_v3: when no letter, mark or digit changes, unreviewed negation lists are no risk.
+    r = opt("ದಯವಿಟ್ಟು   ಈ ವರದಿಯನ್ನು ಸಂಕ್ಷೇಪಿಸಿ!!!", language="kn")
+    assert r.optimized == "ದಯವಿಟ್ಟು ಈ ವರದಿಯನ್ನು ಸಂಕ್ಷೇಪಿಸಿ!" and not r.suggestions
+    assert r.meaning_check.status == "preserved"
 
 
 def test_shrink_risk_becomes_suggestion():
@@ -226,7 +251,8 @@ def test_shrink_risk_becomes_suggestion():
 
 
 def test_duplicate_sentence_is_suggestion_only():
-    text = "Send the full report to the team today. Send the full report to the team today."
+    # rules_v5 treats "today" as a date, so this test uses a repeat without critical details.
+    text = "Send the full report to the team by email. Send the full report to the team by email."
     r = opt(text)
     assert r.optimized == text and not r.changed
     s = r.suggestions[0]
@@ -237,17 +263,33 @@ def test_duplicate_sentence_is_suggestion_only():
 
 
 def test_duplicate_sentence_suggestion_preserved_when_text_is_long():
-    text = ("Send the full report to the team today. Send the full report to the team today. "
+    text = ("Send the full report to the team by email. Send the full report to the team by email. "
             "Include the summary, the charts and the open questions from Monday's review.")
     s = opt(text).suggestions[0]
     assert s.kind == "duplicate_sentence" and s.meaning_status == "preserved" and s.risks == []
 
 
-def test_duplicate_sentence_with_number_rejected():
-    text = "Pay 5 people now please today. Pay 5 people now please today."
+def test_duplicate_sentence_with_relative_day_names_the_date():
+    # rules_v5: "today" is a critical date; removing a repeat that holds it stays a reviewed
+    # suggestion that names the date, like a repeated number (opt_rules_v2).
+    text = "Send the full report to the team today. Send the full report to the team today."
     r = opt(text)
-    assert r.suggestions == []
-    assert any(x.rule == "duplicate_sentence" and x.stage == "meaning" for x in r.rejected)
+    assert r.optimized == text and not r.changed
+    s = r.suggestions[0]
+    assert s.kind == "duplicate_sentence" and s.requires_review and s.meaning_status == "at_risk"
+    assert any("datetime 'today'" in x for x in s.risks)
+
+
+def test_duplicate_sentence_with_number_is_reviewed_suggestion():
+    # opt_rules_v2: removing one copy lowers the number's count but the value stays in the first
+    # copy, so the repeat is offered for review (at_risk, detail named), never applied.
+    text = "Pay 5 people now please today. Pay 5 people now please today."
+    for mode in ("safe", "balanced"):
+        r = opt(text, mode=mode)
+        assert not r.changed and r.optimized == text
+        s = r.suggestions[0]
+        assert (s.kind, s.meaning_status) == ("duplicate_sentence", "at_risk")
+        assert any("number '5'" in x for x in s.risks)
 
 
 # ---------- modes ----------
@@ -257,7 +299,7 @@ def test_balanced_with_shipped_lists_applies_nothing_extra():
     assert r.optimized == "In order to win, practise."           # whitespace only
     en = next(p for p in r.phrase_lists if p.id == "en")
     assert en.review_status == "developer_curated" and not en.applied
-    assert any("No reviewed phrase list" in w for w in r.warnings)
+    assert any("No approved wording rule" in w for w in r.warnings)
 
 
 def test_balanced_applies_reviewed_list_but_safe_does_not():
@@ -308,11 +350,9 @@ def test_languages(language, text, negation):
     assert detail_counts(r.optimized, language) == detail_counts(text, language)
     assert ("negation", negation) in detail_counts(r.optimized, language)
     assert r.meaning_check.status == "preserved"
-    bang = [s for s in r.suggestions if s.before == "!!!"]
-    if language == "en":
-        assert "!!!" not in r.optimized and not bang                     # reviewed-safe: applied
-    else:                                                                 # unreviewed lists: review
-        assert "!!!" in r.optimized and bang and bang[0].meaning_status == "at_risk"
+    # opt_rules_v2 / rules_v3: repeated punctuation is formatting only (no word changes), so it
+    # is applied in every language, also where the negation lists are unreviewed.
+    assert "!!!" not in r.optimized and not r.suggestions
 
 
 # ---------- limits ----------

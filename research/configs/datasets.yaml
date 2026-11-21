@@ -63,3 +63,17 @@ datasets:
       Human-written/verified prompts incl. Romanized and code-mixed variants.
       Follow annotation rules in research/configs/annotation_guidelines.md (to be written).
       No personal data.
+
+  - name: REDUTAX-synthetic-prompts
+    version: "v1"
+    source_url: research/datasets/team_prompts/prompts_v1.jsonl
+    license: TO_VERIFY            # original project text (AI-drafted); the team records its licence decision
+    license_url: null
+    citation: REDUTAX everyday-prompt evaluation set v1 (synthetic, AI-drafted), 2026-11-21
+    accessed_at: null
+    languages: [en, kn, hi, ta, te]
+    approved_for: []
+    notes: >
+      100 synthetic prompts drafted by an AI assistant for the project (native script, Romanized,
+      code-mixed, English). No third-party or user text. pending_review: not checked by native
+      speakers. Not imported into the database; used only by research/scripts/run_prompt_eval.py.

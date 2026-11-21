@@ -139,7 +139,7 @@ def test_identical_and_whitespace_only_preserved():
 
 @pytest.mark.parametrize("original,candidate", [
     ("Don't pay ₹500.", "Do not pay Rs. 500."),
-    ("Please kindly send 3 files.", "Send 3 files."),
+    ("Please kindly send 3 files.", "Please send 3 files."),      # politeness kept (rules_v4)
     ("Meet on 12 Jan 2026 at 5 p.m.", "Meet 12 Jan 2026, 5 PM."),
 ])
 def test_equivalent_rewrites_preserved(original, candidate):
@@ -210,7 +210,7 @@ def test_unreviewed_lexicon_no_risk_when_unchanged():
 
 def test_response_always_carries_limitations_and_method():
     r = run("a 1", "a 1")
-    assert r.method == "rules_v2" and r.limitations == LIMITATIONS
+    assert r.method == "rules_v5" and r.limitations == LIMITATIONS
     assert any("not a guarantee" in x for x in r.limitations)
 
 

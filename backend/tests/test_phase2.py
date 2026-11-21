@@ -15,6 +15,7 @@ from app.services import chat, models, pipeline
 from app.tokenizers import get_tokenizer
 
 KN = "ದಯವಿಟ್ಟು   ವರದಿ ಕಳುಹಿಸಿ!!!!!!"
+KN_DUP = "ದಯವಿಟ್ಟು   ವರದಿ ಕಳುಹಿಸಿ!!!!!! ದಯವಿಟ್ಟು ವರದಿ ಕಳುಹಿಸಿ!!!!!!"   # repeat → suggestion in safe mode
 
 
 def m(mid, **kw):
@@ -181,16 +182,16 @@ def test_no_models_configured_explanation():
 
 # ---------- pipeline (Feature 8 text workflow) ----------
 def test_pipeline_without_models():
-    a = pipeline.analyze(AnalyzeRequest(text=KN, language="kn"))
+    a = pipeline.analyze(AnalyzeRequest(text=KN_DUP, language="kn"))
     assert a.language == "kn" and a.recommendation is None and a.cost is None
     assert a.requires_review and a.optimization.suggestions and "Add models" in a.next_step
 
 
 def test_pipeline_with_models_and_approval_flow():
-    a = pipeline.analyze(AnalyzeRequest(text=KN, language="kn", custom_models=[CHEAP], expected_output_tokens=50))
+    a = pipeline.analyze(AnalyzeRequest(text=KN_DUP, language="kn", custom_models=[CHEAP], expected_output_tokens=50))
     assert a.recommendation.recommended.model_id == "test-cheap" and a.cost.models[0].model_id == "test-cheap"
     edits = [TextEdit(start=s.start, end=s.end, after=s.after) for s in a.optimization.suggestions]
-    r = pipeline.apply_edits(ApplyEditsRequest(original=KN, edits=edits, language="kn"))
+    r = pipeline.apply_edits(ApplyEditsRequest(original=KN_DUP, edits=edits, language="kn"))
     assert r.applied_count == len(edits) and r.allowed and r.tokens_after <= r.tokens_before
     assert r.meaning_check.status == "at_risk"          # Kannada lists unreviewed → still flagged
 

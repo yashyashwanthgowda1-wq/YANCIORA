@@ -55,6 +55,7 @@ export const NAV: NavGroup[] = [
   ] },
   { label: "Research", items: [
     { href: "/research", label: "Research Dashboard", availability: "live", note: "GET /api/benchmarks" },
+    { href: "/review", label: "Linguistic Review", availability: "live", note: "GET /api/linguistics/* · native-speaker decisions exported, then merged by the team" },
   ] },
   { label: "System", items: [
     { href: "/settings", label: "Settings & Privacy", availability: "live", note: "Preferences stored in this browser" },

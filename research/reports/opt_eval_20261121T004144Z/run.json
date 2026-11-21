@@ -1,0 +1,42 @@
+{
+  "run_id": "20261121T004144Z",
+  "kind": "optimizer_evaluation",
+  "optimizer_method": "opt_rules_v2",
+  "meaning_method": "rules_v3",
+  "modes": [
+    "safe",
+    "balanced",
+    "aggressive"
+  ],
+  "tokenizers": [
+    {
+      "name": "cl100k_base",
+      "library": "tiktoken",
+      "version": "0.14.0"
+    },
+    {
+      "name": "o200k_base",
+      "library": "tiktoken",
+      "version": "0.14.0"
+    }
+  ],
+  "dataset": {
+    "name": "FLORES-200",
+    "version": "2022-07-14",
+    "license": "CC-BY-SA-4.0",
+    "approved_for": [
+      "evaluation"
+    ],
+    "input_sha256": "803b7fb9bf1834b53e1b8fb410ae4ce9864bce5d0ffb9464b17ca37cc310cef3",
+    "samples": 5060
+  },
+  "conditions": {
+    "natural": "sentence as stored",
+    "prompt_clean": "Summarise the text below in one sentence.\n\n---\n{text}",
+    "prompt_noisy": "  Summarise the text below in one sentence.  \n\n\n\n\n----------\n{text}<U+200B>\n\n\nSummarise the text below in one sentence.\n"
+  },
+  "code_commit": "9abd1de",
+  "working_tree_dirty": true,
+  "elapsed_seconds": 414.1,
+  "note": "Tokenizer counts, not provider billing. Meaning status is the rule-based rules_v3 check (critical details only), not semantic equivalence."
+}

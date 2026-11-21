@@ -9,7 +9,7 @@ Last updated: 2026-11-21
 | 0 | Repo, config, DB schema, `/health`, tests | Done |
 | 1 | Normalization, tokenizer counters, compare API, licence register, importer, benchmark, DB persistence, retrieval APIs | **Verified 2026-11-21** — Neon PostgreSQL at migration `0002`; all 349 backend tests pass incl. the 30 PostgreSQL tests (test branch); FLORES-200 devtest imported (5,060 rows); first baseline benchmark stored (run `20261120T214425Z`) and shown on the Research Dashboard. Exit criteria met — **team sign-off pending** |
 | 2 | SentencePiece Unigram training + held-out benchmark | Not started (waits for Phase 1 verification + team approval) |
-| 3 | Optimizer + meaning/critical-detail checks (Features 5, 3, 6) | **Features 5, 3 and 6 done** (rules_v2, opt_rules_v1, translit_v1); Feature 6 awaits native-speaker spot checks |
+| 3 | Optimizer + meaning/critical-detail checks (Features 5, 3, 6) | **Done for formatting and exact repeats; Indic wording rules await native-speaker review** — opt_rules_v3 + rules_v4 + native-speaker review system (2026-11-21, uncommitted). See the milestone sections below |
 | 4 | Model registry, cost, Auto/Manual routing, chat | **Built 2026-11-21 (Features 4, 7, 9), committed on `integration/round1`** — registry empty until verified models are added; chat in analysis mode until an LLM is approved. `docs/PHASE2_FEATURES.md` |
 | 5 | Browser voice + Vapi phone | **Built 2026-11-21 (Features 8, 10), committed on `integration/round1`** — Vapi webhook prepared and mock-tested; **no live call yet**. `docs/VAPI_FINAL_CONNECTION_GUIDE.md` |
 | 6 | Evaluation report + demo | Not started |
@@ -28,9 +28,9 @@ Last updated: 2026-11-21
 |---|---|---|
 | 1 | Multilingual Token Counter | Built (`POST /api/tokenize`) |
 | 2 | Language Comparison Engine | Built (`POST /api/compare-languages`); aligned FLORES-200 groups load from PostgreSQL (`GET /api/samples/groups`); stored benchmarks on the Research Dashboard |
-| 3 | Smart Prompt Optimizer | **Done — opt_rules_v1** (`POST /api/optimize`); balanced mode inactive until phrase lists are reviewed |
+| 3 | Smart Prompt Optimizer | **opt_rules_v3 (2026-11-21, uncommitted)** — safe / balanced / aggressive with risk levels; per-edit language, source, risk, approval and token records; wording rules come only from the review data and apply only in their own language. **0 automatic wording rules**: all 399 review entries are pending native-speaker review. Evaluations: `research/OPTIMIZER_EVAL_FLORES200.md`, `research/PROMPT_EVAL_SYNTHETIC_V1.md` |
 | 4 | AI Cost Calculator | **Built — cost_v1** (`POST /api/cost/estimate`); registry prices need `source_url` + `verified_at` to count as verified; registry empty (D42–D43) |
-| 5 | Meaning Preservation Checker | **Done — rules_v2** (units + standalone Romanized negations added 2026-11-21) (`POST /api/meaning-check`, `POST /api/critical-details`); Indic negation lists await native-speaker review |
+| 5 | Meaning Preservation Checker | **rules_v5 (2026-11-21, uncommitted)** — English conditions, constraints, questions, names, number words and relative days; English opposite pairs give a warning; Indic/Romanized markers from the review data (all pending review, used protectively); formality changes, and Romanized marker changes when the language is `auto`, give "review required"; 72-case adversarial suite + 27 rules_v5 regression cases |
 | 6 | Script and Transliteration Optimizer | **Done — translit_v1** (`POST /api/script-variants`; optimizer aggressive-mode suggestions); native-speaker spot check pending |
 | 7 | Smart Model Recommendation | **Built — rec_rules_v1** (`POST /api/models/recommend`); rule-based, explains exclusions, manual lock (D44) |
 | 8 | Voice-to-Optimized Prompt | **Built — pipeline_v1** (`/api/pipeline/analyze`, `/api/pipeline/apply`); server STT adapter ready, inactive until `STT_*` is set (D45–D46) |
@@ -99,6 +99,36 @@ Policy: `research/configs/transliteration.md`. Tamil output uses Sanskrit-style 
   `test_money_and_email_matches_unchanged_by_performance_fix`).
 - `core/text.py`: `script_of_char` and `detect_script` cached; BOM removal uses `str.replace`.
   Same outputs, much faster.
+
+## Indic linguistic-review milestone (2026-11-21, uncommitted)
+
+Decisions D56–D63. Guide for reviewers and the team: `docs/LINGUISTIC_REVIEW_GUIDE.md`.
+
+| Item | State |
+|---|---|
+| Review datasets | `backend/app/linguistics/review/{kn,hi,ta,te,en}.yaml`: 399 entries (Kannada 90, Hindi 113, Tamil 90, Telugu 89, English 17), 10 categories. **All `pending_review`; 0 approved, 0 rejected.** Drafted by an AI assistant and labelled as unverified |
+| Review workflow | Linguistic Review screen (`/review`, drafts in the browser, signed JSON export); spreadsheet export; `research/scripts/apply_review_decisions.py` (validates, merges per entry). No server writes, no database changes |
+| Optimizer use | Pending detection lists protect text and make Indic word changes "review required". Pending wording entries are aggressive-mode suggestions only. English rules never apply to Indic text |
+| Meaning check | `rules_v5` (D62): 72 adversarial cases across kn/hi/ta/te, Romanized and code-mixed — every critical change rejected, formality changes and uncovered deletions "review required". A further probe of 29 rewrites found 6 meaning changes reported `preserved` under rules_v4 (incl. a removed Romanized negation *beda* with language `auto`); all 6 fixed, regression tests in `test_meaning_rules_v5.py` |
+| English validation (Phase 8) | Phrase list still **inactive**. Matrix of 11 entries × 7 contexts (`docs/review/english_phrase_validation.md`, `test_english_validation.py`): 7 redundant-expression rules keep every detail (2–4 tokens saved per use); the 4 request frames are suggestion-only. Found and fixed: *I would like you to* / *I want you to* would have been applied automatically if the list were activated (D63) |
+| FLORES-200 (natural; run `opt_eval_20261121T050911Z`) | Unchanged under rules_v5: 0.004–0.79% fewer tokens (o200k_base), formatting only |
+| FLORES-200 (synthetic noisy prompts, balanced) | **45–54% of injected noise removed automatically** (same as safe mode); the repeated instruction holds the number word "one", so it is now one approval-required suggestion per prompt. The earlier 97–99% *automatic* figure is withdrawn (it relied on the number word being undetected) |
+| Everyday prompts (100 synthetic, AI-drafted; run `prompt_eval_20261121T051656Z`) | 91% unchanged; mean saving 0.35% (o200k_base) / 0.22% (cl100k_base), median 0%, in safe **and** balanced mode — balanced adds no automatic saving on this set; repeats holding a constraint or negation are suggested, not removed, now also with language `auto` (the earlier 33–37% Romanized-`auto` maximum came from two unsafe automatic removals and is withdrawn); 0 token increases, 0 "changed", 100% details kept |
+| Tests (rules_v5 session, 2026-11-21) | Backend **724 passed, 0 failed** (safe runner, PostgreSQL on the Neon test branch; was 617, +27 `test_meaning_rules_v5.py`, +79 `test_english_validation.py`, +1 optimizer test; 2 optimizer tests changed only their filler word "today" → "by email", assertions unchanged). Frontend `tsc` 0 errors, vitest 28/28, `next build` OK (15 pages); no frontend code changed. Secret scan 0 hits; `git diff --check` clean. Browser checks **38/38** (Edge, production build on current code, backend `rules_v5`; servers restarted with the user's approval; 2 console errors, both from the deliberate error tests); log/results/screenshots refreshed in `docs/integration/` and `docs/screenshots/integration/`. `09b-optimizer-kannada-at-risk-suggestion.png` is no longer produced by the script and is kept (stale) until replaced |
+| Still required | Native speakers review the 382 Indic entries; team reviews the 17 English entries; then measure approved wording rules on reviewed, non-synthetic prompts |
+
+## Token-minimization milestone (2026-11-21, uncommitted)
+
+Audit findings and what changed: `research/configs/optimizer.md` (opt_rules_v2), `research/configs/meaning_check.md` (rules_v3), decisions D50–D55. Evaluation (FLORES-200 devtest, 5,060 sentences × 3 modes × 3 conditions × 2 encodings = 91,080 rows): `research/OPTIMIZER_EVAL_FLORES200.md`.
+
+| Result | Value |
+|---|---|
+| Natural FLORES sentences | 0.004–0.79% fewer tokens (o200k_base); only stray whitespace is removable; no paraphrasing |
+| Synthetic noisy prompts, balanced | 97–99% of injected noise tokens removed in all five languages; total reduction 7–35% depending on language and encoding |
+| Safety | 0 token increases, 0 meaning-check "changed", critical-detail counts unchanged in 91,080/91,080 rows |
+| Tests (this milestone) | backend **617 passed** (safe runner, Neon test branch); frontend tsc 0 errors, vitest 28/28, `next build` OK (15 pages incl. `/review`); browser 38/38 |
+| Tests (previous milestone) | backend **515 passed** (PostgreSQL on the Neon test branch via the safe runner; +79 tests incl. `test_token_minimization.py` 73, `test_optimizer_eval.py` 5); frontend tsc 0 errors, vitest 25/25, `next build` OK; browser 36/36 incl. the new decision panel and Kannada mode checks |
+| Still needed | native-speaker Indic phrase lists, condition/constraint words and negation-list review; team review of the English phrase list |
 
 ## Phase 2 test results (2026-11-21, branch `integration/round1`)
 

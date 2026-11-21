@@ -7,7 +7,7 @@ import type {
   AnalyzeRequest, AnalyzeResponse, ApplyEditsRequest, ApplyEditsResponse, ChatAnalyzeRequest, ChatAnalyzeResponse,
   ChatHistoryResponse, ChatSendRequest, ChatSendResponse, CostEstimateRequest, CostEstimateResponse,
   IntegrationsResponse, ModelRegistryResponse, RecommendRequest, RecommendResponse, TranscribeRequest,
-  TranscribeResponse, VapiStatusResponse,
+  TranscribeResponse, VapiStatusResponse, ReviewLanguageResponse, ReviewSummaryResponse,
 } from "./types";
 
 export const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000").replace(/\/+$/, "");
@@ -106,11 +106,11 @@ export const api = {
     request<BenchmarkResultsResponse>(
       `/api/benchmarks/${encodeURIComponent(runId)}/results${buildQuery({ ...q })}`, {}, o),
 
-  // Feature 3 — smart prompt optimizer (opt_rules_v1)
+  // Feature 3 — smart prompt optimizer (opt_rules_v2)
   optimize: (body: OptimizeRequest, o?: RequestOptions) =>
     request<OptimizeResponse>("/api/optimize", { method: "POST", body }, o),
 
-  // Feature 5 — meaning preservation (rules_v2)
+  // Feature 5 — meaning preservation (rules_v3)
   meaningCheck: (body: MeaningCheckRequest, o?: RequestOptions) =>
     request<MeaningCheckResponse>("/api/meaning-check", { method: "POST", body }, o),
 
@@ -145,6 +145,11 @@ export const api = {
     request<ChatHistoryResponse>(`/api/chat/${encodeURIComponent(sessionId)}`, {}, o),
   chatDelete: (sessionId: string, o?: RequestOptions) =>
     request<void>(`/api/chat/${encodeURIComponent(sessionId)}`, { method: "DELETE" }, o),
+
+  // Linguistic review datasets (read-only; decisions are exported, then merged by the team)
+  reviewSummary: (o?: RequestOptions) => request<ReviewSummaryResponse>("/api/linguistics/summary", {}, o),
+  reviewLanguage: (language: string, o?: RequestOptions) =>
+    request<ReviewLanguageResponse>(`/api/linguistics/review/${encodeURIComponent(language)}`, {}, o),
 
   // Status (Feature 10 + providers)
   integrations: (o?: RequestOptions) => request<IntegrationsResponse>("/api/integrations/status", {}, o),

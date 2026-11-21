@@ -1,0 +1,126 @@
+# Kannada linguistic review dataset (REDUTAX, schema redutax-review/v1).
+#
+# EVERY entry below was drafted by an AI assistant (Claude) from general grammar knowledge on
+# 2026-11-21. NONE has been checked by a Kannada speaker: all are `pending_review`.
+# Reviewers: use the Linguistic Review screen (/review) or the spreadsheet export
+# (docs/LINGUISTIC_REVIEW_GUIDE.md). Do not edit decisions here by hand unless you are the reviewer.
+#
+# How entries are used before review:
+#   detection entries (negation, condition, constraint, question, entity, quantity, register,
+#   romanized) — only PROTECTIVELY: text they match is never edited, and while they are pending
+#   the meaning check says "review required" (at_risk) instead of "preserved" when words change.
+#   rewrite entries (redundant_expression, shortening) — never applied automatically until
+#   approved; aggressive mode may show them as suggestions labelled "pending review".
+schema: redutax-review/v1
+language: kn
+default_provenance: "Drafted by AI assistant (Claude) from general Kannada grammar knowledge, 2026-11-21; not verified by a native speaker."
+entries:
+  # ---------- negation (mirrors backend/app/core/lexicons/negation.yaml kn-Knda / kn-Latn, plus gaps) ----------
+  - {id: kn-neg-001, category: negation, script: Knda, expression: "ಇಲ್ಲ", gloss: "not / there is no", match: substring, detect_as: negation, canonical: "kn:illa", lexicon_ref: kn-Knda, review: {decision: pending_review}}
+  - {id: kn-neg-002, category: negation, script: Knda, expression: "ಿಲ್ಲ", gloss: "negative verb ending (e.g. ಬರುವುದಿಲ್ಲ, will not come)", match: suffix, detect_as: negation, canonical: "kn:illa", lexicon_ref: kn-Knda, review: {decision: pending_review}}
+  - {id: kn-neg-003, category: negation, script: Knda, expression: "ಬೇಡ", gloss: "do not / don't want (ಬೇಡಿ polite)", match: substring, detect_as: negation, canonical: "kn:beda", lexicon_ref: kn-Knda, review: {decision: pending_review}}
+  - {id: kn-neg-004, category: negation, script: Knda, expression: "ಅಲ್ಲ", gloss: "is not (identity)", match: substring, detect_as: negation, canonical: "kn:alla", lexicon_ref: kn-Knda, review: {decision: pending_review}}
+  - {id: kn-neg-005, category: negation, script: Knda, expression: "ಬಾರದು", gloss: "must not / should not (e.g. ಮಾಡಬಾರದು)", match: suffix, detect_as: negation, canonical: "kn:baaradu", note: "Gap: not in negation.yaml.", review: {decision: pending_review}}
+  - {id: kn-neg-006, category: negation, script: Knda, expression: "ಬೇಡಿ", gloss: "please don't (polite form of ಬೇಡ)", match: word, detect_as: negation, canonical: "kn:beda", note: "Covered by ಬೇಡ substring; listed so a reviewer can confirm.", review: {decision: pending_review}}
+  - {id: kn-neg-007, category: negation, script: Latn, expression: "illa", gloss: "Romanized ಇಲ್ಲ", match: suffix, detect_as: negation, canonical: "kn:illa", lexicon_ref: kn-Latn, review: {decision: pending_review}}
+  - {id: kn-neg-008, category: negation, script: Latn, expression: "beda", gloss: "Romanized ಬೇಡ", match: word, detect_as: negation, canonical: "kn:beda", lexicon_ref: kn-Latn, review: {decision: pending_review}}
+  - {id: kn-neg-009, category: negation, script: Latn, expression: "alla", gloss: "Romanized ಅಲ್ಲ", match: word, detect_as: negation, canonical: "kn:alla", lexicon_ref: kn-Latn, review: {decision: pending_review}}
+
+  # ---------- conditions ----------
+  - {id: kn-cond-001, category: condition, script: Knda, expression: "ದರೆ", gloss: "conditional verb ending 'if …' (e.g. ಬಂದರೆ, if (s/he) comes)", match: suffix, detect_as: condition, canonical: "kn:if", note: "Also ends ಆದರೆ 'but'; protective over-detection is acceptable.", review: {decision: pending_review}}
+  - {id: kn-cond-002, category: condition, script: Knda, expression: "ಒಂದುವೇಳೆ", gloss: "in case / if by chance", match: word, detect_as: condition, canonical: "kn:in_case", note: "One-word spelling; the two-word spelling is kn-cond-006.", review: {decision: pending_review}}
+  - {id: kn-cond-006, category: condition, script: Knda, expression: "ಒಂದು ವೇಳೆ", gloss: "in case / if by chance (two-word spelling)", match: phrase, detect_as: condition, canonical: "kn:in_case", review: {decision: pending_review}}
+  - {id: kn-cond-003, category: condition, script: Knda, expression: "ಇಲ್ಲದಿದ್ದರೆ", gloss: "otherwise / if not", match: word, detect_as: condition, canonical: "kn:otherwise", review: {decision: pending_review}}
+  - {id: kn-cond-004, category: condition, script: Knda, expression: "ತನಕ", gloss: "until", match: suffix, detect_as: condition, canonical: "kn:until", review: {decision: pending_review}}
+  - {id: kn-cond-005, category: condition, script: Knda, expression: "ಹೊರತು", gloss: "unless / except", match: word, detect_as: condition, canonical: "kn:unless", review: {decision: pending_review}}
+
+  # ---------- constraints ----------
+  - {id: kn-cons-001, category: constraint, script: Knda, expression: "ಮಾತ್ರ", gloss: "only", match: word, detect_as: constraint, canonical: "kn:only", review: {decision: pending_review}}
+  - {id: kn-cons-002, category: constraint, script: Knda, expression: "ಕನಿಷ್ಠ", gloss: "at least / minimum", match: word, detect_as: constraint, canonical: "kn:at_least", review: {decision: pending_review}}
+  - {id: kn-cons-003, category: constraint, script: Knda, expression: "ಗರಿಷ್ಠ", gloss: "at most / maximum", match: word, detect_as: constraint, canonical: "kn:at_most", review: {decision: pending_review}}
+  - {id: kn-cons-004, category: constraint, script: Knda, expression: "ಕಡ್ಡಾಯ", gloss: "mandatory / compulsory", match: substring, detect_as: constraint, canonical: "kn:required", review: {decision: pending_review}}
+  - {id: kn-cons-005, category: constraint, script: Knda, expression: "ಬೇಕು", gloss: "must / need (e.g. ಮಾಡಬೇಕು)", match: suffix, detect_as: constraint, canonical: "kn:must", review: {decision: pending_review}}
+  - {id: kn-cons-006, category: constraint, script: Knda, expression: "ಯಾವಾಗಲೂ", gloss: "always", match: word, detect_as: constraint, canonical: "kn:always", review: {decision: pending_review}}
+  - {id: kn-cons-007, category: constraint, script: Knda, expression: "ಎಲ್ಲಾ", gloss: "all", match: word, detect_as: constraint, canonical: "kn:all", review: {decision: pending_review}}
+
+  # ---------- questions ----------
+  - {id: kn-q-001, category: question, script: Knda, expression: "ಏನು", gloss: "what", match: word, detect_as: question, canonical: "kn:what", review: {decision: pending_review}}
+  - {id: kn-q-002, category: question, script: Knda, expression: "ಯಾರು", gloss: "who", match: word, detect_as: question, canonical: "kn:who", review: {decision: pending_review}}
+  - {id: kn-q-003, category: question, script: Knda, expression: "ಯಾವಾಗ", gloss: "when", match: word, detect_as: question, canonical: "kn:when", review: {decision: pending_review}}
+  - {id: kn-q-004, category: question, script: Knda, expression: "ಎಲ್ಲಿ", gloss: "where", match: word, detect_as: question, canonical: "kn:where", review: {decision: pending_review}}
+  - {id: kn-q-005, category: question, script: Knda, expression: "ಏಕೆ", gloss: "why", match: word, detect_as: question, canonical: "kn:why", review: {decision: pending_review}}
+  - {id: kn-q-006, category: question, script: Knda, expression: "ಯಾಕೆ", gloss: "why (colloquial)", match: word, detect_as: question, canonical: "kn:why", review: {decision: pending_review}}
+  - {id: kn-q-007, category: question, script: Knda, expression: "ಹೇಗೆ", gloss: "how", match: word, detect_as: question, canonical: "kn:how", review: {decision: pending_review}}
+  - {id: kn-q-008, category: question, script: Knda, expression: "ಎಷ್ಟು", gloss: "how much / how many", match: word, detect_as: question, canonical: "kn:how_much", review: {decision: pending_review}}
+  - {id: kn-q-009, category: question, script: Knda, expression: "ಯಾವ", gloss: "which", match: word, detect_as: question, canonical: "kn:which", review: {decision: pending_review}}
+
+  # ---------- names and entities (titles: the title and the next word are protected) ----------
+  - {id: kn-ent-001, category: entity, script: Knda, expression: "ಶ್ರೀ", gloss: "Mr. / Shri (title before a name)", match: word, detect_as: entity, canonical: "title", note: "Indic names have no capital letters; titles are one of the few signals. List names as protected terms.", review: {decision: pending_review}}
+  - {id: kn-ent-002, category: entity, script: Knda, expression: "ಶ್ರೀಮತಿ", gloss: "Mrs. / Shrimati", match: word, detect_as: entity, canonical: "title", review: {decision: pending_review}}
+  - {id: kn-ent-003, category: entity, script: Knda, expression: "ಡಾ.", gloss: "Dr.", match: word, detect_as: entity, canonical: "title", note: "Matched as ಡಾ (the full stop is a separator).", review: {decision: pending_review}}
+
+  # ---------- quantities, dates and numbers ----------
+  - {id: kn-num-001, category: quantity, script: Knda, expression: "ಒಂದು", gloss: "one (also 'a/an')", match: word, detect_as: number, canonical: "1", note: "Also used as an indefinite article; protective over-detection.", review: {decision: pending_review}}
+  - {id: kn-num-002, category: quantity, script: Knda, expression: "ಎರಡು", gloss: "two", match: word, detect_as: number, canonical: "2", review: {decision: pending_review}}
+  - {id: kn-num-003, category: quantity, script: Knda, expression: "ಮೂರು", gloss: "three", match: word, detect_as: number, canonical: "3", review: {decision: pending_review}}
+  - {id: kn-num-004, category: quantity, script: Knda, expression: "ನಾಲ್ಕು", gloss: "four", match: word, detect_as: number, canonical: "4", review: {decision: pending_review}}
+  - {id: kn-num-005, category: quantity, script: Knda, expression: "ಐದು", gloss: "five", match: word, detect_as: number, canonical: "5", review: {decision: pending_review}}
+  - {id: kn-num-006, category: quantity, script: Knda, expression: "ಆರು", gloss: "six", match: word, detect_as: number, canonical: "6", review: {decision: pending_review}}
+  - {id: kn-num-007, category: quantity, script: Knda, expression: "ಏಳು", gloss: "seven (also 'get up')", match: word, detect_as: number, canonical: "7", review: {decision: pending_review}}
+  - {id: kn-num-008, category: quantity, script: Knda, expression: "ಎಂಟು", gloss: "eight", match: word, detect_as: number, canonical: "8", review: {decision: pending_review}}
+  - {id: kn-num-009, category: quantity, script: Knda, expression: "ಒಂಬತ್ತು", gloss: "nine", match: word, detect_as: number, canonical: "9", review: {decision: pending_review}}
+  - {id: kn-num-010, category: quantity, script: Knda, expression: "ಹತ್ತು", gloss: "ten", match: word, detect_as: number, canonical: "10", review: {decision: pending_review}}
+  - {id: kn-num-011, category: quantity, script: Knda, expression: "ನೂರು", gloss: "hundred", match: word, detect_as: number, canonical: "100", review: {decision: pending_review}}
+  - {id: kn-num-012, category: quantity, script: Knda, expression: "ಸಾವಿರ", gloss: "thousand", match: word, detect_as: number, canonical: "1000", review: {decision: pending_review}}
+  - {id: kn-num-013, category: quantity, script: Knda, expression: "ಲಕ್ಷ", gloss: "lakh (100,000)", match: word, detect_as: number, canonical: "100000", review: {decision: pending_review}}
+  - {id: kn-num-014, category: quantity, script: Knda, expression: "ಕೋಟಿ", gloss: "crore (10,000,000)", match: word, detect_as: number, canonical: "10000000", review: {decision: pending_review}}
+  - {id: kn-unit-001, category: quantity, script: Knda, expression: "ಕೆಜಿ", gloss: "kg", match: word, detect_as: number, canonical: "unit:kg", review: {decision: pending_review}}
+  - {id: kn-unit-002, category: quantity, script: Knda, expression: "ಗ್ರಾಂ", gloss: "gram", match: word, detect_as: number, canonical: "unit:g", review: {decision: pending_review}}
+  - {id: kn-unit-003, category: quantity, script: Knda, expression: "ಲೀಟರ್", gloss: "litre", match: word, detect_as: number, canonical: "unit:l", review: {decision: pending_review}}
+  - {id: kn-unit-004, category: quantity, script: Knda, expression: "ದಿನ", gloss: "day (unit of time)", match: word, detect_as: number, canonical: "unit:day", review: {decision: pending_review}}
+  - {id: kn-unit-005, category: quantity, script: Knda, expression: "ಗಂಟೆ", gloss: "hour / o'clock", match: word, detect_as: number, canonical: "unit:hour", review: {decision: pending_review}}
+  - {id: kn-month-01, category: quantity, script: Knda, expression: "ಜನವರಿ", gloss: "January", match: word, detect_as: datetime, canonical: "month:1", review: {decision: pending_review}}
+  - {id: kn-month-02, category: quantity, script: Knda, expression: "ಫೆಬ್ರವರಿ", gloss: "February", match: word, detect_as: datetime, canonical: "month:2", review: {decision: pending_review}}
+  - {id: kn-month-03, category: quantity, script: Knda, expression: "ಮಾರ್ಚ್", gloss: "March", match: word, detect_as: datetime, canonical: "month:3", review: {decision: pending_review}}
+  - {id: kn-month-04, category: quantity, script: Knda, expression: "ಏಪ್ರಿಲ್", gloss: "April", match: word, detect_as: datetime, canonical: "month:4", review: {decision: pending_review}}
+  - {id: kn-month-05, category: quantity, script: Knda, expression: "ಮೇ", gloss: "May", match: word, detect_as: datetime, canonical: "month:5", review: {decision: pending_review}}
+  - {id: kn-month-06, category: quantity, script: Knda, expression: "ಜೂನ್", gloss: "June", match: word, detect_as: datetime, canonical: "month:6", review: {decision: pending_review}}
+  - {id: kn-month-07, category: quantity, script: Knda, expression: "ಜುಲೈ", gloss: "July", match: word, detect_as: datetime, canonical: "month:7", review: {decision: pending_review}}
+  - {id: kn-month-08, category: quantity, script: Knda, expression: "ಆಗಸ್ಟ್", gloss: "August", match: word, detect_as: datetime, canonical: "month:8", review: {decision: pending_review}}
+  - {id: kn-month-09, category: quantity, script: Knda, expression: "ಸೆಪ್ಟೆಂಬರ್", gloss: "September", match: word, detect_as: datetime, canonical: "month:9", review: {decision: pending_review}}
+  - {id: kn-month-10, category: quantity, script: Knda, expression: "ಅಕ್ಟೋಬರ್", gloss: "October", match: word, detect_as: datetime, canonical: "month:10", review: {decision: pending_review}}
+  - {id: kn-month-11, category: quantity, script: Knda, expression: "ನವೆಂಬರ್", gloss: "November", match: word, detect_as: datetime, canonical: "month:11", review: {decision: pending_review}}
+  - {id: kn-month-12, category: quantity, script: Knda, expression: "ಡಿಸೆಂಬರ್", gloss: "December", match: word, detect_as: datetime, canonical: "month:12", review: {decision: pending_review}}
+  - {id: kn-time-001, category: quantity, script: Knda, expression: "ನಾಳೆ", gloss: "tomorrow", match: word, detect_as: datetime, canonical: "day:+1", review: {decision: pending_review}}
+  - {id: kn-time-002, category: quantity, script: Knda, expression: "ಇಂದು", gloss: "today", match: word, detect_as: datetime, canonical: "day:0", review: {decision: pending_review}}
+  - {id: kn-time-003, category: quantity, script: Knda, expression: "ನಿನ್ನೆ", gloss: "yesterday", match: word, detect_as: datetime, canonical: "day:-1", review: {decision: pending_review}}
+
+  # ---------- formal vs informal (register) — removal/addition makes the check ask for review ----------
+  - {id: kn-reg-001, category: register, script: Knda, expression: "ದಯವಿಟ್ಟು", gloss: "please (polite)", match: word, detect_as: register, canonical: "kn:please", review: {decision: pending_review}}
+  - {id: kn-reg-002, category: register, script: Knda, expression: "ನೀವು", gloss: "you (formal / plural)", match: word, detect_as: register, canonical: "kn:you_formal", review: {decision: pending_review}}
+  - {id: kn-reg-003, category: register, script: Knda, expression: "ನೀನು", gloss: "you (informal)", match: word, detect_as: register, canonical: "kn:you_informal", review: {decision: pending_review}}
+  - {id: kn-reg-004, category: register, script: Knda, expression: "ತಾವು", gloss: "you (very formal)", match: word, detect_as: register, canonical: "kn:you_very_formal", review: {decision: pending_review}}
+
+  # ---------- common redundant expressions (rewrite; never automatic until approved) ----------
+  - {id: kn-red-001, category: redundant_expression, script: Knda, expression: "ಸಂಕ್ಷಿಪ್ತವಾಗಿ ಸಾರಾಂಶ", gloss: "briefly summary → summary (a summary is already brief)", original: "ಸಂಕ್ಷಿಪ್ತವಾಗಿ ಸಾರಾಂಶ", proposed: "ಸಾರಾಂಶ", preserves_meaning: unknown, changes_register: "no", safe_for_auto: false, note: "Drafter's proposal; 'briefly' may add a length request in some contexts.", review: {decision: pending_review}}
+  - {id: kn-red-002, category: redundant_expression, script: Knda, expression: "ಮತ್ತೊಮ್ಮೆ ಮತ್ತೆ", gloss: "once again again → once again", original: "ಮತ್ತೊಮ್ಮೆ ಮತ್ತೆ", proposed: "ಮತ್ತೊಮ್ಮೆ", preserves_meaning: unknown, changes_register: "no", safe_for_auto: false, review: {decision: pending_review}}
+  - {id: kn-red-003, category: redundant_expression, script: Knda, expression: "ಈ ಕೆಳಗಿನ", gloss: "this following → following", original: "ಈ ಕೆಳಗಿನ", proposed: "ಕೆಳಗಿನ", preserves_meaning: unknown, changes_register: "no", safe_for_auto: false, review: {decision: pending_review}}
+
+  # ---------- wording-level shortening candidates ----------
+  - {id: kn-short-001, category: shortening, script: Knda, expression: "ನಾನು ನಿಮ್ಮನ್ನು ಕೇಳಿಕೊಳ್ಳುತ್ತೇನೆ", gloss: "I request you (that) … → (drop)", original: "ನಾನು ನಿಮ್ಮನ್ನು ಕೇಳಿಕೊಳ್ಳುತ್ತೇನೆ", proposed: "", preserves_meaning: unknown, changes_register: "yes", safe_for_auto: false, note: "Removes a polite request frame: changes register, suggestion only even if approved.", review: {decision: pending_review}}
+  - {id: kn-short-002, category: shortening, script: Knda, expression: "ಬಗ್ಗೆ ಮಾಹಿತಿ ನೀಡಿ", gloss: "give information about → tell about", original: "ಬಗ್ಗೆ ಮಾಹಿತಿ ನೀಡಿ", proposed: "ಬಗ್ಗೆ ತಿಳಿಸಿ", preserves_meaning: unknown, changes_register: unknown, safe_for_auto: false, review: {decision: pending_review}}
+
+  # ---------- Romanized Kannada (used only when the language is set to Kannada) ----------
+  - {id: kn-rom-001, category: romanized, script: Latn, expression: "beku", gloss: "Romanized ಬೇಕು (must / need)", match: suffix, detect_as: constraint, canonical: "kn:must", review: {decision: pending_review}}
+  - {id: kn-rom-002, category: romanized, script: Latn, expression: "maatra", gloss: "Romanized ಮಾತ್ರ (only)", match: word, detect_as: constraint, canonical: "kn:only", review: {decision: pending_review}}
+  - {id: kn-rom-003, category: romanized, script: Latn, expression: "matra", gloss: "Romanized ಮಾತ್ರ (only), short spelling", match: word, detect_as: constraint, canonical: "kn:only", review: {decision: pending_review}}
+  - {id: kn-rom-004, category: romanized, script: Latn, expression: "bedi", gloss: "Romanized ಬೇಡಿ (please don't), also as an ending (kalisabedi)", match: suffix, detect_as: negation, canonical: "kn:beda", note: "Found by the everyday-prompt evaluation: 'kalisabedi' was missed as a whole-word entry.", review: {decision: pending_review}}
+  - {id: kn-rom-013, category: romanized, script: Latn, expression: "beda", gloss: "Romanized ಬೇಡ as an ending (maadabeda, don't do)", match: suffix, detect_as: negation, canonical: "kn:beda", note: "negation.yaml lists 'beda' as a whole word only; this adds the ending.", review: {decision: pending_review}}
+  - {id: kn-rom-005, category: romanized, script: Latn, expression: "baaradu", gloss: "Romanized ಬಾರದು (must not)", match: suffix, detect_as: negation, canonical: "kn:baaradu", review: {decision: pending_review}}
+  - {id: kn-rom-006, category: romanized, script: Latn, expression: "enu", gloss: "Romanized ಏನು (what)", match: word, detect_as: question, canonical: "kn:what", review: {decision: pending_review}}
+  - {id: kn-rom-007, category: romanized, script: Latn, expression: "yaavaga", gloss: "Romanized ಯಾವಾಗ (when)", match: word, detect_as: question, canonical: "kn:when", review: {decision: pending_review}}
+  - {id: kn-rom-008, category: romanized, script: Latn, expression: "hege", gloss: "Romanized ಹೇಗೆ (how)", match: word, detect_as: question, canonical: "kn:how", review: {decision: pending_review}}
+  - {id: kn-rom-009, category: romanized, script: Latn, expression: "dayavittu", gloss: "Romanized ದಯವಿಟ್ಟು (please)", match: word, detect_as: register, canonical: "kn:please", review: {decision: pending_review}}
+  - {id: kn-rom-010, category: romanized, script: Latn, expression: "neevu", gloss: "Romanized ನೀವು (you, formal)", match: word, detect_as: register, canonical: "kn:you_formal", review: {decision: pending_review}}
+  - {id: kn-rom-011, category: romanized, script: Latn, expression: "neenu", gloss: "Romanized ನೀನು (you, informal)", match: word, detect_as: register, canonical: "kn:you_informal", review: {decision: pending_review}}
+  - {id: kn-rom-012, category: romanized, script: Latn, expression: "naale", gloss: "Romanized ನಾಳೆ (tomorrow)", match: word, detect_as: datetime, canonical: "day:+1", review: {decision: pending_review}}

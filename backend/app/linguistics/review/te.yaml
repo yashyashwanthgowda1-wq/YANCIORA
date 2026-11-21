@@ -1,0 +1,115 @@
+# Telugu linguistic review dataset (REDUTAX, schema redutax-review/v1).
+# EVERY entry was drafted by an AI assistant (Claude) on 2026-11-21 and is `pending_review`:
+# no Telugu speaker has checked it. See kn.yaml for how pending entries are used (protective only).
+schema: redutax-review/v1
+language: te
+default_provenance: "Drafted by AI assistant (Claude) from general Telugu grammar knowledge, 2026-11-21; not verified by a native speaker."
+entries:
+  # ---------- negation (mirrors negation.yaml te-Telu / te-Latn, plus gaps) ----------
+  - {id: te-neg-001, category: negation, script: Telu, expression: "లేదు", gloss: "not / there is no", match: substring, detect_as: negation, canonical: "te:ledu", lexicon_ref: te-Telu, review: {decision: pending_review}}
+  - {id: te-neg-002, category: negation, script: Telu, expression: "వద్దు", gloss: "do not / don't want", match: substring, detect_as: negation, canonical: "te:vaddu", lexicon_ref: te-Telu, review: {decision: pending_review}}
+  - {id: te-neg-003, category: negation, script: Telu, expression: "కాదు", gloss: "is not (identity)", match: substring, detect_as: negation, canonical: "te:kaadu", lexicon_ref: te-Telu, review: {decision: pending_review}}
+  - {id: te-neg-004, category: negation, script: Telu, expression: "కూడదు", gloss: "must not (e.g. చేయకూడదు)", match: suffix, detect_as: negation, canonical: "te:koodadu", note: "Gap: not in negation.yaml.", review: {decision: pending_review}}
+  - {id: te-neg-005, category: negation, script: Telu, expression: "లేను", gloss: "I am not / cannot (e.g. రాలేను)", match: suffix, detect_as: negation, canonical: "te:lenu", note: "Gap: first-person negative ending.", review: {decision: pending_review}}
+  - {id: te-neg-006, category: negation, script: Latn, expression: "ledu", gloss: "Romanized లేదు", match: suffix, detect_as: negation, canonical: "te:ledu", lexicon_ref: te-Latn, review: {decision: pending_review}}
+  - {id: te-neg-007, category: negation, script: Latn, expression: "vaddu", gloss: "Romanized వద్దు", match: word, detect_as: negation, canonical: "te:vaddu", lexicon_ref: te-Latn, review: {decision: pending_review}}
+  - {id: te-neg-008, category: negation, script: Latn, expression: "kaadu", gloss: "Romanized కాదు", match: word, detect_as: negation, canonical: "te:kaadu", lexicon_ref: te-Latn, review: {decision: pending_review}}
+  - {id: te-neg-009, category: negation, script: Latn, expression: "kadu", gloss: "Romanized కాదు (short spelling)", match: word, detect_as: negation, canonical: "te:kaadu", lexicon_ref: te-Latn, review: {decision: pending_review}}
+
+  # ---------- conditions ----------
+  - {id: te-cond-001, category: condition, script: Telu, expression: "ఒకవేళ", gloss: "in case / if", match: word, detect_as: condition, canonical: "te:in_case", review: {decision: pending_review}}
+  - {id: te-cond-002, category: condition, script: Telu, expression: "అయితే", gloss: "if (so) / then / but", match: word, detect_as: condition, canonical: "te:if", note: "Also 'but'; protective over-detection.", review: {decision: pending_review}}
+  - {id: te-cond-003, category: condition, script: Telu, expression: "లేకపోతే", gloss: "otherwise / if not", match: word, detect_as: condition, canonical: "te:otherwise", review: {decision: pending_review}}
+  - {id: te-cond-004, category: condition, script: Telu, expression: "స్తే", gloss: "conditional ending 'if …' (e.g. వస్తే, if (s/he) comes)", match: suffix, detect_as: condition, canonical: "te:if", note: "Covers the common -స్తే pattern only; other conditional forms (e.g. ఉంటే) are listed separately.", review: {decision: pending_review}}
+  - {id: te-cond-005, category: condition, script: Telu, expression: "ఉంటే", gloss: "if (there) is", match: suffix, detect_as: condition, canonical: "te:if", review: {decision: pending_review}}
+  - {id: te-cond-006, category: condition, script: Telu, expression: "వరకు", gloss: "until", match: suffix, detect_as: condition, canonical: "te:until", review: {decision: pending_review}}
+  - {id: te-cond-007, category: condition, script: Telu, expression: "తప్ప", gloss: "except", match: word, detect_as: condition, canonical: "te:except", review: {decision: pending_review}}
+
+  # ---------- constraints ----------
+  - {id: te-cons-001, category: constraint, script: Telu, expression: "మాత్రమే", gloss: "only", match: word, detect_as: constraint, canonical: "te:only", review: {decision: pending_review}}
+  - {id: te-cons-002, category: constraint, script: Telu, expression: "కనీసం", gloss: "at least", match: word, detect_as: constraint, canonical: "te:at_least", review: {decision: pending_review}}
+  - {id: te-cons-003, category: constraint, script: Telu, expression: "గరిష్ఠంగా", gloss: "at most", match: word, detect_as: constraint, canonical: "te:at_most", review: {decision: pending_review}}
+  - {id: te-cons-004, category: constraint, script: Telu, expression: "తప్పనిసరి", gloss: "mandatory", match: substring, detect_as: constraint, canonical: "te:required", review: {decision: pending_review}}
+  - {id: te-cons-005, category: constraint, script: Telu, expression: "ాలి", gloss: "must / should verb ending (e.g. చేయాలి)", match: suffix, detect_as: constraint, canonical: "te:must", note: "Broad ending; protective over-detection.", review: {decision: pending_review}}
+  - {id: te-cons-006, category: constraint, script: Telu, expression: "ఎప్పుడూ", gloss: "always", match: word, detect_as: constraint, canonical: "te:always", review: {decision: pending_review}}
+  - {id: te-cons-007, category: constraint, script: Telu, expression: "అన్ని", gloss: "all", match: word, detect_as: constraint, canonical: "te:all", review: {decision: pending_review}}
+
+  # ---------- questions ----------
+  - {id: te-q-001, category: question, script: Telu, expression: "ఏమి", gloss: "what", match: word, detect_as: question, canonical: "te:what", review: {decision: pending_review}}
+  - {id: te-q-002, category: question, script: Telu, expression: "ఏం", gloss: "what (short)", match: word, detect_as: question, canonical: "te:what", review: {decision: pending_review}}
+  - {id: te-q-003, category: question, script: Telu, expression: "ఎవరు", gloss: "who", match: word, detect_as: question, canonical: "te:who", review: {decision: pending_review}}
+  - {id: te-q-004, category: question, script: Telu, expression: "ఎప్పుడు", gloss: "when", match: word, detect_as: question, canonical: "te:when", review: {decision: pending_review}}
+  - {id: te-q-005, category: question, script: Telu, expression: "ఎక్కడ", gloss: "where", match: word, detect_as: question, canonical: "te:where", review: {decision: pending_review}}
+  - {id: te-q-006, category: question, script: Telu, expression: "ఎందుకు", gloss: "why", match: word, detect_as: question, canonical: "te:why", review: {decision: pending_review}}
+  - {id: te-q-007, category: question, script: Telu, expression: "ఎలా", gloss: "how", match: word, detect_as: question, canonical: "te:how", review: {decision: pending_review}}
+  - {id: te-q-008, category: question, script: Telu, expression: "ఎంత", gloss: "how much", match: word, detect_as: question, canonical: "te:how_much", review: {decision: pending_review}}
+
+  # ---------- names and entities ----------
+  - {id: te-ent-001, category: entity, script: Telu, expression: "శ్రీ", gloss: "Mr. / Shri", match: word, detect_as: entity, canonical: "title", review: {decision: pending_review}}
+  - {id: te-ent-002, category: entity, script: Telu, expression: "శ్రీమతి", gloss: "Mrs.", match: word, detect_as: entity, canonical: "title", review: {decision: pending_review}}
+  - {id: te-ent-003, category: entity, script: Telu, expression: "డాక్టర్", gloss: "Doctor", match: word, detect_as: entity, canonical: "title", review: {decision: pending_review}}
+
+  # ---------- quantities, dates and numbers ----------
+  - {id: te-num-001, category: quantity, script: Telu, expression: "ఒకటి", gloss: "one", match: word, detect_as: number, canonical: "1", review: {decision: pending_review}}
+  - {id: te-num-002, category: quantity, script: Telu, expression: "రెండు", gloss: "two", match: word, detect_as: number, canonical: "2", review: {decision: pending_review}}
+  - {id: te-num-003, category: quantity, script: Telu, expression: "మూడు", gloss: "three", match: word, detect_as: number, canonical: "3", review: {decision: pending_review}}
+  - {id: te-num-004, category: quantity, script: Telu, expression: "నాలుగు", gloss: "four", match: word, detect_as: number, canonical: "4", review: {decision: pending_review}}
+  - {id: te-num-005, category: quantity, script: Telu, expression: "ఐదు", gloss: "five", match: word, detect_as: number, canonical: "5", review: {decision: pending_review}}
+  - {id: te-num-006, category: quantity, script: Telu, expression: "ఆరు", gloss: "six", match: word, detect_as: number, canonical: "6", review: {decision: pending_review}}
+  - {id: te-num-007, category: quantity, script: Telu, expression: "ఏడు", gloss: "seven", match: word, detect_as: number, canonical: "7", review: {decision: pending_review}}
+  - {id: te-num-008, category: quantity, script: Telu, expression: "ఎనిమిది", gloss: "eight", match: word, detect_as: number, canonical: "8", review: {decision: pending_review}}
+  - {id: te-num-009, category: quantity, script: Telu, expression: "తొమ్మిది", gloss: "nine", match: word, detect_as: number, canonical: "9", review: {decision: pending_review}}
+  - {id: te-num-010, category: quantity, script: Telu, expression: "పది", gloss: "ten", match: word, detect_as: number, canonical: "10", review: {decision: pending_review}}
+  - {id: te-num-011, category: quantity, script: Telu, expression: "వంద", gloss: "hundred", match: word, detect_as: number, canonical: "100", review: {decision: pending_review}}
+  - {id: te-num-012, category: quantity, script: Telu, expression: "వెయ్యి", gloss: "thousand", match: word, detect_as: number, canonical: "1000", review: {decision: pending_review}}
+  - {id: te-num-013, category: quantity, script: Telu, expression: "లక్ష", gloss: "lakh", match: word, detect_as: number, canonical: "100000", review: {decision: pending_review}}
+  - {id: te-num-014, category: quantity, script: Telu, expression: "కోటి", gloss: "crore", match: word, detect_as: number, canonical: "10000000", review: {decision: pending_review}}
+  - {id: te-unit-001, category: quantity, script: Telu, expression: "కిలో", gloss: "kilo", match: word, detect_as: number, canonical: "unit:kg", review: {decision: pending_review}}
+  - {id: te-unit-002, category: quantity, script: Telu, expression: "గ్రాము", gloss: "gram", match: word, detect_as: number, canonical: "unit:g", review: {decision: pending_review}}
+  - {id: te-unit-003, category: quantity, script: Telu, expression: "లీటర్", gloss: "litre", match: word, detect_as: number, canonical: "unit:l", review: {decision: pending_review}}
+  - {id: te-unit-004, category: quantity, script: Telu, expression: "రోజు", gloss: "day", match: word, detect_as: number, canonical: "unit:day", review: {decision: pending_review}}
+  - {id: te-unit-005, category: quantity, script: Telu, expression: "గంట", gloss: "hour", match: word, detect_as: number, canonical: "unit:hour", review: {decision: pending_review}}
+  - {id: te-unit-006, category: quantity, script: Telu, expression: "గంటలకు", gloss: "at … o'clock", match: word, detect_as: number, canonical: "unit:oclock", review: {decision: pending_review}}
+  - {id: te-month-01, category: quantity, script: Telu, expression: "జనవరి", gloss: "January", match: word, detect_as: datetime, canonical: "month:1", review: {decision: pending_review}}
+  - {id: te-month-02, category: quantity, script: Telu, expression: "ఫిబ్రవరి", gloss: "February", match: word, detect_as: datetime, canonical: "month:2", review: {decision: pending_review}}
+  - {id: te-month-03, category: quantity, script: Telu, expression: "మార్చి", gloss: "March", match: word, detect_as: datetime, canonical: "month:3", review: {decision: pending_review}}
+  - {id: te-month-04, category: quantity, script: Telu, expression: "ఏప్రిల్", gloss: "April", match: word, detect_as: datetime, canonical: "month:4", review: {decision: pending_review}}
+  - {id: te-month-05, category: quantity, script: Telu, expression: "మే", gloss: "May", match: word, detect_as: datetime, canonical: "month:5", review: {decision: pending_review}}
+  - {id: te-month-06, category: quantity, script: Telu, expression: "జూన్", gloss: "June", match: word, detect_as: datetime, canonical: "month:6", review: {decision: pending_review}}
+  - {id: te-month-07, category: quantity, script: Telu, expression: "జూలై", gloss: "July", match: word, detect_as: datetime, canonical: "month:7", review: {decision: pending_review}}
+  - {id: te-month-08, category: quantity, script: Telu, expression: "ఆగస్టు", gloss: "August", match: word, detect_as: datetime, canonical: "month:8", review: {decision: pending_review}}
+  - {id: te-month-09, category: quantity, script: Telu, expression: "సెప్టెంబర్", gloss: "September", match: word, detect_as: datetime, canonical: "month:9", review: {decision: pending_review}}
+  - {id: te-month-10, category: quantity, script: Telu, expression: "అక్టోబర్", gloss: "October", match: word, detect_as: datetime, canonical: "month:10", review: {decision: pending_review}}
+  - {id: te-month-11, category: quantity, script: Telu, expression: "నవంబర్", gloss: "November", match: word, detect_as: datetime, canonical: "month:11", review: {decision: pending_review}}
+  - {id: te-month-12, category: quantity, script: Telu, expression: "డిసెంబర్", gloss: "December", match: word, detect_as: datetime, canonical: "month:12", review: {decision: pending_review}}
+  - {id: te-time-001, category: quantity, script: Telu, expression: "రేపు", gloss: "tomorrow", match: word, detect_as: datetime, canonical: "day:+1", review: {decision: pending_review}}
+  - {id: te-time-002, category: quantity, script: Telu, expression: "ఈరోజు", gloss: "today", match: word, detect_as: datetime, canonical: "day:0", review: {decision: pending_review}}
+  - {id: te-time-003, category: quantity, script: Telu, expression: "నిన్న", gloss: "yesterday", match: word, detect_as: datetime, canonical: "day:-1", review: {decision: pending_review}}
+
+  # ---------- formal vs informal (register) ----------
+  - {id: te-reg-001, category: register, script: Telu, expression: "దయచేసి", gloss: "please", match: word, detect_as: register, canonical: "te:please", review: {decision: pending_review}}
+  - {id: te-reg-002, category: register, script: Telu, expression: "మీరు", gloss: "you (formal / plural)", match: word, detect_as: register, canonical: "te:you_formal", review: {decision: pending_review}}
+  - {id: te-reg-003, category: register, script: Telu, expression: "నువ్వు", gloss: "you (informal)", match: word, detect_as: register, canonical: "te:you_informal", review: {decision: pending_review}}
+  - {id: te-reg-004, category: register, script: Telu, expression: "గారు", gloss: "honorific suffix word (e.g. రావు గారు)", match: word, detect_as: register, canonical: "te:garu", review: {decision: pending_review}}
+
+  # ---------- common redundant expressions ----------
+  - {id: te-red-001, category: redundant_expression, script: Telu, expression: "క్లుప్తంగా సారాంశం", gloss: "briefly summary → summary", original: "క్లుప్తంగా సారాంశం", proposed: "సారాంశం", preserves_meaning: unknown, changes_register: "no", safe_for_auto: false, review: {decision: pending_review}}
+  - {id: te-red-002, category: redundant_expression, script: Telu, expression: "మళ్ళీ ఒకసారి", gloss: "once again → again", original: "మళ్ళీ ఒకసారి", proposed: "మళ్ళీ", preserves_meaning: unknown, changes_register: "no", safe_for_auto: false, review: {decision: pending_review}}
+  - {id: te-red-003, category: redundant_expression, script: Telu, expression: "కింద ఇచ్చిన", gloss: "given below → following", original: "కింద ఇచ్చిన", proposed: "కింది", preserves_meaning: unknown, changes_register: unknown, safe_for_auto: false, review: {decision: pending_review}}
+
+  # ---------- wording-level shortening candidates ----------
+  - {id: te-short-001, category: shortening, script: Telu, expression: "నేను మిమ్మల్ని కోరుతున్నాను", gloss: "I request you → (drop)", original: "నేను మిమ్మల్ని కోరుతున్నాను", proposed: "", preserves_meaning: unknown, changes_register: "yes", safe_for_auto: false, note: "Removes a polite request frame: suggestion only.", review: {decision: pending_review}}
+  - {id: te-short-002, category: shortening, script: Telu, expression: "గురించి సమాచారం ఇవ్వండి", gloss: "give information about → tell about", original: "గురించి సమాచారం ఇవ్వండి", proposed: "గురించి చెప్పండి", preserves_meaning: unknown, changes_register: unknown, safe_for_auto: false, review: {decision: pending_review}}
+
+  # ---------- Romanized Telugu (used only when the language is set to Telugu) ----------
+  - {id: te-rom-001, category: romanized, script: Latn, expression: "matrame", gloss: "Romanized మాత్రమే (only)", match: word, detect_as: constraint, canonical: "te:only", review: {decision: pending_review}}
+  - {id: te-rom-002, category: romanized, script: Latn, expression: "kavali", gloss: "Romanized కావాలి (want / need)", match: word, detect_as: constraint, canonical: "te:must", review: {decision: pending_review}}
+  - {id: te-rom-003, category: romanized, script: Latn, expression: "koodadu", gloss: "Romanized కూడదు (must not)", match: suffix, detect_as: negation, canonical: "te:koodadu", review: {decision: pending_review}}
+  - {id: te-rom-004, category: romanized, script: Latn, expression: "emi", gloss: "Romanized ఏమి (what)", match: word, detect_as: question, canonical: "te:what", review: {decision: pending_review}}
+  - {id: te-rom-005, category: romanized, script: Latn, expression: "eppudu", gloss: "Romanized ఎప్పుడు (when)", match: word, detect_as: question, canonical: "te:when", review: {decision: pending_review}}
+  - {id: te-rom-006, category: romanized, script: Latn, expression: "ela", gloss: "Romanized ఎలా (how)", match: word, detect_as: question, canonical: "te:how", review: {decision: pending_review}}
+  - {id: te-rom-007, category: romanized, script: Latn, expression: "ekkada", gloss: "Romanized ఎక్కడ (where)", match: word, detect_as: question, canonical: "te:where", review: {decision: pending_review}}
+  - {id: te-rom-008, category: romanized, script: Latn, expression: "dayachesi", gloss: "Romanized దయచేసి (please)", match: word, detect_as: register, canonical: "te:please", review: {decision: pending_review}}
+  - {id: te-rom-009, category: romanized, script: Latn, expression: "meeru", gloss: "Romanized మీరు (you, formal)", match: word, detect_as: register, canonical: "te:you_formal", review: {decision: pending_review}}
+  - {id: te-rom-010, category: romanized, script: Latn, expression: "nuvvu", gloss: "Romanized నువ్వు (you, informal)", match: word, detect_as: register, canonical: "te:you_informal", review: {decision: pending_review}}
+  - {id: te-rom-011, category: romanized, script: Latn, expression: "repu", gloss: "Romanized రేపు (tomorrow)", match: word, detect_as: datetime, canonical: "day:+1", review: {decision: pending_review}}

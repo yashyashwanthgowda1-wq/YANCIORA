@@ -167,7 +167,7 @@ def test_variant_meaning_check_present():
     v = sv("ನಾನು ಬರುವುದಿಲ್ಲ", "kn").variants[0]
     # Negation ಇಲ್ಲ → 'illa' matches the (unreviewed) Romanized list; Indic lists unreviewed → at_risk.
     assert v.meaning_check.status in ("at_risk", "changed")
-    assert v.meaning_check.method == "rules_v2"
+    assert v.meaning_check.method == "rules_v5"
 
 
 def test_deterministic():

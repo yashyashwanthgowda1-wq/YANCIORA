@@ -3,8 +3,15 @@
     {
       "name": "Home loads and reports backend health",
       "ok": true,
-      "details": {},
-      "api": []
+      "details": {
+        "healthCall": "GET /health → 200"
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /health → 200"
+      ]
     },
     {
       "name": "Counter · en · cl100k_base",
@@ -14,10 +21,6 @@
         "tokenizer": "cl100k_base · tiktoken 0.14.0"
       },
       "api": [
-        "GET /api/tokenizers → 200",
-        "GET /api/tokenizers → 200",
-        "GET /health → 200",
-        "GET /health → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
@@ -123,6 +126,7 @@
       "api": [
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
+        "GET /health → 200",
         "POST /api/compare-languages → 200"
       ]
     },
@@ -137,7 +141,6 @@
         "schemeWarning": true
       },
       "api": [
-        "GET /health → 200",
         "POST /api/script-variants → 200"
       ]
     },
@@ -195,6 +198,7 @@
       "api": [
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
+        "GET /health → 200",
         "POST /api/critical-details → 200",
         "POST /api/optimize → 200"
       ]
@@ -214,8 +218,8 @@
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /health → 200",
-        "POST /api/optimize → 200",
-        "POST /api/critical-details → 200"
+        "POST /api/critical-details → 200",
+        "POST /api/optimize → 200"
       ]
     },
     {
@@ -233,8 +237,8 @@
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /health → 200",
-        "POST /api/optimize → 200",
-        "POST /api/critical-details → 200"
+        "POST /api/critical-details → 200",
+        "POST /api/optimize → 200"
       ]
     },
     {
@@ -271,8 +275,8 @@
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /health → 200",
-        "POST /api/optimize → 200",
-        "POST /api/critical-details → 200"
+        "POST /api/critical-details → 200",
+        "POST /api/optimize → 200"
       ]
     },
     {
@@ -284,25 +288,32 @@
       "api": [
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
+        "GET /health → 200",
         "POST /api/critical-details → 200",
         "POST /api/optimize → 200"
       ]
     },
     {
-      "name": "Optimizer · Kannada at_risk edit is a suggestion that needs review",
+      "name": "Optimizer · Kannada: formatting applied, repeat suggested (safe) and removed (balanced)",
       "ok": true,
       "details": {
-        "suggested": "2",
-        "exclamationsKeptInOutput": true,
-        "riskText": true
+        "safe": "193→190",
+        "balanced": [
+          "cl100k_base 193→129 (33.16%)",
+          "o200k_base 46→31 (32.61%)"
+        ],
+        "chars": "120→77",
+        "script": "Knda",
+        "negationKept": true
       },
       "api": [
-        "GET /health → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /health → 200",
+        "POST /api/critical-details → 200",
         "POST /api/optimize → 200",
-        "POST /api/critical-details → 200"
+        "POST /api/critical-details → 200",
+        "POST /api/optimize → 200"
       ]
     },
     {
@@ -347,8 +358,8 @@
       "api": [
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
-        "POST /api/critical-details → 200",
         "GET /health → 200",
+        "POST /api/critical-details → 200",
         "POST /api/optimize → 200"
       ]
     },
@@ -400,6 +411,7 @@
       "api": [
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
+        "GET /health → 200",
         "POST /api/tokenize → 200",
         "POST /api/tokenize → 200",
         "POST /api/tokenize → 200",
@@ -417,20 +429,18 @@
         "problems": []
       },
       "api": [
-        "GET /health → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /health → 200",
-        "GET /api/benchmarks → 200"
+        "GET /api/benchmarks → 200",
+        "GET /api/benchmarks/20261120T214425Z/results → 200"
       ]
     },
     {
       "name": "Research Dashboard per-sample results load from the database",
       "ok": true,
       "details": {},
-      "api": [
-        "GET /api/benchmarks/20261120T214425Z/results → 200"
-      ]
+      "api": []
     },
     {
       "name": "Language Comparison loads an aligned FLORES-200 group from the database",
@@ -449,6 +459,61 @@
       ]
     },
     {
+      "name": "Optimizer · decision: keep original, use optimized, approve a suggestion, copy",
+      "ok": true,
+      "details": {
+        "optimizedTokens": "see screenshot",
+        "applyStatus": "preserved",
+        "tokens": "18→11",
+        "copiedShown": 1
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "POST /api/optimize → 200",
+        "POST /api/critical-details → 200",
+        "POST /api/pipeline/apply → 200"
+      ]
+    },
+    {
+      "name": "Linguistic Review · pending entries, approve/correct, sign, export (nothing approved on the server)",
+      "ok": true,
+      "details": {
+        "exported": [
+          "kn-red-002:approved",
+          "kn-red-003:corrected"
+        ],
+        "serverApproved": 0,
+        "serverPending": 90
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /api/linguistics/review/kn → 200",
+        "GET /api/linguistics/summary → 200",
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/linguistics/summary → 200",
+        "GET /api/linguistics/review/kn → 200",
+        "GET /health → 200"
+      ]
+    },
+    {
+      "name": "Optimizer · Kannada aggressive: pending wording is a labelled suggestion that needs approval",
+      "ok": true,
+      "details": {
+        "suggestion": "ಮತ್ತೊಮ್ಮೆ ಮತ್ತೆ → ಮತ್ತೊಮ್ಮೆ (meaning_change)",
+        "meaning": "preserved"
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "POST /api/critical-details → 200",
+        "POST /api/optimize → 200"
+      ]
+    },
+    {
       "name": "Cost Calculator · backend estimate with optimized comparison (Kannada)",
       "ok": true,
       "details": {
@@ -460,8 +525,9 @@
       },
       "api": [
         "GET /api/tokenizers → 200",
-        "GET /api/tokenizers → 200",
         "GET /api/models → 200",
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
         "POST /api/optimize → 200",
         "POST /api/cost/estimate → 200"
       ]
@@ -477,9 +543,8 @@
         ]
       },
       "api": [
-        "GET /health → 200",
-        "GET /api/tokenizers → 200",
         "GET /api/models → 200",
+        "GET /api/tokenizers → 200",
         "GET /health → 200",
         "POST /api/models/recommend → 200",
         "POST /api/models/recommend → 200"
@@ -489,8 +554,8 @@
       "name": "AI Chat · analysis mode, approval, LLM not configured is explicit",
       "ok": true,
       "details": {
-        "sessionId": "-1k6PK…",
-        "suggestions": 1,
+        "sessionId": "s77h4Z…",
+        "suggestions": 0,
         "sendDisabled": true
       },
       "api": [
@@ -509,15 +574,15 @@
       "details": {
         "tokens": 19,
         "applied": 2,
-        "meaning": "at_risk",
+        "meaning": "preserved",
         "before": 20,
         "after": 18
       },
       "api": [
+        "GET /api/vapi/status → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /api/models → 200",
-        "GET /api/vapi/status → 200",
         "GET /health → 200",
         "GET /api/integrations/status → 200",
         "POST /api/pipeline/analyze → 200",
@@ -527,7 +592,9 @@
     {
       "name": "Settings · real provider status (no secrets)",
       "ok": true,
-      "details": {},
+      "details": {
+        "vapiSecretConfigured": true
+      },
       "api": [
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
