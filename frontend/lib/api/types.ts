@@ -456,3 +456,205 @@ export interface ScriptVariantsResponse {
   warnings: string[];
   limitations: string[];
 }
+
+// =====================================================================================
+// Phase 2 — Features 4 (cost), 7 (recommendation), 8 (voice), 9 (chat), 10 (Vapi)
+// Mirror of backend/app/schemas.py (Phase 2 section). Change both together.
+// =====================================================================================
+export type Encoding = "cl100k_base" | "o200k_base";
+export type SupportLevel = "verified" | "claimed" | "unsupported" | "unknown";
+export type TaskType = "general" | "summarization" | "translation" | "qa" | "coding" | "creative" | "classification" | "extraction";
+export type CostPreference = "lowest" | "balanced" | "quality";
+export const TASK_TYPES: readonly TaskType[] = ["general", "summarization", "translation", "qa", "coding", "creative", "classification", "extraction"];
+export const MAX_MODELS_PER_REQUEST = 10;
+
+export interface ModelPricing {
+  currency: string;
+  input_per_1m: number;
+  output_per_1m: number;
+  source_url?: string | null;
+  verified_at?: string | null; // YYYY-MM-DD
+}
+
+export interface ModelSpec {
+  id: string;
+  provider: string;
+  display_name?: string | null;
+  encoding?: Encoding | null;
+  encoding_source?: string | null;
+  context_window_tokens?: number | null;
+  max_output_tokens?: number | null;
+  pricing?: ModelPricing | null;
+  languages?: Partial<Record<LanguageCode, SupportLevel>>;
+  language_source?: string | null;
+  tasks?: TaskType[];
+  quality_tier?: number | null;
+  quality_source?: string | null;
+  source?: "registry" | "user";
+  notes?: string | null;
+}
+
+export interface ModelRegistryResponse { models: ModelSpec[]; count: number; registry_file: string; warnings: string[] }
+
+export interface CostEstimateRequest {
+  text: string;
+  optimized_text?: string | null;
+  model_ids?: string[];
+  custom_models?: ModelSpec[];
+  expected_output_tokens?: number;
+  fallback_encoding?: Encoding;
+}
+
+export interface ModelCost {
+  model_id: string;
+  provider: string;
+  display_name: string | null;
+  source: "registry" | "user";
+  encoding_used: Encoding;
+  encoding_status: "model_encoding" | "fallback_encoding";
+  count_status: CountStatus;
+  input_tokens: number;
+  optimized_input_tokens: number | null;
+  output_tokens: number;
+  currency: string | null;
+  input_cost: number | null;
+  output_cost: number | null;
+  total_cost: number | null;
+  optimized_total_cost: number | null;
+  savings: number | null;
+  savings_pct: number | null;
+  price_status: "verified" | "unverified" | "user_entered" | "missing";
+  price_source_url: string | null;
+  price_verified_at: string | null;
+  warnings: string[];
+}
+
+export interface CostEstimateResponse { method: string; models: ModelCost[]; expected_output_tokens: number; unknown_model_ids: string[]; warnings: string[] }
+
+export interface RecommendRequest {
+  text: string;
+  language: LanguageCode;
+  task_type?: TaskType;
+  cost_preference?: CostPreference;
+  require_language_support?: "verified" | "claimed" | "any";
+  min_context_tokens?: number | null;
+  min_quality_tier?: number | null;
+  expected_output_tokens?: number;
+  model_ids?: string[] | null;
+  custom_models?: ModelSpec[];
+  locked_model_id?: string | null;
+}
+
+export interface Candidate {
+  model_id: string;
+  provider: string;
+  display_name: string | null;
+  source: "registry" | "user";
+  eligible: boolean;
+  rank: number | null;
+  language_support: SupportLevel;
+  context_window_tokens: number | null;
+  required_tokens: number;
+  quality_tier: number | null;
+  cost: ModelCost;
+  reasons: string[];
+  exclusions: string[];
+  limitations: string[];
+}
+
+export interface RecommendResponse {
+  method: string;
+  language: LanguageCode;
+  task_type: TaskType;
+  cost_preference: CostPreference;
+  recommended: Candidate | null;
+  alternatives: Candidate[];
+  excluded: Candidate[];
+  locked: boolean;
+  explanation: string;
+  warnings: string[];
+}
+
+export interface AnalyzeRequest {
+  text: string;
+  language?: LanguageCode | "auto";
+  tokenizer?: string;
+  mode?: OptimizeMode;
+  protected_terms?: string[];
+  task_type?: TaskType;
+  cost_preference?: CostPreference;
+  expected_output_tokens?: number;
+  model_ids?: string[] | null;
+  custom_models?: ModelSpec[];
+  locked_model_id?: string | null;
+}
+
+export interface AnalyzeResponse {
+  method: string;
+  language: LanguageCode | null;
+  script: Script | null;
+  tokens: TokenizeResponse;
+  optimization: OptimizeResponse;
+  recommendation: RecommendResponse | null;
+  cost: CostEstimateResponse | null;
+  requires_review: boolean;
+  next_step: string;
+}
+
+export interface TextEdit { start: number; end: number; after: string }
+
+export interface ApplyEditsRequest {
+  original: string;
+  edits: TextEdit[];
+  language?: LanguageCode | "auto";
+  tokenizer?: string;
+  protected_terms?: string[];
+}
+
+export interface ApplyEditsResponse {
+  text: string;
+  applied_count: number;
+  allowed: boolean;
+  meaning_check: MeaningCheckResponse;
+  tokenizer: TokenizerRef;
+  tokens_before: number;
+  tokens_after: number;
+  warnings: string[];
+}
+
+export interface TranscribeRequest { audio_base64: string; mime_type?: string; language?: LanguageCode | "auto" }
+export interface TranscribeResponse { text: string; language: LanguageCode | null; provider: string; model: string | null; status: "provider_transcript" }
+
+export interface ChatTurn {
+  role: "user" | "assistant";
+  kind: "message" | "analysis" | "llm_reply";
+  content: string;
+  created_at: string;
+  meta: Record<string, unknown>;
+}
+
+export interface ChatAnalyzeRequest extends AnalyzeRequest { session_id?: string | null }
+export interface ChatAnalyzeResponse { session_id: string; mode: "analysis"; reply: string; analysis: AnalyzeResponse; llm_available: boolean; history: ChatTurn[] }
+export interface ChatSendRequest { text: string; language?: LanguageCode | "auto" }
+export interface LlmUsage { prompt_tokens: number | null; completion_tokens: number | null; total_tokens: number | null; status: "provider_reported" }
+export interface ChatSendResponse { session_id: string; reply: string; provider: string; model: string; usage: LlmUsage | null; history: ChatTurn[] }
+export interface ChatHistoryResponse { session_id: string; history: ChatTurn[] }
+
+export interface IntegrationStatus { configured: boolean; detail: string }
+export interface IntegrationsResponse {
+  database: IntegrationStatus;
+  models_registry: IntegrationStatus;
+  speech_to_text: IntegrationStatus;
+  llm: IntegrationStatus;
+  vapi_webhook: IntegrationStatus;
+}
+
+export interface VapiStatusResponse {
+  webhook_path: string;
+  auth_configured: boolean;
+  auth_modes: string[];
+  tools: string[];
+  assistant_config: string;
+  connection_guide: string;
+  live_call_verified: boolean;
+}

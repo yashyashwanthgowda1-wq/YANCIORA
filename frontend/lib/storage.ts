@@ -21,7 +21,7 @@ export const DEFAULT_PREFS: Preferences = {
 
 export interface ActivityEntry {
   at: string;
-  kind: "count" | "compare" | "optimize" | "cost";
+  kind: "count" | "compare" | "optimize" | "cost" | "models" | "chat" | "voice";
   summary: string;
   href: string;
 }

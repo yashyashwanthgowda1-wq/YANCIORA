@@ -27,3 +27,7 @@ research/artifacts/
 .DS_Store
 .idea/
 .vscode/
+
+# Filled-in Vapi assistant configs (contain your backend URL and credential id)
+config/vapi/*.filled.json
+config/vapi/*.local.json

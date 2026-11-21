@@ -46,12 +46,12 @@ export const NAV: NavGroup[] = [
   ] },
   { label: "Reduce", items: [
     { href: "/optimize", label: "Prompt Optimizer", availability: "live", note: "POST /api/optimize · /api/meaning-check · /api/critical-details (rules-based)" },
-    { href: "/cost", label: "Cost Calculator", availability: "partial", note: "Formula with prices you enter; no price registry yet" },
-    { href: "/models", label: "Model Recommendation", availability: "planned", note: "Model registry arrives in Phase 4" },
+    { href: "/cost", label: "Cost Calculator", availability: "live", note: "POST /api/cost/estimate · registry + user-entered prices" },
+    { href: "/models", label: "Model Recommendation", availability: "live", note: "POST /api/models/recommend (rule-based, configured model data)" },
   ] },
   { label: "Assist", items: [
-    { href: "/chat", label: "AI Chat", availability: "planned", note: "POST /api/chat arrives in Phase 4" },
-    { href: "/voice", label: "Voice & Calls", availability: "partial", note: "Browser voice input; Vapi arrives in Phase 5" },
+    { href: "/chat", label: "AI Chat", availability: "live", note: "POST /api/chat (analysis) · /send needs a configured LLM" },
+    { href: "/voice", label: "Voice & Calls", availability: "live", note: "Voice→optimized prompt; Vapi webhook prepared (connect in Vapi)" },
   ] },
   { label: "Research", items: [
     { href: "/research", label: "Research Dashboard", availability: "live", note: "GET /api/benchmarks" },

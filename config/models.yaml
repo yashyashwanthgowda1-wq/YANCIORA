@@ -1,0 +1,57 @@
+# REDUTAX model registry (Features 4, 7, 9, 10).
+#
+# SHIPS EMPTY ON PURPOSE. REDUTAX never invents model prices, capabilities or language
+# support (CLAUDE.md hard rules). Add a model only with facts you have checked, and record
+# where each fact came from. Unknown values stay null / "unknown"; the recommendation engine
+# reports them as limitations instead of guessing.
+#
+# Fields
+#   id                    provider's model identifier (as used in its API)
+#   provider              provider name
+#   display_name          optional label
+#   encoding              tokenizer encoding REDUTAX may use to count tokens for this model:
+#                         cl100k_base | o200k_base | null (unknown → counted with a fallback
+#                         encoding and labelled an estimate)
+#   encoding_source       URL/notes proving the model uses that encoding (else leave null)
+#   context_window_tokens documented context window, or null
+#   max_output_tokens     documented output limit, or null
+#   pricing               null, or:
+#     currency            provider billing currency, e.g. USD
+#     input_per_1m        price per 1,000,000 input tokens
+#     output_per_1m       price per 1,000,000 output tokens
+#     source_url          the provider's pricing page
+#     verified_at         YYYY-MM-DD you checked it (null = unverified)
+#   languages             per language: verified | claimed | unsupported | unknown
+#                         verified  = measured on the team's evaluation set
+#                         claimed   = stated in the provider's documentation (put the URL in
+#                                     language_source)
+#   language_source       URL/notes for the language entries
+#   tasks                 tasks the provider documents: general, summarization, translation,
+#                         qa, coding, creative, classification, extraction (empty = not documented)
+#   quality_tier          optional 1–5 assigned by the team from its own evaluation; else null
+#   quality_source        how the tier was decided
+#   notes                 free text
+#
+# Example shape (commented out — NOT a real model, NOT real prices):
+#
+#   - id: example-model-id
+#     provider: Example Provider
+#     display_name: Example model
+#     encoding: null
+#     encoding_source: null
+#     context_window_tokens: null
+#     max_output_tokens: null
+#     pricing:
+#       currency: USD
+#       input_per_1m: 0.0
+#       output_per_1m: 0.0
+#       source_url: https://provider.example/pricing
+#       verified_at: null
+#     languages: {en: unknown, kn: unknown, hi: unknown, ta: unknown, te: unknown}
+#     language_source: null
+#     tasks: []
+#     quality_tier: null
+#     quality_source: null
+#     notes: null
+
+models: []

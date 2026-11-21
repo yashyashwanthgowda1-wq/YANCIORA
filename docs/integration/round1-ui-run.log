@@ -1,4 +1,4 @@
-PASS  Home loads and reports backend health  — {"healthCall":"GET /health → 200"}
+PASS  Home loads and reports backend health  — {}
 PASS  Counter · en · cl100k_base  — {"tokens":"26","tokenizer":"cl100k_base · tiktoken 0.14.0"}
 PASS  Counter · kn · cl100k_base  — {"tokens":"118","tokenizer":"cl100k_base · tiktoken 0.14.0"}
 PASS  Counter · hi · cl100k_base  — {"tokens":"64","tokenizer":"cl100k_base · tiktoken 0.14.0"}
@@ -28,7 +28,12 @@ PASS  Meaning check (rules_v2) · unit change 5 kg → 5 g is rejected in the UI
 PASS  Research Dashboard shows the stored PostgreSQL run, values match the API  — {"runId":"20261120T214425Z","summaryRowsShown":10,"matchedApiValues":10,"problems":[]}
 PASS  Research Dashboard per-sample results load from the database  — {}
 PASS  Language Comparison loads an aligned FLORES-200 group from the database  — {"variantCards":5,"compareAligned":true,"languages":"en,kn,hi,ta,te"}
+PASS  Cost Calculator · backend estimate with optimized comparison (Kannada)  — {"inputTokens":24,"optimizedTokens":23,"total":0.0824,"savingsPct":0.12,"encoding":"o200k_base"}
+PASS  Model Recommendation · add user models, recommend, lock  — {"lowestCost":"test-model-cheap","claimedSupport":"test-model-kn","excluded":["test-model-cheap"]}
+PASS  AI Chat · analysis mode, approval, LLM not configured is explicit  — {"sessionId":"-1k6PK…","suggestions":1,"sendDisabled":true}
+PASS  Voice · text workflow: process, approve, final comparison; Vapi status  — {"tokens":19,"applied":2,"meaning":"at_risk","before":20,"after":18}
+PASS  Settings · real provider status (no secrets)  — {}
 
-30/30 passed; console errors: 2
+35/35 passed; console errors: 2
   console: http://localhost:3000/optimize :: Failed to load resource: net::ERR_CONNECTION_REFUSED
   console: http://localhost:3000/optimize :: Failed to load resource: the server responded with a status of 400 (Bad Request)

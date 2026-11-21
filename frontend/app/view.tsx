@@ -137,7 +137,7 @@ export default function HomeView() {
                 <ul className="timeline" style={{ padding: "4px 18px" }}>
                   {activity.map((a, i) => (
                     <li key={i}>
-                      <span className="ph">{a.kind === "count" ? "CT" : a.kind === "compare" ? "CM" : a.kind === "optimize" ? "OP" : "$"}</span>
+                      <span className="ph">{a.kind === "count" ? "CT" : a.kind === "compare" ? "CM" : a.kind === "optimize" ? "OP" : a.kind === "models" ? "MR" : a.kind === "chat" ? "CH" : a.kind === "voice" ? "VO" : "$"}</span>
                       <Link href={a.href}>{a.summary}</Link>
                       <span className="small subtle">{fmtDateTime(a.at)}</span>
                     </li>

@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Badge, Callout, Field, PageHeader, Segmented } from "@/components/ui";
-import { API_BASE_URL } from "@/lib/api/client";
+import { api, API_BASE_URL } from "@/lib/api/client";
 import { LANGUAGE_CODES, type LanguageCode } from "@/lib/api/types";
-import { useHealth, useTokenizers } from "@/lib/hooks";
+import { useApi, useHealth, useTokenizers } from "@/lib/hooks";
 import { LANGUAGES } from "@/lib/languages";
 import { clearLocalData, DEFAULT_PREFS, loadPrefs, savePrefs, type Preferences } from "@/lib/storage";
 
@@ -13,6 +13,8 @@ export default function SettingsView() {
   const [cleared, setCleared] = useState(false);
   const health = useHealth();
   const toks = useTokenizers();
+  const integrations = useApi((signal) => api.integrations({ signal }), []);
+  const ig = integrations.data;
   useEffect(() => setPrefs(loadPrefs()), []);
 
   const set = (patch: Partial<Preferences>) => {
@@ -97,9 +99,10 @@ export default function SettingsView() {
               <li><span>REDUTAX backend <span className="subtle mono small">{API_BASE_URL}</span></span>{health.loading ? <Badge tone="neutral">Checking</Badge> : health.error ? <Badge tone="red">Unreachable</Badge> : <Badge tone="blue">Reachable</Badge>}</li>
               <li><span>PostgreSQL</span>{db === "ok" ? <Badge tone="blue">Connected</Badge> : db === "not_configured" ? <Badge tone="outline">Not configured</Badge> : db === "error" ? <Badge tone="red">Error</Badge> : <Badge tone="neutral">—</Badge>}</li>
               <li><span>Tokenizers</span>{toks.data ? <Badge tone="blue">{toks.data.tokenizers.length} registered</Badge> : <Badge tone="neutral">—</Badge>}</li>
-              <li><span>LLM providers (optimizer, chat)</span><Badge tone="planned">No integration yet · Phase 3–4</Badge></li>
-              <li><span>Vapi telephone</span><Badge tone="planned">No integration yet · Phase 5</Badge></li>
-              <li><span>Price registry</span><Badge tone="planned">No integration yet · Phase 4</Badge></li>
+              <li><span>Chat LLM provider <span className="subtle small">{ig?.llm.detail}</span></span>{!ig ? <Badge tone="neutral">—</Badge> : ig.llm.configured ? <Badge tone="blue">Configured</Badge> : <Badge tone="outline">Not configured · analysis mode</Badge>}</li>
+              <li><span>Speech-to-text (server) <span className="subtle small">{ig?.speech_to_text.detail}</span></span>{!ig ? <Badge tone="neutral">—</Badge> : ig.speech_to_text.configured ? <Badge tone="blue">Configured</Badge> : <Badge tone="outline">Not configured</Badge>}</li>
+              <li><span>Vapi webhook <span className="subtle small">{ig?.vapi_webhook.detail}</span></span>{!ig ? <Badge tone="neutral">—</Badge> : ig.vapi_webhook.configured ? <Badge tone="blue">Secret configured</Badge> : <Badge tone="outline">Prepared · secret not set</Badge>}</li>
+              <li><span>Model &amp; price registry <span className="subtle small">{ig?.models_registry.detail}</span></span>{!ig ? <Badge tone="neutral">—</Badge> : ig.models_registry.configured ? <Badge tone="blue">Configured</Badge> : <Badge tone="outline">Empty · add verified models</Badge>}</li>
             </ul>
           </div>
         </div>

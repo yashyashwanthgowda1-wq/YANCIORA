@@ -3,15 +3,8 @@
     {
       "name": "Home loads and reports backend health",
       "ok": true,
-      "details": {
-        "healthCall": "GET /health → 200"
-      },
-      "api": [
-        "GET /api/tokenizers → 200",
-        "GET /api/tokenizers → 200",
-        "GET /health → 200",
-        "GET /health → 200"
-      ]
+      "details": {},
+      "api": []
     },
     {
       "name": "Counter · en · cl100k_base",
@@ -21,6 +14,10 @@
         "tokenizer": "cl100k_base · tiktoken 0.14.0"
       },
       "api": [
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /health → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
@@ -126,7 +123,6 @@
       "api": [
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
-        "GET /health → 200",
         "POST /api/compare-languages → 200"
       ]
     },
@@ -141,6 +137,7 @@
         "schemeWarning": true
       },
       "api": [
+        "GET /health → 200",
         "POST /api/script-variants → 200"
       ]
     },
@@ -197,7 +194,6 @@
       },
       "api": [
         "GET /api/tokenizers → 200",
-        "GET /health → 200",
         "GET /api/tokenizers → 200",
         "POST /api/critical-details → 200",
         "POST /api/optimize → 200"
@@ -218,8 +214,8 @@
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /health → 200",
-        "POST /api/critical-details → 200",
-        "POST /api/optimize → 200"
+        "POST /api/optimize → 200",
+        "POST /api/critical-details → 200"
       ]
     },
     {
@@ -275,8 +271,8 @@
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /health → 200",
-        "POST /api/critical-details → 200",
-        "POST /api/optimize → 200"
+        "POST /api/optimize → 200",
+        "POST /api/critical-details → 200"
       ]
     },
     {
@@ -288,7 +284,6 @@
       "api": [
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
-        "GET /health → 200",
         "POST /api/critical-details → 200",
         "POST /api/optimize → 200"
       ]
@@ -302,6 +297,7 @@
         "riskText": true
       },
       "api": [
+        "GET /health → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /health → 200",
@@ -317,8 +313,8 @@
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /health → 200",
-        "POST /api/critical-details → 200",
-        "POST /api/optimize → 200"
+        "POST /api/optimize → 200",
+        "POST /api/critical-details → 200"
       ]
     },
     {
@@ -351,8 +347,8 @@
       "api": [
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
-        "GET /health → 200",
         "POST /api/critical-details → 200",
+        "GET /health → 200",
         "POST /api/optimize → 200"
       ]
     },
@@ -404,7 +400,6 @@
       "api": [
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
-        "GET /health → 200",
         "POST /api/tokenize → 200",
         "POST /api/tokenize → 200",
         "POST /api/tokenize → 200",
@@ -422,18 +417,20 @@
         "problems": []
       },
       "api": [
+        "GET /health → 200",
         "GET /api/tokenizers → 200",
         "GET /api/tokenizers → 200",
         "GET /health → 200",
-        "GET /api/benchmarks → 200",
-        "GET /api/benchmarks/20261120T214425Z/results → 200"
+        "GET /api/benchmarks → 200"
       ]
     },
     {
       "name": "Research Dashboard per-sample results load from the database",
       "ok": true,
       "details": {},
-      "api": []
+      "api": [
+        "GET /api/benchmarks/20261120T214425Z/results → 200"
+      ]
     },
     {
       "name": "Language Comparison loads an aligned FLORES-200 group from the database",
@@ -449,6 +446,94 @@
         "GET /health → 200",
         "GET /api/samples/groups → 200",
         "POST /api/compare-languages → 200"
+      ]
+    },
+    {
+      "name": "Cost Calculator · backend estimate with optimized comparison (Kannada)",
+      "ok": true,
+      "details": {
+        "inputTokens": 24,
+        "optimizedTokens": 23,
+        "total": 0.0824,
+        "savingsPct": 0.12,
+        "encoding": "o200k_base"
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/models → 200",
+        "POST /api/optimize → 200",
+        "POST /api/cost/estimate → 200"
+      ]
+    },
+    {
+      "name": "Model Recommendation · add user models, recommend, lock",
+      "ok": true,
+      "details": {
+        "lowestCost": "test-model-cheap",
+        "claimedSupport": "test-model-kn",
+        "excluded": [
+          "test-model-cheap"
+        ]
+      },
+      "api": [
+        "GET /health → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/models → 200",
+        "GET /health → 200",
+        "POST /api/models/recommend → 200",
+        "POST /api/models/recommend → 200"
+      ]
+    },
+    {
+      "name": "AI Chat · analysis mode, approval, LLM not configured is explicit",
+      "ok": true,
+      "details": {
+        "sessionId": "-1k6PK…",
+        "suggestions": 1,
+        "sendDisabled": true
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /api/models → 200",
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/integrations/status → 200",
+        "POST /api/chat → 200",
+        "POST /api/pipeline/apply → 200"
+      ]
+    },
+    {
+      "name": "Voice · text workflow: process, approve, final comparison; Vapi status",
+      "ok": true,
+      "details": {
+        "tokens": 19,
+        "applied": 2,
+        "meaning": "at_risk",
+        "before": 20,
+        "after": 18
+      },
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "GET /api/models → 200",
+        "GET /api/vapi/status → 200",
+        "GET /health → 200",
+        "GET /api/integrations/status → 200",
+        "POST /api/pipeline/analyze → 200",
+        "POST /api/pipeline/apply → 200"
+      ]
+    },
+    {
+      "name": "Settings · real provider status (no secrets)",
+      "ok": true,
+      "details": {},
+      "api": [
+        "GET /api/tokenizers → 200",
+        "GET /api/tokenizers → 200",
+        "GET /health → 200",
+        "GET /api/integrations/status → 200",
+        "GET /health → 200"
       ]
     }
   ],

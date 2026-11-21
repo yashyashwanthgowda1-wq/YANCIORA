@@ -1,0 +1,142 @@
+{
+  "name": "REDUTAX Indic AI Assistant",
+  "firstMessage": "Namaskara! This is the REDUTAX assistant. You can speak in Kannada, Hindi, Tamil, Telugu or English. How can I help?",
+  "metadata": {
+    "project": "REDUTAX (Team YANCIORA, No. 46)",
+    "purpose": "Telephone assistant that answers callers in their language and uses REDUTAX tools to measure and reduce prompt tokens while preserving meaning.",
+    "supportedLanguages": ["kn", "hi", "ta", "te", "en"],
+    "redutaxWebhookPath": "/api/vapi/webhook",
+    "configVersion": "1",
+    "liveCallVerified": false
+  },
+  "transcriber": {
+    "provider": "<TRANSCRIBER_PROVIDER>",
+    "model": "<TRANSCRIBER_MODEL>",
+    "language": "<TRANSCRIBER_LANGUAGE_OR_MULTI>"
+  },
+  "voice": {
+    "provider": "<VOICE_PROVIDER>",
+    "voiceId": "<VOICE_ID>"
+  },
+  "model": {
+    "provider": "<LLM_PROVIDER>",
+    "model": "<LLM_MODEL>",
+    "temperature": 0.3,
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are the REDUTAX Indic AI Assistant on a phone call. Supported languages: Kannada, Hindi, Tamil, Telugu and English. Reply in the caller's language; if you are unsure which language they use, call detect_language or ask them.\n\nTools (they run on the REDUTAX server):\n- detect_language: script and likely language of what the caller said.\n- analyze_tokens: token count of a text under a tokenizer encoding.\n- optimize_prompt: shorten a prompt safely; only edits that keep every number, date, name, amount and negation are applied.\n- check_meaning: compare an original and a rewritten text for missing or changed critical details.\n- recommend_model: recommend a configured model for a task and language.\n- estimate_cost: estimated cost of a prompt for configured models.\n\nRules:\n1. Never change numbers, dates, times, money amounts, names or negations the caller gave you.\n2. Token counts and costs are estimates, not provider bills; say so if you mention them.\n3. If a tool returns an error or times out, apologise briefly, say you could not complete that step, and continue without inventing a result.\n4. If recommend_model or estimate_cost reports that no models are configured, tell the caller that model data has not been set up yet.\n5. Keep answers short and easy to follow by ear; do not read out JSON.\n6. Do not ask for or repeat sensitive personal data (bank, card or ID numbers)."
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "detect_language",
+          "description": "Detect the script and likely language (kn, hi, ta, te, en) of a text. Latin script cannot tell English from Romanized Indic text.",
+          "parameters": {
+            "type": "object",
+            "properties": {"text": {"type": "string", "description": "What the caller said"}},
+            "required": ["text"]
+          }
+        },
+        "server": {"url": "<PUBLIC_BACKEND_URL>/api/vapi/webhook", "credentialId": "<VAPI_CREDENTIAL_ID>"}
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "analyze_tokens",
+          "description": "Count tokens of a text with a tokenizer encoding (tokenizer count, not provider billing).",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "text": {"type": "string"},
+              "language": {"type": "string", "enum": ["auto", "kn", "hi", "ta", "te", "en"]},
+              "tokenizer": {"type": "string", "enum": ["cl100k_base", "o200k_base"]}
+            },
+            "required": ["text"]
+          }
+        },
+        "server": {"url": "<PUBLIC_BACKEND_URL>/api/vapi/webhook", "credentialId": "<VAPI_CREDENTIAL_ID>"}
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "optimize_prompt",
+          "description": "Shorten a prompt with REDUTAX safe rules. Only edits that save tokens and pass the meaning check are applied; uncertain suggestions are not applied.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "text": {"type": "string"},
+              "language": {"type": "string", "enum": ["auto", "kn", "hi", "ta", "te", "en"]},
+              "tokenizer": {"type": "string", "enum": ["cl100k_base", "o200k_base"]}
+            },
+            "required": ["text"]
+          }
+        },
+        "server": {"url": "<PUBLIC_BACKEND_URL>/api/vapi/webhook", "credentialId": "<VAPI_CREDENTIAL_ID>"}
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "check_meaning",
+          "description": "Rule-based check that a rewritten text keeps the original's numbers, dates, money, negations, URLs, emails, quotes and code. 'preserved' is not a guarantee.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "original": {"type": "string"},
+              "candidate": {"type": "string"},
+              "language": {"type": "string", "enum": ["auto", "kn", "hi", "ta", "te", "en"]}
+            },
+            "required": ["original", "candidate"]
+          }
+        },
+        "server": {"url": "<PUBLIC_BACKEND_URL>/api/vapi/webhook", "credentialId": "<VAPI_CREDENTIAL_ID>"}
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "recommend_model",
+          "description": "Recommend a configured model for a text, language and task, with the reason. Uses only configured model data.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "text": {"type": "string"},
+              "language": {"type": "string", "enum": ["kn", "hi", "ta", "te", "en"]},
+              "task_type": {"type": "string", "enum": ["general", "summarization", "translation", "qa", "coding", "creative", "classification", "extraction"]},
+              "cost_preference": {"type": "string", "enum": ["lowest", "balanced", "quality"]},
+              "expected_output_tokens": {"type": "integer", "minimum": 0}
+            },
+            "required": ["text", "language"]
+          }
+        },
+        "server": {"url": "<PUBLIC_BACKEND_URL>/api/vapi/webhook", "credentialId": "<VAPI_CREDENTIAL_ID>"}
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "estimate_cost",
+          "description": "Estimated input/output cost of a text for configured models (estimate, not provider billing).",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "text": {"type": "string"},
+              "optimized_text": {"type": "string"},
+              "model_ids": {"type": "array", "items": {"type": "string"}},
+              "expected_output_tokens": {"type": "integer", "minimum": 0}
+            },
+            "required": ["text"]
+          }
+        },
+        "server": {"url": "<PUBLIC_BACKEND_URL>/api/vapi/webhook", "credentialId": "<VAPI_CREDENTIAL_ID>"}
+      }
+    ]
+  },
+  "server": {
+    "url": "<PUBLIC_BACKEND_URL>/api/vapi/webhook",
+    "credentialId": "<VAPI_CREDENTIAL_ID>"
+  },
+  "serverMessages": ["tool-calls", "status-update", "end-of-call-report"],
+  "endCallMessage": "Thank you for calling REDUTAX. Goodbye!",
+  "maxDurationSeconds": 600
+}

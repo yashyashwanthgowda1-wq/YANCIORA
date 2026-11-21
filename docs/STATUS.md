@@ -1,6 +1,6 @@
 # REDUTAX status
 
-Last updated: 2026-11-20
+Last updated: 2026-11-21
 
 ## Phase summary
 
@@ -10,8 +10,8 @@ Last updated: 2026-11-20
 | 1 | Normalization, tokenizer counters, compare API, licence register, importer, benchmark, DB persistence, retrieval APIs | **Verified 2026-11-21** — Neon PostgreSQL at migration `0002`; all 349 backend tests pass incl. the 30 PostgreSQL tests (test branch); FLORES-200 devtest imported (5,060 rows); first baseline benchmark stored (run `20261120T214425Z`) and shown on the Research Dashboard. Exit criteria met — **team sign-off pending** |
 | 2 | SentencePiece Unigram training + held-out benchmark | Not started (waits for Phase 1 verification + team approval) |
 | 3 | Optimizer + meaning/critical-detail checks (Features 5, 3, 6) | **Features 5, 3 and 6 done** (rules_v2, opt_rules_v1, translit_v1); Feature 6 awaits native-speaker spot checks |
-| 4 | Model registry, cost, Auto/Manual routing, chat | Not started |
-| 5 | Browser voice + Vapi phone | Not started |
+| 4 | Model registry, cost, Auto/Manual routing, chat | **Built 2026-11-21 (Features 4, 7, 9), committed on `integration/round1`** — registry empty until verified models are added; chat in analysis mode until an LLM is approved. `docs/PHASE2_FEATURES.md` |
+| 5 | Browser voice + Vapi phone | **Built 2026-11-21 (Features 8, 10), committed on `integration/round1`** — Vapi webhook prepared and mock-tested; **no live call yet**. `docs/VAPI_FINAL_CONNECTION_GUIDE.md` |
 | 6 | Evaluation report + demo | Not started |
 | UI | Frontend (Next.js) for all ten PRD §6 screens | **Built, awaiting team review** on branch `frontend/ui-phase`. See `docs/FRONTEND_COMPLETION_REPORT.md` |
 
@@ -29,13 +29,13 @@ Last updated: 2026-11-20
 | 1 | Multilingual Token Counter | Built (`POST /api/tokenize`) |
 | 2 | Language Comparison Engine | Built (`POST /api/compare-languages`); aligned FLORES-200 groups load from PostgreSQL (`GET /api/samples/groups`); stored benchmarks on the Research Dashboard |
 | 3 | Smart Prompt Optimizer | **Done — opt_rules_v1** (`POST /api/optimize`); balanced mode inactive until phrase lists are reviewed |
-| 4 | AI Cost Calculator | Not started (needs pricing source decision) |
+| 4 | AI Cost Calculator | **Built — cost_v1** (`POST /api/cost/estimate`); registry prices need `source_url` + `verified_at` to count as verified; registry empty (D42–D43) |
 | 5 | Meaning Preservation Checker | **Done — rules_v2** (units + standalone Romanized negations added 2026-11-21) (`POST /api/meaning-check`, `POST /api/critical-details`); Indic negation lists await native-speaker review |
 | 6 | Script and Transliteration Optimizer | **Done — translit_v1** (`POST /api/script-variants`; optimizer aggressive-mode suggestions); native-speaker spot check pending |
-| 7 | Smart Model Recommendation | Not started |
-| 8 | Voice-to-Optimized Prompt | Not started |
-| 9 | Smart AI Chatbot | Not started (needs provider approval) |
-| 10 | AI Telephone Voice Assistant (Vapi) | Not started (needs Vapi approval) |
+| 7 | Smart Model Recommendation | **Built — rec_rules_v1** (`POST /api/models/recommend`); rule-based, explains exclusions, manual lock (D44) |
+| 8 | Voice-to-Optimized Prompt | **Built — pipeline_v1** (`/api/pipeline/analyze`, `/api/pipeline/apply`); server STT adapter ready, inactive until `STT_*` is set (D45–D46) |
+| 9 | Smart AI Chatbot | **Built — analysis mode** (`POST /api/chat`); `/send` works once `LLM_*` is set (needs provider approval) (D47) |
+| 10 | AI Telephone Voice Assistant (Vapi) | **Prepared, not live** — secured webhook + 6 tools + assistant JSON; 35 mocked tests + 26 live HTTP checks; contract checked against Vapi's OpenAPI spec (2026-11-21); live call pending (D48–D49) |
 
 ### Feature 5 acceptance criteria — results
 
@@ -99,6 +99,23 @@ Policy: `research/configs/transliteration.md`. Tamil output uses Sanskrit-style 
   `test_money_and_email_matches_unchanged_by_performance_fix`).
 - `core/text.py`: `script_of_char` and `detect_script` cached; BOM removal uses `str.replace`.
   Same outputs, much faster.
+
+## Phase 2 test results (2026-11-21, branch `integration/round1`)
+
+| Check | Result |
+|---|---|
+| Backend `pytest` incl. PostgreSQL (Neon **test branch**, via `backend/scripts/run_db_tests.py`) | **436 passed, 0 failed, 0 skipped** (was 349; +87 Phase 2 tests, incl. provider rate-limit handling and the 2026-11-21 Vapi readiness audit: `test_phase2.py` 32, `test_vapi.py` 28, `test_api_phase2.py`) · 1 third-party deprecation warning (starlette testclient) |
+| Frontend `tsc --noEmit` | 0 errors |
+| Frontend vitest | **22/22** (16 existing + 6 new in `tests/phase2.test.ts`) |
+| Frontend `next build` | OK — 14 static pages, all 10 screens |
+| Live webhook check (no secret set) | `POST /api/vapi/webhook` → 503 `vapi_not_configured` (refuses by default) |
+| Browser checks (Edge, real UI + backend) | **35/35** — incl. Cost, Models, Chat, Voice, Settings Phase 2 flows; 2 console errors, both from deliberate error tests |
+| Production database after all runs (read-only check) | Unchanged — migration `0002`; 5,060 samples, 10,120 counts, 10 summaries |
+| Secret scan of the 33 changed/new files | 0 hits (no `.env` value, key pattern, Neon host or credential id); `.env` git-ignored |
+| `git diff --check` | Clean |
+
+Provider state: database configured; model registry empty; STT, LLM and Vapi secret **not configured**
+(those endpoints return explicit 503s; nothing is simulated).
 
 ## What works
 
@@ -177,7 +194,7 @@ Note for Windows: if pytest fails with `PermissionError` on its temp folder, add
 | `POST /api/optimize` | Implemented (Feature 3, opt_rules_v1) |
 | `POST /api/script-variants` | Implemented (Feature 6, translit_v1) |
 | `GET /api/benchmarks/{run_id}/results` | Implemented. Filters: `tokenizer`, `language`, `script`, `aligned_group_id`, `page`, `page_size` ≤ 100 |
-| Others in the UI brief | Later phases |
+| Phase 2 endpoints (`/api/models`, `/api/cost/estimate`, `/api/models/recommend`, `/api/pipeline/*`, `/api/voice/transcribe`, `/api/chat*`, `/api/integrations/status`, `/api/vapi/*`) | Implemented — reference in `docs/PHASE2_FEATURES.md` |
 
 Errors: `422 invalid_request` (bad filter), `404 not_found` (unknown dataset/run),
 `503 database_not_configured` / `503 database_unavailable`.
@@ -226,4 +243,5 @@ Frontend only; no backend file changed. Details: `docs/FRONTEND_COMPLETION_REPOR
 - tiktoken downloads its encoding files on first use; offline machines need the cache.
 - Encodings are baselines; which hosted model uses which encoding is not asserted anywhere.
 - A stored benchmark run covers one dataset version (one processed `samples.jsonl`).
+- Phase 2: empty model registry; chat sessions in memory only; STT/LLM need OpenAI-compatible providers; Vapi tested with mocks only (`docs/PHASE2_FEATURES.md` → Limitations).
 - Paper figures in the team slide (arXiv:2607.24276) are unverified and not REDUTAX results.

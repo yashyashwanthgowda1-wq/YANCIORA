@@ -33,6 +33,25 @@ class Settings(BaseModel):
     log_level: str = "INFO"
     cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:3000"])
     database_url: str | None = None
+    # ---- Phase 2 providers (all optional; features degrade to their documented fallbacks) ----
+    # Model registry (verified model metadata and prices; ships empty).
+    models_registry_path: str | None = None
+    # Speech-to-text: an OpenAI-compatible POST {base}/audio/transcriptions endpoint.
+    stt_base_url: str | None = None
+    stt_api_key: str | None = None
+    stt_model: str | None = None
+    # Chat LLM: an OpenAI-compatible POST {base}/chat/completions endpoint.
+    llm_base_url: str | None = None
+    llm_api_key: str | None = None
+    llm_model: str | None = None
+    llm_provider_name: str | None = None
+    llm_timeout_seconds: float = 30.0
+    # Vapi webhook authentication (at least one must be set or the webhook refuses requests).
+    vapi_webhook_secret: str | None = None      # Bearer token / X-Vapi-Secret value
+    vapi_hmac_secret: str | None = None         # HMAC credential secret
+    vapi_hmac_signature_header: str = "x-signature"
+    vapi_hmac_timestamp_header: str = "x-timestamp"
+    vapi_tool_timeout_seconds: float = 8.0
 
     @field_validator("log_level")
     @classmethod
@@ -54,6 +73,9 @@ class Settings(BaseModel):
             data["cors_origins"] = [o.strip() for o in v.split(",") if o.strip()]
         if v := e.get("DATABASE_URL"):
             data["database_url"] = v
+        for env_key, field in ENV_FIELDS.items():
+            if v := e.get(env_key):
+                data[field] = v
         return cls(**data)
 
     def safe_dict(self) -> dict[str, object]:
@@ -61,7 +83,26 @@ class Settings(BaseModel):
         d = self.model_dump()
         if self.database_url:
             d["database_url"] = redact_url(self.database_url)
+        for field in SECRET_FIELDS:
+            d[field] = "configured" if d.get(field) else None
+        for field in ("stt_base_url", "llm_base_url"):
+            if d.get(field):
+                d[field] = redact_url(d[field])
         return d
+
+
+# Environment variable → Settings field for the Phase 2 providers.
+ENV_FIELDS = {
+    "REDUTAX_MODELS_REGISTRY": "models_registry_path",
+    "STT_BASE_URL": "stt_base_url", "STT_API_KEY": "stt_api_key", "STT_MODEL": "stt_model",
+    "LLM_BASE_URL": "llm_base_url", "LLM_API_KEY": "llm_api_key", "LLM_MODEL": "llm_model",
+    "LLM_PROVIDER_NAME": "llm_provider_name", "LLM_TIMEOUT_SECONDS": "llm_timeout_seconds",
+    "VAPI_WEBHOOK_SECRET": "vapi_webhook_secret", "VAPI_HMAC_SECRET": "vapi_hmac_secret",
+    "VAPI_HMAC_SIGNATURE_HEADER": "vapi_hmac_signature_header",
+    "VAPI_HMAC_TIMESTAMP_HEADER": "vapi_hmac_timestamp_header",
+    "VAPI_TOOL_TIMEOUT_SECONDS": "vapi_tool_timeout_seconds",
+}
+SECRET_FIELDS = ("stt_api_key", "llm_api_key", "vapi_webhook_secret", "vapi_hmac_secret")
 
 
 def redact_url(url: str) -> str:

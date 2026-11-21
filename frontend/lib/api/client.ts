@@ -4,6 +4,10 @@ import type {
   MeaningCheckRequest, MeaningCheckResponse, OptimizeRequest, OptimizeResponse, SampleGroupsQuery,
   SampleGroupsResponse, ScriptVariantsRequest, ScriptVariantsResponse, TokenizeRequest, TokenizeResponse,
   TokenizersResponse,
+  AnalyzeRequest, AnalyzeResponse, ApplyEditsRequest, ApplyEditsResponse, ChatAnalyzeRequest, ChatAnalyzeResponse,
+  ChatHistoryResponse, ChatSendRequest, ChatSendResponse, CostEstimateRequest, CostEstimateResponse,
+  IntegrationsResponse, ModelRegistryResponse, RecommendRequest, RecommendResponse, TranscribeRequest,
+  TranscribeResponse, VapiStatusResponse,
 } from "./types";
 
 export const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000").replace(/\/+$/, "");
@@ -45,7 +49,7 @@ export interface RequestOptions {
 
 export async function request<T>(
   path: string,
-  init: { method?: "GET" | "POST"; body?: unknown } = {},
+  init: { method?: "GET" | "POST" | "DELETE"; body?: unknown } = {},
   opts: RequestOptions = {},
 ): Promise<T> {
   const f = opts.fetchImpl ?? fetch;
@@ -70,6 +74,7 @@ export async function request<T>(
   }
 
   if (res.ok || opts.acceptStatus?.includes(res.status)) {
+    if (res.status === 204) return undefined as T;
     if (body === null) throw new ApiError(res.status, "bad_response", "The server returned an empty or non-JSON response.");
     return body as T;
   }
@@ -115,6 +120,35 @@ export const api = {
   // Feature 6 — script and transliteration variants (translit_v1)
   scriptVariants: (body: ScriptVariantsRequest, o?: RequestOptions) =>
     request<ScriptVariantsResponse>("/api/script-variants", { method: "POST", body }, o),
+
+  // Feature 4 / 7 — model registry, cost, recommendation
+  models: (o?: RequestOptions) => request<ModelRegistryResponse>("/api/models", {}, o),
+  costEstimate: (body: CostEstimateRequest, o?: RequestOptions) =>
+    request<CostEstimateResponse>("/api/cost/estimate", { method: "POST", body }, o),
+  recommend: (body: RecommendRequest, o?: RequestOptions) =>
+    request<RecommendResponse>("/api/models/recommend", { method: "POST", body }, o),
+
+  // Feature 8 — pipeline and server transcription
+  analyze: (body: AnalyzeRequest, o?: RequestOptions) =>
+    request<AnalyzeResponse>("/api/pipeline/analyze", { method: "POST", body }, o),
+  applyEdits: (body: ApplyEditsRequest, o?: RequestOptions) =>
+    request<ApplyEditsResponse>("/api/pipeline/apply", { method: "POST", body }, o),
+  transcribe: (body: TranscribeRequest, o?: RequestOptions) =>
+    request<TranscribeResponse>("/api/voice/transcribe", { method: "POST", body }, o),
+
+  // Feature 9 — chat
+  chat: (body: ChatAnalyzeRequest, o?: RequestOptions) =>
+    request<ChatAnalyzeResponse>("/api/chat", { method: "POST", body }, o),
+  chatSend: (sessionId: string, body: ChatSendRequest, o?: RequestOptions) =>
+    request<ChatSendResponse>(`/api/chat/${encodeURIComponent(sessionId)}/send`, { method: "POST", body }, o),
+  chatHistory: (sessionId: string, o?: RequestOptions) =>
+    request<ChatHistoryResponse>(`/api/chat/${encodeURIComponent(sessionId)}`, {}, o),
+  chatDelete: (sessionId: string, o?: RequestOptions) =>
+    request<void>(`/api/chat/${encodeURIComponent(sessionId)}`, { method: "DELETE" }, o),
+
+  // Status (Feature 10 + providers)
+  integrations: (o?: RequestOptions) => request<IntegrationsResponse>("/api/integrations/status", {}, o),
+  vapiStatus: (o?: RequestOptions) => request<VapiStatusResponse>("/api/vapi/status", {}, o),
 };
 
 /** Human guidance for known error codes (shown under the server's own message). */
@@ -130,6 +164,16 @@ export function errorHint(code: string): string | null {
       return "The database is configured but unreachable. Start it with: docker compose up -d db.";
     case "transliteration_unavailable":
       return "Install the transliteration engine on the backend: pip install --no-deps --require-hashes -r requirements-translit.txt";
+    case "stt_not_configured":
+      return "Server transcription needs STT_BASE_URL, STT_API_KEY and STT_MODEL in the backend .env. Use browser voice input or type instead.";
+    case "llm_not_configured":
+      return "Sending to a model needs LLM_BASE_URL, LLM_API_KEY and LLM_MODEL in the backend .env. REDUTAX analysis still works.";
+    case "provider_error":
+      return "The configured provider failed or timed out. Try again; check the provider's status and the backend logs.";
+    case "provider_rate_limited":
+      return "The provider's rate limit was reached. Wait for the time in the message, then retry. The message was not added to the conversation."
+    case "registry_invalid":
+      return "config/models.yaml has an invalid entry. Fix it and retry.";
     case "unknown_tokenizer":
       return "Pick a tokenizer from the list; the backend only accepts the names it reports at /api/tokenizers.";
     case "not_found":

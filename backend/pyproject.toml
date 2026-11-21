@@ -12,6 +12,7 @@ dependencies = [
   "alembic>=1.13",
   "tiktoken>=0.7",
   "pyyaml>=6",
+  "httpx>=0.27",                 # provider adapters (STT, LLM)
   # Pinned (team decision 2026-11-20): regex is also used by tiktoken; 2026.11.19 avoided.
   "regex==2026.9.29",
   # Runtime needs of indic-transliteration (installed separately, --no-deps; see

@@ -63,6 +63,19 @@
 | D40 | Startup log shows the database only as `configured (<driver>)` (`redact_url`); failed health-check connections are logged by error type only | Logs must not contain the database user, host, password or full connection string. `mask_url` is kept but no longer used for logging. |
 | D41 | `GET /api/benchmarks` fills `dataset.license` from the `datasets` row (was always null) | Licence metadata travels with stored results; response shape unchanged (field already existed). |
 
+Phase 2 (Features 4, 7, 8, 9, 10), 2026-11-21 — see `docs/PHASE2_FEATURES.md`:
+
+| # | Decision | Reason |
+|---|---|---|
+| D42 | Model/price registry `config/models.yaml` ships **empty**; prices count as `verified` only with `source_url` + `verified_at`; user-entered models are sent per request with `source: "user"` and labelled `user_entered` | No model prices, language support or quality scores may be invented; the team fills the registry from provider documentation. |
+| D43 | Cost (`cost_v1`) counts each model's input with its documented tiktoken encoding, else a labelled fallback encoding; every count is `estimate` | Encoding counts are not provider billing; which hosted model uses which encoding must be sourced. |
+| D44 | Recommendation (`rec_rules_v1`) is deterministic rules over registry metadata: explicit exclusions, three ranking orders, unknowns ranked last and named; a locked manual choice is always kept (with a warning if ineligible) | Explainable without a paid evaluation; no task-quality or latency claims without data. |
+| D45 | Server STT and chat LLM use **OpenAI-compatible** HTTP adapters (`/audio/transcriptions`, `/chat/completions`) configured only by env vars; absent config → 503 `stt_not_configured` / `llm_not_configured`; provider HTTP 429 → 429 `provider_rate_limited`, other failures/timeouts → 502 `provider_error`; no provider chosen or called | Provider and paid-API approval is a team decision (open question); one adapter covers many providers. |
+| D46 | Audio is sent as base64 JSON (≤ 10 MB decoded), forwarded to the STT provider and never stored or logged; no transcript is ever simulated | Keeps the API JSON-only; privacy rule on voice data. |
+| D47 | Chat works in **analysis mode** without an LLM (reply opens with "REDUTAX analysis mode — this is not a live AI conversation."); sessions are in-process memory only (200 sessions, 40 turns, 2 h idle), never in the DB or logs | No fake AI replies; prompt/transcript retention is still an open question, so nothing is persisted. |
+| D48 | Vapi webhook `POST /api/vapi/webhook`: refuses everything (503) until `VAPI_WEBHOOK_SECRET` and/or `VAPI_HMAC_SECRET` is set; accepts Bearer, legacy `X-Vapi-Secret`, or HMAC-SHA256 over `{timestamp}.{body}` (timestamp header required, ±5 min; body-only signatures refused since the 2026-11-21 audit); results carry `toolCallId` + `name` (Vapi OpenAPI `ToolCallResult`); constant-time compares; 1 MB body cap; per-tool timeout; logs only event type, call id, tool, outcome, duration; six tools wrap existing services (`optimize_prompt` safe mode only) | Contract checked against docs.vapi.ai (server URL auth, tool-calls request/response). Security rules: secure webhooks, no sensitive voice/conversation logs. |
+| D49 | Vapi is reported as **prepared, not live** (`live_call_verified: false`) until a real call is made; assistant JSON keeps provider, model, URL and credential as placeholders | Never claim an external integration is live without verification; transcriber/voice choice for kn/ta/te is open. |
+
 The new response types in `backend/app/schemas.py` (`SampleGroupsResponse`, `BenchmarksResponse`,
 `BenchmarkResultsResponse`, `MeaningCheckResponse`, `CriticalDetailsResponse`, `OptimizeResponse`, `ScriptVariantsResponse`) must be mirrored in the frontend's `lib/api/types.ts`.
 
@@ -72,10 +85,10 @@ The new response types in `backend/app/schemas.py` (`SampleGroupsResponse`, `Ben
 - UI/UX: design tool and frontend framework (Next.js suggested by PRD).
 - Which dataset licences permit the intended use (FLORES-200 first)?
 - LLM providers and API accounts for the demo.
-- Speech providers for Kannada/Hindi/Tamil/Telugu through Vapi.
+- Speech providers for Kannada/Hindi/Tamil/Telugu through Vapi. (Phase 2: transcriber/voice are placeholders — D49.)
 - Minimum task-quality score and maximum voice latency.
 - Prompt/transcript retention period.
-- Pricing source and currency for the cost calculator.
+- Pricing source and currency for the cost calculator. (Phase 2: registry format ready, empty — D42.)
 
 ## Unverified figures
 

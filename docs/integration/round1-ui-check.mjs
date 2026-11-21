@@ -379,6 +379,103 @@ await step("Language Comparison loads an aligned FLORES-200 group from the datab
   await shot("18-compare-aligned-sample-loader");
 });
 
+
+// ---------------------------------------------------------------- Phase 2 screens (Features 4, 7, 8, 9, 10)
+// Test models are user-entered fixtures with made-up ids and prices (not real model data).
+await step("Cost Calculator · backend estimate with optimized comparison (Kannada)", async () => {
+  await page.goto(`${BASE}/cost`, { waitUntil: "networkidle" });
+  await waitTokenizers("#cs-tok");
+  await page.fill('textarea[aria-label="Prompt text"]', "ದಯವಿಟ್ಟು   ಈ ವರದಿಯನ್ನು ಕಳುಹಿಸಿ!!!!!! ಬಜೆಟ್ ₹೫೦೦೦.");
+  await page.fill("#cs-out", "200");
+  await page.fill('input[aria-label="Model 1 name"]', "test-model-a");
+  await page.selectOption('select[aria-label="Model 1 encoding"]', "o200k_base");
+  await page.fill('input[aria-label="Model 1 input price"]', "100");
+  await page.fill('input[aria-label="Model 1 output price"]', "400");
+  const resp = page.waitForResponse((r) => r.url().includes("/api/cost/estimate"), { timeout: 60000 });
+  await page.getByRole("button", { name: "Calculate estimate" }).click();
+  const est = await (await resp).json();
+  await page.waitForSelector("text=Estimated total per request", { timeout: 30000 });
+  const body = await page.textContent("body");
+  const m = est.models[0];
+  record("Cost Calculator · backend estimate with optimized comparison (Kannada)",
+    m.model_id === "test-model-a" && m.price_status === "user_entered" && /User-entered/.test(body) && m.total_cost > 0,
+    { inputTokens: m.input_tokens, optimizedTokens: m.optimized_input_tokens, total: m.total_cost, savingsPct: m.savings_pct, encoding: m.encoding_used });
+  await shot("19-cost-calculator");
+});
+await step("Model Recommendation · add user models, recommend, lock", async () => {
+  await page.goto(`${BASE}/models`, { waitUntil: "networkidle" });
+  for (const [id, ctx, inp, out, sup] of [["test-model-cheap", "8000", "0.5", "1.5", "unknown"], ["test-model-kn", "16000", "2", "8", "claimed"]]) {
+    await page.fill("#am-id", id); await page.fill("#am-p", "TestProvider");
+    await page.selectOption("#am-enc", "o200k_base"); await page.fill("#am-ctx", ctx);
+    await page.fill("#am-in", inp); await page.fill("#am-out", out); await page.selectOption("#am-sup", sup);
+    await page.getByRole("button", { name: "Add user-entered model" }).click();
+  }
+  await page.fill("#md-text", "ದಯವಿಟ್ಟು ಈ ವರದಿಯನ್ನು ಸಂಕ್ಷೇಪಿಸಿ.");
+  await page.selectOption("#md-pref", "lowest");
+  const resp = page.waitForResponse((r) => r.url().includes("/api/models/recommend"), { timeout: 60000 });
+  await page.getByRole("button", { name: "Recommend", exact: true }).click();
+  const r1 = await (await resp).json();
+  await page.waitForSelector("text=Recommended:", { timeout: 30000 });
+  await page.selectOption("#md-sup", "claimed");
+  const resp2 = page.waitForResponse((r) => r.url().includes("/api/models/recommend"), { timeout: 60000 });
+  await page.getByRole("button", { name: "Recommend", exact: true }).click();
+  const r2 = await (await resp2).json();
+  await page.waitForTimeout(300);
+  const body = await page.textContent("body");
+  record("Model Recommendation · add user models, recommend, lock",
+    r1.recommended?.model_id === "test-model-cheap" && r2.recommended?.model_id === "test-model-kn" && /Excluded model/.test(body),
+    { lowestCost: r1.recommended?.model_id, claimedSupport: r2.recommended?.model_id, excluded: r2.excluded.map((c) => c.model_id) });
+  await shot("20-model-recommendation");
+});
+await step("AI Chat · analysis mode, approval, LLM not configured is explicit", async () => {
+  await page.goto(`${BASE}/chat`, { waitUntil: "networkidle" });
+  await page.fill('textarea[aria-label="Message"]', "ದಯವಿಟ್ಟು   ನಾಳೆ ₹೫೦೦ ಪಾವತಿಸಬೇಡಿ!!!!!!");
+  await page.selectOption('select[aria-label="Language"]', "kn");
+  const resp = page.waitForResponse((r) => r.url().includes("/api/chat") && r.request().method() === "POST", { timeout: 60000 });
+  await page.getByRole("button", { name: "Analyse" }).click();
+  const a = await (await resp).json();
+  await page.waitForSelector("text=REDUTAX analysis — not an AI reply", { timeout: 30000 });
+  const boxes = page.locator(".turn-bubble input[type=checkbox]");
+  if (await boxes.count()) await boxes.first().check();
+  await page.getByRole("button", { name: "Apply approved edits" }).click();
+  await page.waitForSelector("text=Prompt to send:", { timeout: 30000 });
+  const sendDisabled = await page.getByRole("button", { name: /Send to model/ }).isDisabled();
+  const body = await page.textContent("body");
+  record("AI Chat · analysis mode, approval, LLM not configured is explicit",
+    a.mode === "analysis" && a.llm_available === false && sendDisabled && /No LLM provider is configured/.test(body) && !/As an AI/.test(body),
+    { sessionId: a.session_id.slice(0, 6) + "…", suggestions: a.analysis.optimization.suggestions.length, sendDisabled });
+  await shot("21-chat-analysis-mode");
+});
+await step("Voice · text workflow: process, approve, final comparison; Vapi status", async () => {
+  await page.goto(`${BASE}/voice`, { waitUntil: "networkidle" });
+  await waitTokenizers("select.select:not([aria-label])");
+  await page.fill("#vc-edit", "नमस्ते   कल ₹500 मत भेजो!!!!!!");
+  await page.selectOption('select[aria-label="Language"]', "hi");
+  const resp = page.waitForResponse((r) => r.url().includes("/api/pipeline/analyze"), { timeout: 60000 });
+  await page.getByRole("button", { name: "Process prompt" }).click();
+  const a = await (await resp).json();
+  await page.waitForSelector("text=Optimization result", { timeout: 30000 });
+  const sugg = page.locator("section:has(h2:has-text('Approve uncertain changes')) input[type=checkbox]:not([disabled])");
+  if (await sugg.count()) await sugg.first().check();
+  const resp2 = page.waitForResponse((r) => r.url().includes("/api/pipeline/apply"), { timeout: 60000 });
+  await page.getByRole("button", { name: /Apply .*safe edits and compare/ }).click();
+  const ap = await (await resp2).json();
+  await page.waitForSelector("text=Original vs final prompt", { timeout: 30000 });
+  const body = await page.textContent("body");
+  record("Voice · text workflow: process, approve, final comparison; Vapi status",
+    a.language === "hi" && ap.allowed === true && /Implemented/.test(body) && /Secret not set/.test(body) && /Not yet/.test(body),
+    { tokens: a.tokens.token_count, applied: ap.applied_count, meaning: ap.meaning_check.status, before: ap.tokens_before, after: ap.tokens_after });
+  await shot("22-voice-workflow");
+});
+await step("Settings · real provider status (no secrets)", async () => {
+  await page.goto(`${BASE}/settings`, { waitUntil: "networkidle" });
+  await page.waitForSelector("text=Chat LLM provider", { timeout: 30000 });
+  await page.waitForFunction(() => /analysis mode/.test(document.body.innerText), null, { timeout: 30000 });
+  const body = await page.textContent("body");
+  record("Settings · real provider status (no secrets)", /Prepared · secret not set/.test(body) && /Empty · add verified models/.test(body) && !/sk-|npg_/.test(body), {});
+  await shot("23-settings-providers");
+});
+
 fs.writeFileSync(path.join(OUT, "results.json"), JSON.stringify({ results, consoleErrors }, null, 2));
 console.log(`\n${results.filter((r) => r.ok).length}/${results.length} passed; console errors: ${consoleErrors.length}`);
 consoleErrors.slice(0, 10).forEach((e) => console.log("  console:", e));
