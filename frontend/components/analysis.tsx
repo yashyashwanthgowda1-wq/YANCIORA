@@ -7,9 +7,9 @@
 import { useState } from "react";
 import type {
   CriticalDetail, DetailCategory, EditReport, MeaningCheckResponse, MeaningStatus, OptimizeResponse,
-  RejectedEdit, ScriptVariant, ScriptVariantsResponse, TokenizerRef,
+  RejectedEdit, ScriptVariant, ScriptVariantsResponse,
 } from "@/lib/api/types";
-import { fmtDec, fmtInt, fmtRatio } from "@/lib/format";
+import { fmtDec, fmtInt } from "@/lib/format";
 import { IconCopy } from "./icons";
 import { Badge, Callout, CountStatusBadge, TokenizerTag } from "./ui";
 
@@ -192,7 +192,11 @@ function EditTable({ title, hint, edits, kind, limit = 50 }: {
   );
 }
 
-export function OptimizeResults({ res }: { res: OptimizeResponse }) {
+/**
+ * `hideInternals` (Prompt Optimizer page) hides the meaning-check panel/badge and internal
+ * phrase-list identifiers. Presentation only: the backend still runs and enforces those checks.
+ */
+export function OptimizeResults({ res, hideInternals = false }: { res: OptimizeResponse; hideInternals?: boolean }) {
   const [copied, setCopied] = useState(false);
   const copy = async () => { try { await navigator.clipboard.writeText(res.optimized); setCopied(true); setTimeout(() => setCopied(false), 1200); } catch { /* blocked */ } };
   return (
@@ -200,7 +204,7 @@ export function OptimizeResults({ res }: { res: OptimizeResponse }) {
       <div className="btn-row">
         <h2 style={{ fontSize: 20 }}>Optimization result</h2>
         <Badge tone="outline">{res.mode} mode</Badge>
-        <MeaningStatusBadge status={res.meaning_check.status} />
+        {!hideInternals && <MeaningStatusBadge status={res.meaning_check.status} />}
         {res.requires_review && <ReviewBadge />}
         {!res.changed && <Badge tone="neutral">Original kept</Badge>}
       </div>
@@ -250,12 +254,14 @@ export function OptimizeResults({ res }: { res: OptimizeResponse }) {
       <EditTable title="Rejected edits" kind="rejected" edits={res.rejected} limit={20}
         hint="Touched a protected detail, overlapped another edit, saved no tokens, hit the edit limit, or changed a critical detail." />
 
-      <section className="panel">
-        <div className="panel-head"><div><h2>Meaning check — original vs optimized</h2><p>Rule-based critical-detail comparison (Feature 5)</p></div></div>
-        <div className="panel-body"><MeaningFindings mc={res.meaning_check} /></div>
-      </section>
+      {!hideInternals && (
+        <section className="panel">
+          <div className="panel-head"><div><h2>Meaning check — original vs optimized</h2><p>Rule-based critical-detail comparison (Feature 5)</p></div></div>
+          <div className="panel-body"><MeaningFindings mc={res.meaning_check} /></div>
+        </section>
+      )}
 
-      {res.phrase_lists.length > 0 && (
+      {!hideInternals && res.phrase_lists.length > 0 && (
         <p className="small subtle">Phrase lists: {res.phrase_lists.map((p) => `${p.id} — ${p.review_status.replace("_", " ")}, ${p.entries} entries, ${p.applied ? "applied" : "not applied"}`).join(" · ")}</p>
       )}
       {res.warnings.length > 0 && <Callout tone="warn" title="Notes from the optimizer"><Bullets items={res.warnings} /></Callout>}
@@ -265,20 +271,12 @@ export function OptimizeResults({ res }: { res: OptimizeResponse }) {
 }
 
 // ---------------------------------------------------------------- Feature 6
-function TokenCells({ v }: { v: ScriptVariant }) {
-  return (
-    <>
-      {v.token_counts.map((t) => (
-        <span key={t.tokenizer.name} className="small num" style={{ display: "block" }}>
-          {fmtInt(t.tokens)} <span className={t.delta_vs_source < 0 ? "delta-neg" : t.delta_vs_source > 0 ? "delta-pos" : "subtle"}>({t.delta_vs_source > 0 ? "+" : ""}{t.delta_vs_source})</span> · {fmtRatio(t.ratio_vs_source)}
-        </span>
-      ))}
-    </>
-  );
-}
-
+/**
+ * Generated script variants: scheme, text and "Add to comparison" only. Token counts,
+ * round-trip/meaning columns and transliteration warnings are intentionally not shown here;
+ * token counts appear in the comparison results once a variant is added.
+ */
 export function ScriptVariantsResults({ res, onAdd }: { res: ScriptVariantsResponse; onAdd?: (v: ScriptVariant) => void }) {
-  const tok: TokenizerRef | undefined = res.source.token_counts[0]?.tokenizer;
   if (res.status === "unsupported") {
     return <Callout tone="warn" title="Not supported"><Bullets items={res.warnings} /></Callout>;
   }
@@ -287,36 +285,21 @@ export function ScriptVariantsResults({ res, onAdd }: { res: ScriptVariantsRespo
       <div className="btn-row">
         <Badge tone="outline">{res.direction === "native_to_roman" ? "Native → Romanized" : "Romanized → native"}</Badge>
         <ReviewBadge />
-        {tok && <TokenizerTag t={tok} />}
-        {res.source.token_counts[0] && <CountStatusBadge status={res.source.token_counts[0].status} />}
-        <span className="small subtle">{res.library.name} {res.library.version} · {res.method} · source: {fmtInt(res.source.token_counts[0]?.tokens)} tokens</span>
       </div>
       <div className="table-wrap">
         <table className="table">
-          <thead><tr><th>Scheme</th><th>Text</th><th className="num">Tokens (Δ) · ratio</th><th>Round trip</th><th>Meaning check</th><th /></tr></thead>
+          <thead><tr><th>Scheme</th><th>Text</th><th /></tr></thead>
           <tbody>
             {res.variants.map((v, i) => (
               <tr key={i}>
                 <td><code>{v.scheme ?? v.script}</code></td>
-                <td className="indic" style={{ maxWidth: 360 }}>{v.text}</td>
-                <td className="num"><TokenCells v={v} /></td>
-                <td className="small">
-                  {v.lossless_round_trip ? <Badge tone="blue">Lossless</Badge> : <Badge tone="red">Lossy</Badge>}
-                  {v.joiners.source_count > 0 && <div className="subtle">ZWJ/ZWNJ: {v.joiners.source_count} → {v.joiners.output_count}{v.joiners.preserved_in_round_trip ? " (restored)" : " (lost)"}</div>}
-                  {!v.lossless_round_trip && <Bullets items={v.lossy_reasons} />}
-                </td>
-                <td><MeaningStatusBadge status={v.meaning_check.status} /></td>
-                <td>{onAdd && <button className="btn btn-sm btn-secondary" onClick={() => onAdd(v)}>Add to comparison</button>}</td>
+                <td className="indic">{v.text}</td>
+                <td style={{ textAlign: "right" }}>{onAdd && <button className="btn btn-sm btn-secondary" onClick={() => onAdd(v)}>Add to comparison</button>}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      {[...new Set(res.variants.flatMap((v) => v.warnings))].length > 0 && (
-        <Callout tone="warn" title="Transliteration warnings"><Bullets items={[...new Set(res.variants.flatMap((v) => v.warnings))]} /></Callout>
-      )}
-      {res.warnings.length > 0 && <Callout tone="info"><Bullets items={res.warnings} /></Callout>}
-      <Limitations items={res.limitations} />
     </div>
   );
 }

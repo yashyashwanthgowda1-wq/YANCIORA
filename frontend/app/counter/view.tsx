@@ -143,11 +143,6 @@ export default function CounterView() {
                 <Stat label="Language · script" value={<span style={{ fontSize: 18, display: "block" }}>{r.language ? LANGUAGES[r.language].name : "Unknown"}<span className="stat-unit" style={{ display: "block", marginLeft: 0 }}>{r.script ? SCRIPT_LABELS[r.script] : "No script detected"}</span></span>} />
               </div>
               <div className="panel-body stack">
-                {r.language === null && r.script === "Latn" && (
-                  <Callout tone="info" title="Latin script: language not assumed">
-                    English and Romanized Kannada, Hindi, Tamil or Telugu all use Latin letters. Choose the language above if you want it recorded.
-                  </Callout>
-                )}
                 {r.script === "mixed" && <Callout tone="info" title="Mixed scripts detected">This looks like code-mixed text. Word count is whitespace-based; check attached punctuation.</Callout>}
                 {showPieces && r.pieces && (
                   <div>

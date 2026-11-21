@@ -15,7 +15,7 @@ import { logActivity } from "@/lib/storage";
 const CALL_FLOW = [
   ["1", "Incoming call", "Vapi number answers"],
   ["2", "Speech", "Vapi STT / TTS"],
-  ["3", "Backend", "POST /api/vapi/webhook (authenticated)"],
+  ["3", "Backend", "Authenticated webhook"],
   ["4", "Language", "detect_language tool"],
   ["5", "Optimize", "optimize_prompt + check_meaning"],
   ["6", "Route", "recommend_model + estimate_cost"],

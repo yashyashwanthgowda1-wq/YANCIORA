@@ -457,6 +457,21 @@ input[type="range"] { accent-color: var(--red-600); width: 100%; }
 .run-item[aria-pressed="true"] { border-color: var(--blue-700); box-shadow: inset 3px 0 0 var(--red-600); background: var(--blue-50); }
 .run-item .rid { font-family: var(--font-mono); font-size: var(--fs-12); color: var(--ink); font-weight: 600; word-break: break-all; }
 .lit-table td:nth-child(2) { font-variant-numeric: tabular-nums; }
+.dash-section + .dash-section { margin-top: var(--sp-10); }
+.dash-head { display: flex; align-items: flex-start; gap: var(--sp-3); padding-bottom: var(--sp-3); margin-bottom: var(--sp-4); border-bottom: 1px solid var(--border); }
+.dash-head .n { font-family: var(--font-mono); font-size: var(--fs-12); font-weight: 700; color: var(--red-600); padding-top: 4px; }
+.dash-head h2 { font-size: var(--fs-20); }
+.dash-head p { font-size: var(--fs-13); color: var(--text-muted); margin-top: 2px; }
+.dash-sub { font-size: var(--fs-14); font-weight: 650; margin: var(--sp-6) 0 var(--sp-3); }
+.tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-4); }
+.tool-card { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: 16px 18px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--white); color: var(--ink); transition: border-color .12s; }
+.tool-card:hover { text-decoration: none; border-color: var(--blue-500); }
+.tool-card h3 { font-size: 15px; }
+.tool-card p { flex: 1; font-size: var(--fs-13); color: var(--text-muted); }
+.tool-card .go { display: inline-flex; align-items: center; gap: 4px; font-size: var(--fs-13); font-weight: 600; color: var(--blue-700); }
+.filter-bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--sp-4); padding: 14px 18px; margin-bottom: var(--sp-6); border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface-sunken); }
+.filter-bar .field { min-width: 180px; flex: 1 1 180px; }
+@media (max-width: 860px) { .tool-grid { grid-template-columns: minmax(0, 1fr); } }
 
 /* Settings */
 .settings-section { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: var(--sp-8); padding: var(--sp-6) 0; border-top: 1px solid var(--border); }

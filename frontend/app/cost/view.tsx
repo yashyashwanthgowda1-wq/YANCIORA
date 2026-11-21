@@ -180,7 +180,7 @@ export default function CostView() {
 
         <div className="stack-lg" style={{ position: "sticky", top: 76 }}>
           <section className="panel" aria-live="polite">
-            <div className="panel-head"><div><h2>3 · Estimate</h2><p>{source === "count" ? "POST /api/cost/estimate" : first?.row.model || "Model 1"}</p></div></div>
+            <div className="panel-head"><div><h2>3 · Estimate</h2><p>{source === "count" ? "Calculated by the backend" : first?.row.model || "Model 1"}</p></div></div>
             <div className="panel-body stack">
               {source === "count" ? (
                 <>
@@ -229,7 +229,7 @@ export default function CostView() {
           </section>
 
           <section className="panel">
-            <div className="panel-head"><div><h2>Model price registry</h2><p><code>GET /api/models</code> · config/models.yaml</p></div>
+            <div className="panel-head"><div><h2>Model price registry</h2><p>Verified models from config/models.yaml</p></div>
               <Badge tone={registryModels.length ? "blue" : "outline"}>{registryModels.length} model{registryModels.length === 1 ? "" : "s"}</Badge></div>
             <div className="panel-body stack">
               {catalog.registry.error && <ErrorState error={catalog.registry.error} compact />}

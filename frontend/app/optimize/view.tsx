@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import { CriticalDetailChips, MeaningFindings, MeaningStatusBadge, NegationLists, OptimizeResults } from "@/components/analysis";
+import { MeaningStatusBadge, OptimizeResults } from "@/components/analysis";
 import { TokenizerSelect } from "@/components/domain";
-import { IconCopy, IconLock, IconPlus, IconTrash } from "@/components/icons";
+import { IconCopy, IconPlus, IconTrash } from "@/components/icons";
 import { Badge, Callout, CountStatusBadge, ErrorState, Field, PageHeader, Segmented, TokenizerTag } from "@/components/ui";
 import { api } from "@/lib/api/client";
 import {
@@ -15,25 +15,10 @@ import { LANGUAGES } from "@/lib/languages";
 import { logActivity } from "@/lib/storage";
 import { editsForDecision } from "@/lib/optimize";
 
-/** What the rule-based meaning check (rules_v2) covers today for each protected category. */
-const PROTECTED: { name: string; checked: "yes" | "partly" | "no"; note: string }[] = [
-  { name: "Names", checked: "partly", note: "Latin-script capitalised names and acronyms; Indic names only if you list them as protected terms" },
-  { name: "Numbers & amounts", checked: "yes", note: "digits in any script, ₹/Rs/$ amounts" },
-  { name: "Dates & times", checked: "partly", note: "numeric and English formats" },
-  { name: "Locations", checked: "partly", note: "Latin-script capitalised place names only (same heuristic as names)" },
-  { name: "Units & quantities", checked: "partly", note: "Latin units (kg, km, GB, days…) compared; Indic-script units not yet" },
-  { name: "Negation", checked: "partly", note: "word lists; Indic lists await native-speaker review" },
-  { name: "Conditions", checked: "partly", note: "English words (if, unless, until, otherwise…); Indic words not yet" },
-  { name: "Questions", checked: "yes", note: "each question mark is kept" },
-  { name: "Safety instructions", checked: "no", note: "not checked yet" },
-  { name: "Output format", checked: "no", note: "not checked yet" },
-  { name: "Explicit constraints", checked: "partly", note: "English must/only/at least/at most…, plus quoted text, code, URLs and emails" },
-];
-
 const MODES: { value: OptimizeMode; label: string; risk: string }[] = [
   { value: "safe", label: "Safe", risk: "Lossless formatting only: spaces, blank lines, invisible characters, repeated punctuation, long separator lines. Repeated sentences are only suggested." },
-  { value: "balanced", label: "Balanced", risk: "Also removes exact repeats of an earlier sentence or line that contain no critical detail, and applies wording rules approved in the Linguistic Review (none approved yet). Wording is changed only in the prompt's own language." },
-  { value: "aggressive", label: "Aggressive", risk: "Same automatic edits as balanced, plus suggestions that may change meaning (wording still pending native-speaker review, script variants). Nothing extra is applied without your approval." },
+  { value: "balanced", label: "Balanced", risk: "Also removes repeated sentences (when every number, negation and other detail is still in the first copy) and applies approved wording rules: English wordy phrases (e.g. \"in order to\" → \"to\"). Kannada, Hindi, Tamil and Telugu wording rules await native-speaker review, so only formatting and repeats are changed there. Every edit must save tokens and pass the meaning check." },
+  { value: "aggressive", label: "Aggressive", risk: "Same automatic edits as balanced, plus suggestions that may change meaning or tone (Indic wording pending native-speaker review, politeness frames, script variants). Use \"Select all\" to build one shorter alternative; nothing extra is applied without your approval." },
 ];
 const ENCODING_PAIR: Record<string, string> = { cl100k_base: "o200k_base", o200k_base: "cl100k_base" };
 
@@ -76,13 +61,12 @@ export default function OptimizeView() {
   });
 
   const optimize = useAction(async (signal) => {
-    const [res, details] = await Promise.all([
-      api.optimize({ text: original, language, mode, tokenizers: encodings, protected_terms: terms }, { signal }),
-      api.criticalDetails({ text: original, language, protected_terms: terms }, { signal }),
-    ]);
+    // Critical-detail protection runs inside POST /api/optimize itself; the separate
+    // /api/critical-details call was only used for the (removed) on-page detail list.
+    const res = await api.optimize({ text: original, language, mode, tokenizers: encodings, protected_terms: terms }, { signal });
     const t = res.token_counts[0];
     logActivity({ kind: "optimize", href: "/optimize", summary: `Optimizer ${res.mode}: ${fmtInt(t?.before)} → ${fmtInt(t?.after)} tokens · ${res.accepted.length} accepted · ${res.suggestions.length} suggested · ${tokenizer}` });
-    return { res, details };
+    return { res };
   });
   const canOptimize = !!original.trim() && !!tokenizer && original.length <= MAX_TEXT_CHARS && !termTooLong;
 
@@ -95,7 +79,7 @@ export default function OptimizeView() {
   return (
     <>
       <PageHeader
-        eyebrow={<>Reduce <Badge tone="blue">F03 · F05 · Live</Badge> <Badge tone="outline">Rules-based</Badge></>}
+        eyebrow={<>Reduce <Badge tone="blue">F03 · Live</Badge> <Badge tone="outline">Rules-based</Badge></>}
         title="Prompt Optimizer"
         lede="Shorter prompts, same meaning. Deterministic rules propose edits; an edit is applied only if it saves tokens and the rule-based meaning check finds every critical detail intact. Anything uncertain is returned as a suggestion for you to review, and the original is kept when nothing qualifies. You can also measure and check your own rewrites."
       />
@@ -129,7 +113,7 @@ export default function OptimizeView() {
         <section className="stack">
           <div className="panel">
             <div className="panel-head">
-              <div><h2>Automatic optimization</h2><p><code>POST /api/optimize</code> · {mode} mode · every edit measured with {tokenizer || "the selected tokenizer"} and checked for meaning</p></div>
+              <div><h2>Automatic optimization</h2><p>{MODES.find((m) => m.value === mode)?.label} mode · every edit measured with {tokenizer || "the selected tokenizer"}</p></div>
             </div>
             <div className="panel-body stack">
               <p className="small muted">
@@ -137,7 +121,6 @@ export default function OptimizeView() {
               </p>
               {optimize.data && (
                 <div className="btn-row">
-                  <MeaningStatusBadge status={optimize.data.res.meaning_check.status} />
                   <span className="small num">{fmtInt(optimize.data.res.token_counts[0]?.before)} → {fmtInt(optimize.data.res.token_counts[0]?.after)} tokens</span>
                   <span className="small subtle">{optimize.data.res.accepted.length} accepted · {optimize.data.res.suggestions.length} suggested · {optimize.data.res.rejected.length} rejected</span>
                 </div>
@@ -174,7 +157,7 @@ export default function OptimizeView() {
       </div>
 
       {optimize.error && <ErrorState error={optimize.error} onRetry={() => optimize.run()} />}
-      {optimize.data && <div style={{ marginBottom: 32 }}><OptimizeResults res={optimize.data.res} /></div>}
+      {optimize.data && <div style={{ marginBottom: 32 }}><OptimizeResults res={optimize.data.res} hideInternals /></div>}
       {optimize.data && <DecisionPanel key={optimize.data.res.original + optimize.data.res.mode + optimize.data.res.optimized} res={optimize.data.res} language={language} tokenizer={tokenizer} terms={terms} />}
 
       {count.error && <ErrorState error={count.error} onRetry={() => count.run()} />}
@@ -184,7 +167,7 @@ export default function OptimizeView() {
           <div className="btn-row"><h2 style={{ fontSize: 20 }}>Candidate ledger</h2><CountStatusBadge status={orig.result.status} /><TokenizerTag t={orig.result.tokenizer} /></div>
           <div className="table-wrap">
             <table className="table">
-              <thead><tr><th>Candidate</th><th className="num">Tokens</th><th className="num">Change</th><th className="num">Tokens / word</th><th>Critical details</th><th>Semantic score</th><th>Decision</th><th /></tr></thead>
+              <thead><tr><th>Candidate</th><th className="num">Tokens</th><th className="num">Change</th><th className="num">Tokens / word</th><th>Decision</th><th /></tr></thead>
               <tbody>
                 {rows.map((r, i) => {
                   const d = pctChange(orig.result.token_count, r.result.token_count);
@@ -194,8 +177,6 @@ export default function OptimizeView() {
                       <td className="num">{fmtInt(r.result.token_count)}</td>
                       <td className="num">{i === 0 ? "—" : <span className={d !== null && d < 0 ? "delta-neg" : d !== null && d > 0 ? "delta-pos" : ""}>{fmtPct(d)}</span>}</td>
                       <td className="num">{fmtDec(r.result.tokens_per_word)}</td>
-                      <td>{i === 0 || !r.meaning ? "—" : <><MeaningStatusBadge status={r.meaning.status} /><div className="small subtle">{r.meaning.missing_count} missing · {r.meaning.added_count} added</div></>}</td>
-                      <td>{i === 0 ? "—" : <Badge tone="planned" title="rules_v2 compares critical details only; no semantic similarity model is used">Not measured</Badge>}</td>
                       <td>{i === 0 ? <Badge tone="blue">Retained</Badge> : <Decision meaning={r.meaning} fewer={r.result.token_count < orig.result.token_count} />}</td>
                       <td>{i > 0 && <button className="btn btn-sm btn-ghost" onClick={() => setViewIdx(i)} aria-pressed={viewIdx === i}>View</button>}</td>
                     </tr>
@@ -206,9 +187,7 @@ export default function OptimizeView() {
           </div>
           {rows.length > 1 && (
             <Callout tone="info" title="Nothing is sent or replaced automatically">
-              A rewrite is shown as eligible only when it uses fewer tokens and the rule-based check found every critical detail intact. That check compares
-              numbers, amounts, dates, negations, quotes, code, URLs, emails and protected terms; it is not a semantic score and not a guarantee of equal meaning.
-              An increase in tokens is reported, not hidden.
+              A rewrite is shown as eligible only when it uses fewer tokens and keeps the original's important details. An increase in tokens is reported, not hidden.
             </Callout>
           )}
 
@@ -228,42 +207,8 @@ export default function OptimizeView() {
               </div>
             </div>
           )}
-          {viewing && viewIdx > 0 && viewing.meaning && (
-            <section className="panel">
-              <div className="panel-head"><div><h2>Meaning check — {viewing.label}</h2><p>Original vs this rewrite (rules_v2)</p></div></div>
-              <div className="panel-body"><MeaningFindings mc={viewing.meaning} /></div>
-            </section>
-          )}
         </section>
       )}
-
-      <section style={{ marginTop: 32 }} className="stack">
-        <div className="section-title"><h2>Meaning preservation</h2></div>
-        <section className="panel">
-          <div className="panel-head"><div><h2>Critical details in the original</h2><p><code>POST /api/critical-details</code> · found when you run Optimize; these are never edited</p></div></div>
-          <div className="panel-body stack">
-            {optimize.data ? (
-              <>
-                <CriticalDetailChips details={optimize.data.details.details} />
-                <NegationLists mc={optimize.data.details} />
-                {optimize.data.details.warnings.length > 0 && <Callout tone="info">{optimize.data.details.warnings.join(" ")}</Callout>}
-              </>
-            ) : <p className="small muted">Run Optimize to list the numbers, amounts, dates, negations, quotes, code, URLs, emails and protected terms found in your prompt.</p>}
-          </div>
-        </section>
-        <ul className="check-list" aria-label="Protected detail categories">
-          {PROTECTED.map((p) => (
-            <li key={p.name}><span className="dot" />
-              <span>{p.name}
-                <span className="small subtle" style={{ display: "block" }}>{p.checked === "yes" ? "Checked" : p.checked === "partly" ? "Partly checked" : "Not checked yet"}{p.checked === "no" ? "" : `: ${p.note}`}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
-        <div className="btn-row">
-          <span className="small subtle"><IconLock /> Approval is required by default (PRD §22): choose the version to use in “Your decision” above and copy it. Sending to a model happens in AI Chat (needs a configured LLM).</span>
-        </div>
-      </section>
     </>
   );
 }
@@ -309,11 +254,14 @@ function DecisionPanel({ res, language, tokenizer, terms }: { res: OptimizeRespo
               </label>
             ))}
             <div className="btn-row">
+              <button className="btn btn-ghost btn-sm" onClick={() => setApproved(approved.size === approvable.length ? new Set() : new Set(approvable.map(({ i }) => i)))}>
+                {approved.size === approvable.length ? "Clear selection" : `Select all ${approvable.length} (shorter alternative)`}
+              </button>
               <button className="btn btn-secondary btn-sm" disabled={approved.size === 0 || apply.loading} onClick={() => apply.run()}>{apply.loading && <span className="spinner" />} Apply approved suggestions</button>
               {apply.data && approved.size > 0 && (
                 <span className="small">
-                  <MeaningStatusBadge status={apply.data.meaning_check.status} /> {fmtInt(apply.data.tokens_before)} → {fmtInt(apply.data.tokens_after)} tokens ({apply.data.tokenizer.name}) · {apply.data.applied_count} edits
-                  {!apply.data.allowed && <span className="field-error"> · the meaning check reports a changed critical detail (removing a repeated copy lowers that detail's count); check the result before using it</span>}
+                  {fmtInt(apply.data.tokens_before)} → {fmtInt(apply.data.tokens_after)} tokens ({apply.data.tokenizer.name}) · {apply.data.applied_count} edits
+                  {!apply.data.allowed && <span className="field-error"> · an important detail in the original may have changed; check the result before using it</span>}
                 </span>
               )}
             </div>
@@ -326,6 +274,12 @@ function DecisionPanel({ res, language, tokenizer, terms }: { res: OptimizeRespo
         {choice === "optimized" && !(apply.data && approved.size) && first && (
           <p className="small subtle num">{first.tokenizer.name}: {fmtInt(first.before)} → {fmtInt(first.after)} tokens ({fmtDec(first.saved_pct)}% saved)</p>
         )}
+        <div className="stack" aria-label="Meaning check result">
+          <div className="btn-row"><span className="small">Meaning check (rule-based; not a guarantee):</span> <MeaningStatusBadge status={res.meaning_check.status} /></div>
+          {res.meaning_check.risks.length > 0 && (
+            <ul className="small muted" style={{ margin: 0, paddingLeft: 18 }}>{res.meaning_check.risks.map((r) => <li key={r}>{r}</li>)}</ul>
+          )}
+        </div>
       </div>
     </section>
   );

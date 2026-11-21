@@ -41,21 +41,22 @@ export const NAV: NavGroup[] = [
     { href: "/", label: "Home", availability: "live", note: "System status and project overview" },
   ] },
   { label: "Measure", items: [
-    { href: "/counter", label: "Token Counter", availability: "live", note: "POST /api/tokenize" },
-    { href: "/compare", label: "Language Comparison", availability: "live", note: "POST /api/compare-languages · /api/script-variants" },
+    { href: "/counter", label: "Token Counter", availability: "live", note: "Count tokens and words with a named tokenizer" },
+    { href: "/compare", label: "Language Comparison", availability: "live", note: "Compare the same meaning across languages and scripts" },
   ] },
   { label: "Reduce", items: [
-    { href: "/optimize", label: "Prompt Optimizer", availability: "live", note: "POST /api/optimize · /api/meaning-check · /api/critical-details (rules-based)" },
-    { href: "/cost", label: "Cost Calculator", availability: "live", note: "POST /api/cost/estimate · registry + user-entered prices" },
-    { href: "/models", label: "Model Recommendation", availability: "live", note: "POST /api/models/recommend (rule-based, configured model data)" },
+    { href: "/optimize", label: "Prompt Optimizer", availability: "live", note: "Shorten a prompt while keeping its important details" },
+    { href: "/cost", label: "Cost Calculator", availability: "live", note: "Estimate cost from registry or user-entered prices" },
+    { href: "/models", label: "Model Recommendation", availability: "live", note: "Rule-based model suggestions from configured model data" },
   ] },
   { label: "Assist", items: [
-    { href: "/chat", label: "AI Chat", availability: "live", note: "POST /api/chat (analysis) · /send needs a configured LLM" },
-    { href: "/voice", label: "Voice & Calls", availability: "live", note: "Voice→optimized prompt; Vapi webhook prepared (connect in Vapi)" },
+    { href: "/chat", label: "AI Chat", availability: "live", note: "Analyse a prompt; sending needs a configured LLM" },
+    { href: "/voice", label: "Voice & Calls", availability: "live", note: "Turn speech into an optimized prompt; connect telephone calls in Vapi" },
   ] },
   { label: "Research", items: [
-    { href: "/research", label: "Research Dashboard", availability: "live", note: "GET /api/benchmarks" },
-    { href: "/review", label: "Linguistic Review", availability: "live", note: "GET /api/linguistics/* · native-speaker decisions exported, then merged by the team" },
+    { href: "/research", label: "Research Dashboard", availability: "live", note: "Stored tokenizer benchmark runs and results" },
+    // The Linguistic Review page was removed from the frontend. The backend
+    // /api/linguistics/* endpoints and the review datasets are unchanged.
   ] },
   { label: "System", items: [
     { href: "/settings", label: "Settings & Privacy", availability: "live", note: "Preferences stored in this browser" },

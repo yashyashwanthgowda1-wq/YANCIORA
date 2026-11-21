@@ -13,7 +13,7 @@ Last updated: 2026-11-21
 | 4 | Model registry, cost, Auto/Manual routing, chat | **Built 2026-11-21 (Features 4, 7, 9), committed on `integration/round1`** — registry empty until verified models are added; chat in analysis mode until an LLM is approved. `docs/PHASE2_FEATURES.md` |
 | 5 | Browser voice + Vapi phone | **Built 2026-11-21 (Features 8, 10), committed on `integration/round1`** — Vapi webhook prepared and mock-tested; **no live call yet**. `docs/VAPI_FINAL_CONNECTION_GUIDE.md` |
 | 6 | Evaluation report + demo | Not started |
-| UI | Frontend (Next.js) for all ten PRD §6 screens | **Built, awaiting team review** on branch `frontend/ui-phase`. See `docs/FRONTEND_COMPLETION_REPORT.md` |
+| UI | Frontend (Next.js) for all ten PRD §6 screens | **Built, awaiting team review** on branch `frontend/ui-phase`. See `docs/FRONTEND_COMPLETION_REPORT.md`. Presentation cleanup done 2026-11-21 (uncommitted): see "Frontend cleanup milestone" |
 
 ## Work tracks (team decision 2026-11-20)
 
@@ -28,7 +28,7 @@ Last updated: 2026-11-21
 |---|---|---|
 | 1 | Multilingual Token Counter | Built (`POST /api/tokenize`) |
 | 2 | Language Comparison Engine | Built (`POST /api/compare-languages`); aligned FLORES-200 groups load from PostgreSQL (`GET /api/samples/groups`); stored benchmarks on the Research Dashboard |
-| 3 | Smart Prompt Optimizer | **opt_rules_v3 (2026-11-21, uncommitted)** — safe / balanced / aggressive with risk levels; per-edit language, source, risk, approval and token records; wording rules come only from the review data and apply only in their own language. **0 automatic wording rules**: all 399 review entries are pending native-speaker review. Evaluations: `research/OPTIMIZER_EVAL_FLORES200.md`, `research/PROMPT_EVAL_SYNTHETIC_V1.md` |
+| 3 | Smart Prompt Optimizer | **opt_rules_v4 (2026-11-21, D64, uncommitted)** — safe / balanced / aggressive. Balanced now really compresses: 76 approved English wording rules, and repeated instructions removed even when they hold details (every value kept once; status at_risk). Indic wording stays suggestion-only (399 review entries pending). Verbose synthetic set, balanced, o200k_base: English −16.9%, kn/hi/ta/te native −7.8 to −8.1%, Romanized −17 to −24%; 0 token increases, 0 changed, 0 detail values lost. Browser acceptance 23/23. `research/PROMPT_EVAL_VERBOSE_V1.md` |
 | 4 | AI Cost Calculator | **Built — cost_v1** (`POST /api/cost/estimate`); registry prices need `source_url` + `verified_at` to count as verified; registry empty (D42–D43) |
 | 5 | Meaning Preservation Checker | **rules_v5 (2026-11-21, uncommitted)** — English conditions, constraints, questions, names, number words and relative days; English opposite pairs give a warning; Indic/Romanized markers from the review data (all pending review, used protectively); formality changes, and Romanized marker changes when the language is `auto`, give "review required"; 72-case adversarial suite + 27 rules_v5 regression cases |
 | 6 | Script and Transliteration Optimizer | **Done — translit_v1** (`POST /api/script-variants`; optimizer aggressive-mode suggestions); native-speaker spot check pending |
@@ -100,6 +100,35 @@ Policy: `research/configs/transliteration.md`. Tamil output uses Sanskrit-style 
 - `core/text.py`: `script_of_char` and `detect_script` cached; BOM removal uses `str.replace`.
   Same outputs, much faster.
 
+## Frontend cleanup milestone (2026-11-21, uncommitted)
+
+Presentation-only cleanup of the Next.js frontend. No backend file, schema, endpoint, request/response type (`frontend/lib/api/types.ts`, `client.ts`) or research value changed.
+
+| Item | State |
+|---|---|
+| Token Counter | "Latin script: language not assumed" notice removed. Counting and "Compare all tokenizers" unchanged |
+| Language Comparison → Script variants | Results table reduced to scheme, text and "Add to comparison". Token-count summary/columns, round-trip and meaning columns, transliteration warnings and limitations no longer shown. Generation and adding to the comparison unchanged |
+| Prompt Optimizer | "Meaning preservation" section (critical-detail list, negation lists, protected-category checklist), meaning-check result panel, per-rewrite meaning panel, "Critical details"/"Semantic score" ledger columns, phrase-list IDs and endpoint text removed. The page no longer calls `POST /api/critical-details` (it fed only the removed list); critical-detail protection still runs inside `POST /api/optimize`. Voice & Calls keeps the full result view |
+| Linguistic Review | Page deleted (`frontend/app/review/`, `lib/review.ts`, `tests/review.test.ts`); `/review` returns 404. Removed from the Research menu and home cards. `/api/linguistics/*` and the 399 review entries unchanged. Reviewers now use the spreadsheet export + `apply_review_decisions.py` |
+| Sidebar and home | Availability legend ("Live backend / Partly available / Planned phase") and availability dots removed. Menu/home-card descriptions rewritten in plain language (no endpoint paths) |
+| Endpoint text | Visible `GET`/`POST /api/...` text removed from Compare, Cost, Chat, Voice call flow and the database status tooltip. Kept on purpose: the Vapi webhook path on Voice & Calls → Integration status (needed to connect Vapi) |
+| Research Dashboard | Reorganized into A. Research overview (runs stored, tokenizers available, languages in scope, evaluation status, all from live data), B. Tokenization and language research (tool cards), C. Evaluation and results (filters, runs, run detail, reference reports). No metric added or changed |
+| Tests | `tsc --noEmit` 0 errors on a clean build directory; vitest **30/30** (new `tests/nav.test.ts`, 5 tests; `review.test.ts` removed with the page); `next build` OK, **14 pages** (no `/review`). Browser (Edge, production build on :3100 against the running backend with the other contributor's latest optimizer): **18/21**. All 15 Indic + 3 English optimizer runs render the cleaned result correctly; the 3 misses are the test's own expectation that English with language "Auto" is detected as `en` (the backend returns `null` for Latin script by design). "Select all" + apply (21 → 15 tokens) and the rewrite ledger pass; `/review` 404; no legend, dots or endpoint text |
+| Limitations | `tsc` inside `frontend/` reports 3 errors from the stale `.next/types/app/review` until the next `next build` (the running `next start` server on :3000 still serves the previous build and was not touched). Docs still describing the removed screen (not edited in this milestone): `docs/LINGUISTIC_REVIEW_GUIDE.md` (step 1), `docs/review/english_phrase_validation.md`, `docs/integration/round1-ui-check.mjs` (visits `/review`), `docs/integration/optimizer-e2e/e2e_optimize.mjs` (expects the removed meaning/critical-detail panels). Unused frontend code left in place: `InactiveFeature` (with its endpoint label), `CriticalDetailChips`, review methods in `client.ts` |
+
+## Optimizer compression milestone (2026-11-21, opt_rules_v4, uncommitted)
+
+| Item | State |
+|---|---|
+| Cause of "no savings" | The engine applied only formatting, detail-free exact repeats and *approved* wording rules, and none were approved. Not a bug in the request flow |
+| Changes (D64, approved by the project owner) | English phrase list active (76 rules, each gated by token saving + meaning check); repeats with details removed in balanced when every value survives (`at_risk`); punctuation-insensitive repeats; short repeats inside running text; politeness checked by count; aggressive "Select all" builds one combined alternative |
+| Indic | Unchanged policy: formatting + repeats only; wording suggestions pending native-speaker review |
+| Verbose set (100 synthetic prompts, 20 per language) | Balanced, o200k_base mean saving: English 16.9%, Kannada 7.8%, Hindi 8.0%, Tamil 7.9%, Telugu 8.1%, Romanized 17–24%. 0 token increases, 0 `changed`, 0 detail values lost (300 runs), script kept 300/300 |
+| Everyday set (short prompts) | Balanced: 70–90% unchanged, mean 0.5–6.8% |
+| Browser | 23/23 incl. a ~650-token repetitive English prompt: 652 → 148 tokens (cl100k_base) |
+| Tests | Backend relevant suites pass (see the final report); frontend tsc clean, vitest 31/31, build OK |
+| UI note | Uncommitted frontend changes by another contributor removed the on-page critical-details list and meaning panel from `/optimize`; a meaning-check line (badge + warnings) was added back to the decision panel |
+
 ## Indic linguistic-review milestone (2026-11-21, uncommitted)
 
 Decisions D56–D63. Guide for reviewers and the team: `docs/LINGUISTIC_REVIEW_GUIDE.md`.
@@ -107,7 +136,7 @@ Decisions D56–D63. Guide for reviewers and the team: `docs/LINGUISTIC_REVIEW_G
 | Item | State |
 |---|---|
 | Review datasets | `backend/app/linguistics/review/{kn,hi,ta,te,en}.yaml`: 399 entries (Kannada 90, Hindi 113, Tamil 90, Telugu 89, English 17), 10 categories. **All `pending_review`; 0 approved, 0 rejected.** Drafted by an AI assistant and labelled as unverified |
-| Review workflow | Linguistic Review screen (`/review`, drafts in the browser, signed JSON export); spreadsheet export; `research/scripts/apply_review_decisions.py` (validates, merges per entry). No server writes, no database changes |
+| Review workflow | Spreadsheet export; `research/scripts/apply_review_decisions.py` (validates, merges per entry). No server writes, no database changes. The browser Linguistic Review screen (`/review`) was **removed from the frontend on 2026-11-21** (see "Frontend cleanup milestone"); the `/api/linguistics/*` endpoints and all 399 entries are unchanged |
 | Optimizer use | Pending detection lists protect text and make Indic word changes "review required". Pending wording entries are aggressive-mode suggestions only. English rules never apply to Indic text |
 | Meaning check | `rules_v5` (D62): 72 adversarial cases across kn/hi/ta/te, Romanized and code-mixed — every critical change rejected, formality changes and uncovered deletions "review required". A further probe of 29 rewrites found 6 meaning changes reported `preserved` under rules_v4 (incl. a removed Romanized negation *beda* with language `auto`); all 6 fixed, regression tests in `test_meaning_rules_v5.py` |
 | English validation (Phase 8) | Phrase list still **inactive**. Matrix of 11 entries × 7 contexts (`docs/review/english_phrase_validation.md`, `test_english_validation.py`): 7 redundant-expression rules keep every detail (2–4 tokens saved per use); the 4 request frames are suggestion-only. Found and fixed: *I would like you to* / *I want you to* would have been applied automatically if the list were activated (D63) |
@@ -275,3 +304,4 @@ Frontend only; no backend file changed. Details: `docs/FRONTEND_COMPLETION_REPOR
 - A stored benchmark run covers one dataset version (one processed `samples.jsonl`).
 - Phase 2: empty model registry; chat sessions in memory only; STT/LLM need OpenAI-compatible providers; Vapi tested with mocks only (`docs/PHASE2_FEATURES.md` → Limitations).
 - Paper figures in the team slide (arXiv:2607.24276) are unverified and not REDUTAX results.
+- No browser screen for native-speaker review since 2026-11-21: decisions are collected through the spreadsheet export and merged with `research/scripts/apply_review_decisions.py`.

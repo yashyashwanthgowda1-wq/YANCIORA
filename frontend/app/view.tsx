@@ -121,7 +121,7 @@ export default function HomeView() {
         <div className="quick">
           {NAV.flatMap((g) => g.items).filter((i) => i.href !== "/").map((i) => (
             <Link key={i.href} href={i.href}>
-              <span className="q-head">{i.label}<span className={`avail avail-${i.availability}`} aria-label={i.availability} /></span>
+              <span className="q-head">{i.label}</span>
               <p>{i.note}</p>
             </Link>
           ))}

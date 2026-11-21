@@ -182,11 +182,11 @@ function ScriptVariantsTool({ tokenizer, variants, canAdd, onAdd }: {
   });
 
   return (
-    <section className="panel" style={{ marginBottom: 24 }}>
+    <section className="panel" id="script-variants" style={{ marginBottom: 24, scrollMarginTop: 72 }}>
       <div className="panel-head">
         <div>
           <h2>Script variants <Badge tone="blue">F06</Badge></h2>
-          <p>Same text in another script (<code>POST /api/script-variants</code>). Variants are never applied automatically; fewer tokens does not mean a model understands the text equally well.</p>
+          <p>Same text in another script. Variants are never applied automatically; add one to the comparison to measure it.</p>
         </div>
       </div>
       <div className="panel-body stack">
@@ -330,7 +330,7 @@ function SampleLoader({ onPick }: { onPick: (g: SampleGroup) => void }) {
 
   return (
     <section className="panel panel-sunken" style={{ marginBottom: 24 }} aria-label="Aligned sample loader">
-      <div className="panel-head"><div><h2>Aligned sample groups</h2><p>From imported datasets via <code>GET /api/samples/groups</code>. A group shares one meaning across languages.</p></div></div>
+      <div className="panel-head"><div><h2>Aligned sample groups</h2><p>From imported datasets. A group shares one meaning across languages.</p></div></div>
       <div className="panel-body stack">
         <div className="row">
           <Field label="Dataset" htmlFor="sl-ds" hint="Exact name, e.g. FLORES-200"><input id="sl-ds" className="input" value={dataset} onChange={(e) => { setDataset(e.target.value); setPage(1); }} placeholder="Any dataset" /></Field>

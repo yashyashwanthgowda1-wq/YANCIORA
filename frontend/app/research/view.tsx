@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { DotRangePlot } from "@/components/charts";
-import { IconDownload } from "@/components/icons";
+import { IconArrowRight, IconDownload } from "@/components/icons";
 import {
   Badge, Callout, CountStatusBadge, EmptyState, ErrorState, Field, LoadingRows, PageHeader, Pager, Stat, TokenizerTag,
 } from "@/components/ui";
@@ -31,71 +32,120 @@ export default function ResearchView() {
   }, [runs.data, selected]);
 
   const run = runs.data?.items.find((r) => r.run_id === selected) ?? null;
+  const filtered = !!(dataset.trim() || tokenizer || language);
+  const total = runs.data?.total;
+  const evalStatus = runs.error ? "Unavailable" : runs.loading && !runs.data ? "Checking…" : total ? "Runs stored" : "Awaiting first run";
 
   return (
     <>
       <PageHeader
         eyebrow={<>Research <Badge tone="blue">Live</Badge></>}
         title="Research Dashboard"
-        lede="Stored tokenizer benchmark runs: dataset version, tokenizer versions, normalization policy, per-language fertility with confidence intervals, and per-sample counts. Every number comes from a stored run."
+        lede="How tokenizers handle Kannada, Hindi, Tamil, Telugu and English, measured on stored, reproducible benchmark runs. Every number on this page comes from a stored run or the live backend."
       />
 
-      <div className="row" style={{ marginBottom: 20 }}>
-        <Field label="Dataset" htmlFor="rs-ds"><input id="rs-ds" className="input" placeholder="Any dataset" value={dataset} onChange={(e) => { setDataset(e.target.value); setPage(1); }} /></Field>
-        <Field label="Tokenizer" htmlFor="rs-tok">
-          <select id="rs-tok" className="select" value={tokenizer} onChange={(e) => { setTokenizer(e.target.value); setPage(1); }}>
-            <option value="">Any tokenizer</option>
-            {(toks.data?.tokenizers ?? []).map((t) => <option key={t} value={t}>{t}</option>)}
-          </select>
-        </Field>
-        <Field label="Language" htmlFor="rs-lang">
-          <select id="rs-lang" className="select" value={language} onChange={(e) => { setLanguage(e.target.value as LanguageCode | ""); setPage(1); }}>
-            <option value="">All languages</option>
-            {LANGUAGE_CODES.map((c) => <option key={c} value={c}>{LANGUAGES[c].name}</option>)}
-          </select>
-        </Field>
-      </div>
-
-      {runs.loading && !runs.data && <LoadingRows rows={5} />}
-      {runs.error && <ErrorState error={runs.error} onRetry={runs.reload} />}
-
-      {runs.data && runs.data.items.length === 0 && (
-        <div className="panel">
-          <EmptyState art="chart" title="No benchmark runs stored yet">
-            A run appears here after the team verifies a dataset licence, imports it, and stores a benchmark. No results are shown until then.
-          </EmptyState>
-          <div className="panel-foot">
-            <div className="kicker" style={{ marginBottom: 6 }}>How a run gets here</div>
-            <ol className="small muted" style={{ margin: 0, paddingLeft: 18, lineHeight: 1.9 }}>
-              <li>Verify the licence entry in <code>research/configs/datasets.yaml</code></li>
-              <li><code>python research/scripts/import_pilot.py --input … --dataset FLORES-200 --load-db</code></li>
-              <li><code>python research/scripts/run_benchmark.py --input … --split test --store-db</code></li>
-            </ol>
-          </div>
+      {/* ---- A. Overview ---- */}
+      <section className="dash-section" aria-labelledby="rs-a">
+        <DashHead n="A" id="rs-a" title="Research overview" desc="What is measured today and where the evaluation stands." />
+        <div className="stat-strip">
+          <Stat label={filtered ? "Benchmark runs (filtered)" : "Benchmark runs stored"} value={total === undefined ? "—" : fmtInt(total)} />
+          <Stat label="Tokenizers available" value={toks.data ? toks.data.tokenizers.length : "—"} />
+          <Stat label="Languages in scope" value={LANGUAGE_CODES.length} />
+          <Stat label="Evaluation status" value={<span style={{ fontSize: 18 }}>{evalStatus}</span>} />
         </div>
-      )}
+      </section>
 
-      {runs.data && runs.data.items.length > 0 && (
-        <div className="split-aside">
-          <aside aria-label="Benchmark runs">
-            <div className="kicker" style={{ marginBottom: 8 }}>Runs · {runs.data.total}</div>
-            <div className="run-list">
-              {runs.data.items.map((r) => (
-                <button key={r.run_id} className="run-item" aria-pressed={r.run_id === selected} onClick={() => setSelected(r.run_id)}>
-                  <div className="rid">{r.run_id}</div>
-                  <div className="small muted">{r.dataset.name}@{r.dataset.version} · {r.split ?? "all splits"}</div>
-                  <div className="small subtle">{fmtDateTime(r.run_at)} · {fmtInt(r.n_samples)} samples</div>
-                </button>
-              ))}
+      {/* ---- B. Tools ---- */}
+      <section className="dash-section" aria-labelledby="rs-b">
+        <DashHead n="B" id="rs-b" title="Tokenization and language research" desc="Interactive tools for measuring your own text with the live tokenizers." />
+        <div className="tool-grid">
+          <ToolCard href="/counter" title="Tokenizer comparison">Count one text under every available tokenizer and compare tokens and tokens per word.</ToolCard>
+          <ToolCard href="/compare" title="Language comparison">Compare the same meaning across languages and scripts against a reference language.</ToolCard>
+          <ToolCard href="/compare#script-variants" title="Script variant research">Generate native or Romanized versions of a text and add them to a comparison.</ToolCard>
+        </div>
+      </section>
+
+      {/* ---- C. Evaluation and results ---- */}
+      <section className="dash-section" aria-labelledby="rs-c">
+        <DashHead n="C" id="rs-c" title="Evaluation and results" desc="Stored benchmark runs: dataset and tokenizer versions, per-language fertility with confidence intervals, and per-sample counts." />
+
+        <div className="filter-bar" role="group" aria-label="Filter benchmark runs">
+          <Field label="Dataset" htmlFor="rs-ds"><input id="rs-ds" className="input" placeholder="Any dataset" value={dataset} onChange={(e) => { setDataset(e.target.value); setPage(1); }} /></Field>
+          <Field label="Tokenizer" htmlFor="rs-tok">
+            <select id="rs-tok" className="select" value={tokenizer} onChange={(e) => { setTokenizer(e.target.value); setPage(1); }}>
+              <option value="">Any tokenizer</option>
+              {(toks.data?.tokenizers ?? []).map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </Field>
+          <Field label="Language" htmlFor="rs-lang">
+            <select id="rs-lang" className="select" value={language} onChange={(e) => { setLanguage(e.target.value as LanguageCode | ""); setPage(1); }}>
+              <option value="">All languages</option>
+              {LANGUAGE_CODES.map((c) => <option key={c} value={c}>{LANGUAGES[c].name}</option>)}
+            </select>
+          </Field>
+        </div>
+
+        {runs.loading && !runs.data && <LoadingRows rows={5} />}
+        {runs.error && <ErrorState error={runs.error} onRetry={runs.reload} />}
+
+        {runs.data && runs.data.items.length === 0 && (
+          <div className="panel">
+            <EmptyState art="chart" title="No benchmark runs stored yet">
+              A run appears here after the team verifies a dataset licence, imports it, and stores a benchmark. No results are shown until then.
+            </EmptyState>
+            <div className="panel-foot">
+              <div className="kicker" style={{ marginBottom: 6 }}>How a run gets here</div>
+              <ol className="small muted" style={{ margin: 0, paddingLeft: 18, lineHeight: 1.9 }}>
+                <li>Verify the licence entry in <code>research/configs/datasets.yaml</code></li>
+                <li><code>python research/scripts/import_pilot.py --input … --dataset FLORES-200 --load-db</code></li>
+                <li><code>python research/scripts/run_benchmark.py --input … --split test --store-db</code></li>
+              </ol>
             </div>
-            <Pager page={page} pageSize={pageSize} total={runs.data.total} onPage={setPage} />
-          </aside>
-          {run && <RunDetail run={run} />}
-        </div>
-      )}
+          </div>
+        )}
 
-      <LiteratureReference />
+        {runs.data && runs.data.items.length > 0 && (
+          <div className="split-aside">
+            <aside aria-label="Benchmark runs">
+              <div className="kicker" style={{ marginBottom: 8 }}>Runs · {runs.data.total}</div>
+              <div className="run-list">
+                {runs.data.items.map((r) => (
+                  <button key={r.run_id} className="run-item" aria-pressed={r.run_id === selected} onClick={() => setSelected(r.run_id)}>
+                    <div className="rid">{r.run_id}</div>
+                    <div className="small muted">{r.dataset.name}@{r.dataset.version} · {r.split ?? "all splits"}</div>
+                    <div className="small subtle">{fmtDateTime(r.run_at)} · {fmtInt(r.n_samples)} samples</div>
+                  </button>
+                ))}
+              </div>
+              <Pager page={page} pageSize={pageSize} total={runs.data.total} onPage={setPage} />
+            </aside>
+            {run && <RunDetail run={run} />}
+          </div>
+        )}
+
+        <h3 className="dash-sub">Reference reports</h3>
+        <LiteratureReference />
+      </section>
     </>
+  );
+}
+
+function DashHead({ n, id, title, desc }: { n: string; id: string; title: string; desc: string }) {
+  return (
+    <div className="dash-head">
+      <span className="n" aria-hidden="true">{n}</span>
+      <div><h2 id={id}>{title}</h2><p>{desc}</p></div>
+    </div>
+  );
+}
+
+function ToolCard({ href, title, children }: { href: string; title: string; children: ReactNode }) {
+  return (
+    <Link href={href} className="tool-card">
+      <h3>{title}</h3>
+      <p>{children}</p>
+      <span className="go">Open <IconArrowRight width={14} height={14} /></span>
+    </Link>
   );
 }
 
@@ -254,7 +304,7 @@ const LITERATURE: [string, number][] = [
 
 function LiteratureReference() {
   return (
-    <details className="panel" style={{ marginTop: 32 }}>
+    <details className="panel">
       <summary className="panel-head" style={{ cursor: "pointer", listStyle: "none", borderBottom: 0 }}>
         <div>
           <h2>Literature reference <Badge tone="red">Unverified · not a REDUTAX result</Badge></h2>

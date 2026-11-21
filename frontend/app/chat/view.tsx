@@ -200,7 +200,7 @@ export default function ChatView() {
 
         <aside className="stack">
           <section className="panel">
-            <div className="panel-head"><div><h2>Chat service</h2><p><code>POST /api/chat</code> · <code>/api/chat/&#123;id&#125;/send</code></p></div></div>
+            <div className="panel-head"><div><h2>Chat service</h2><p>Prompt analysis and model replies</p></div></div>
             <div className="panel-body stack">
               {status.error && <ErrorState error={status.error} compact />}
               <ul className="checklist">

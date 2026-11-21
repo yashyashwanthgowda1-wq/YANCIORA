@@ -40,19 +40,15 @@ export function AppShell({ children }: { children: ReactNode }) {
             <div className="nav-group" key={g.label}>
               <div className="nav-group-label">{g.label}</div>
               {g.items.map((i) => (
-                <Link key={i.href} href={i.href} className="nav-link" aria-current={path === i.href ? "page" : undefined} title={i.note}>
+                <Link key={i.href} href={i.href} className="nav-link" aria-current={path === i.href ? "page" : undefined}>
                   <span>{i.label}</span>
-                  <span className={`avail avail-${i.availability}`} aria-label={i.availability} />
                 </Link>
               ))}
             </div>
           ))}
         </nav>
         <div className="sidebar-foot">
-          <div className="legend-row"><span className="avail avail-live" /> Live backend</div>
-          <div className="legend-row"><span className="avail avail-partial" /> Partly available</div>
-          <div className="legend-row"><span className="avail avail-planned" /> Planned phase</div>
-          <div style={{ marginTop: 10 }}>Team YANCIORA · No. 46</div>
+          <div>Team YANCIORA · No. 46</div>
         </div>
       </aside>
       <div className="scrim" onClick={() => setOpen(false)} aria-hidden="true" />
@@ -84,7 +80,7 @@ function SystemPills() {
   return (
     <>
       <span className="status-pill" title={`Backend: ${API_BASE_URL}`}><span className={`dot ${api.dot}`} /><span className="pill-text">{api.text}</span></span>
-      <span className="status-pill" title="From GET /health"><span className={`dot ${db.dot}`} /><span className="pill-text">{db.text}</span></span>
+      <span className="status-pill" title="Database connection status"><span className={`dot ${db.dot}`} /><span className="pill-text">{db.text}</span></span>
       {toks.data && <span className="status-pill" title={toks.data.tokenizers.join(", ")}><span className="dot dot-ok" /><span className="pill-text">{toks.data.tokenizers.length} tokenizers</span></span>}
     </>
   );
